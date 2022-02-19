@@ -8,6 +8,7 @@ import PrismaException from '../exceptions/PrismaException';
 import VerifyRequest from "./VerifyRequest.model";
 import IUser from "../types/IUser";
 import EditData from "../types/EditData";
+import Roles from "../types/Roles";
 
 class User extends Model {
     private name: string;
@@ -157,6 +158,13 @@ class User extends Model {
         const prisma = User.getPrisma();
         return await prisma.user.update({
             data,
+            where: { id: userId }
+        }).catch(err => { throw PrismaException.createException(err,"User") });
+    }
+    public static async changeRole(role: Roles, userId: string){
+        const prisma = User.getPrisma();
+        return await prisma.user.update({
+            data: { role },
             where: { id: userId }
         }).catch(err => { throw PrismaException.createException(err,"User") });
     }

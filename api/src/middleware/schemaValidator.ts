@@ -40,6 +40,20 @@ const schemaValidator = (pathToSchema: string) => {
                     case "format":
                         throw new ApiErrorException(`must match ${validate.errors[0].params.format} format`, 400);
                     break;
+                    case "enum":
+                        let acceptedValues = "";
+                        validate.errors[0].params.allowedValues.forEach((el:string, index:number) => {
+                            if(index != 0){
+                                acceptedValues += `, ${el}`
+                            }else{
+                                acceptedValues += `${el}`
+                            }
+                        });
+                        throw new ApiErrorException(`${validate.errors[0].instancePath.substring(1)} may have values ${acceptedValues}`, 400);
+                    break;
+                    default:
+                        throw new ApiErrorException(`Something went wrong`, 500);
+                    break;
                 }
             }
         }
