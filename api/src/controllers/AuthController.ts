@@ -6,9 +6,8 @@ import VerifyRequest from "../models/VerifyRequest.model";
 import MailerService from "../services/MailerService";
 class AuthController {
     public async register(req: Request, res: Response, next: NextFunction) {
-        const { email, login, password } = req.body;
-        const user = new User(email, login, password);
-        const data = await user.createUser().catch(next);
+        const { email, name, surname, phoneNumber, password } = req.body;
+        const data = await new User(email, name, surname, phoneNumber, password).createUser().catch(next);
         if (data) {
             const request = await VerifyRequest.create(data.id).catch(next)
             if (request) {
@@ -25,8 +24,8 @@ class AuthController {
         }
     }
     public async login(req: Request, res: Response, next: NextFunction) {
-        const { login, password } = req.body;
-        const result = await User.login({ login, password }).catch(next);
+        const { email, password } = req.body;
+        const result = await User.login({ email, password }).catch(next);
         if (result) {
             const tokenExp: Date = new Date();
             tokenExp.setTime(result.jwt.exp as number * 1000);
@@ -80,16 +79,16 @@ class AuthController {
             res.json({message: "Password reseted successfully"});
         }
     }
-    public async editLogin(req: Request, res: Response, next: NextFunction){
-        const { login } = req.body;
-        const result = await User.editLogin(login, req.user?.id);
-        if(result){
-            const result2 = await User.logout(req.user?.refTokenId).catch(next);
-            if(result2){
-                return res.clearCookie("BEARER").clearCookie("REFRESH_TOKEN").status(202).json({ message: "You must sign in to complete the login change" });
-            }
-        }
-    }
+    // public async editLogin(req: Request, res: Response, next: NextFunction){
+    //     const { login } = req.body;
+    //     const result = await User.editLogin(login, req.user?.id);
+    //     if(result){
+    //         const result2 = await User.logout(req.user?.refTokenId).catch(next);
+    //         if(result2){
+    //             return res.clearCookie("BEARER").clearCookie("REFRESH_TOKEN").status(202).json({ message: "You must sign in to complete the login change" });
+    //         }
+    //     }
+    // }
     public async editPassword(req: Request, res: Response, next: NextFunction){
         const { password, newPassword } = req.body;
         const result = await User.editPassword(password,newPassword, req.user?.id).catch(next); 

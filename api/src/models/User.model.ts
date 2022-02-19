@@ -9,13 +9,17 @@ import VerifyRequest from "./VerifyRequest.model";
 import IUser from "../types/IUser";
 
 class User extends Model {
-    private login: string;
+    private name: string;
+    private surname: string;
+    private phoneNumber: string;
     private plainPassword: string;
     private email: string;
-    constructor(email: string, login: string, plainPassword: string) {
+    constructor(email: string, name: string,surname:string,phoneNumber: string, plainPassword: string) {
         super();
         this.email = email;
-        this.login = login;
+        this.name = name;
+        this.surname = surname;
+        this.phoneNumber = phoneNumber;
         this.plainPassword = plainPassword;
     }
     public async createUser() {
@@ -24,14 +28,16 @@ class User extends Model {
         const user = await prisma.user.create({
             data: {
                 email: this.email,
-                login: this.login,
+                name: this.name,
+                surname: this.surname,
+                phoneNumber: this.phoneNumber,
                 password: `${salt}:${scryptSync(this.plainPassword, salt, 64).toString("hex")}`
             }
         }).catch(err => { throw PrismaException.createException(err,"User") });     
         return user;
     }
-    public static async login({ login, password }: { login: string, password: string }) {
-        const user = await User.getUserByLogin(login);
+    public static async login({ email, password }: { email: string, password: string }) {
+        const user = await User.getUserByEmail(email);
         if (!user) {
             throw new ApiErrorException("Wrong credentials", 403);
         }
@@ -42,7 +48,7 @@ class User extends Model {
             throw new ApiErrorException("Wrong credentials", 403);
         }
         const refreshToken = await new RefreshToken(user.id).createToken();
-        const token = jwt.sign({ id: user.id, login, refTokenId: refreshToken.id }, process.env.JWT_SECRET as string, { expiresIn: 60 * 15 })
+        const token = jwt.sign({ id: user.id, email, role: user.role, refTokenId: refreshToken.id }, process.env.JWT_SECRET as string, { expiresIn: 60 * 15 })
         const tokenData = jwt.decode(token);
         const refreshTokenData = jwt.decode(refreshToken.token);
         if (typeof tokenData != "string" && typeof refreshTokenData != "string") {
@@ -78,7 +84,7 @@ class User extends Model {
             if (refTokens.length === 0 || typeof refToken == "undefined") {
                 throw new ApiErrorException("no refresh token found", 403);
             } else {
-                const newToken: string = jwt.sign({ id: decoded.id, login: refToken.user?.login, refTokenId: refToken?.id }, process.env.JWT_SECRET as string, { expiresIn: 60 * 15 })
+                const newToken: string = jwt.sign({ id: decoded.id, email: refToken.user?.email, role: refToken.user?.role, refTokenId: refToken?.id }, process.env.JWT_SECRET as string, { expiresIn: 60 * 15 })
                 const tokenData = jwt.decode(newToken);
                 if (typeof tokenData != "string") {
                     return { token: newToken, exp: tokenData?.exp };
@@ -107,16 +113,6 @@ class User extends Model {
         }
         const user = await prisma.user.findUnique({
             where: { email }
-        }).catch(err => { throw PrismaException.createException(err,"User") });
-        return user;
-    }
-    public static async getUserByLogin(login: string) {
-        const prisma = User.getPrisma();
-        if(login == undefined){
-            throw new ApiErrorException("undefined login", 404);
-        }
-        const user = await prisma.user.findUnique({
-            where: { login }
         }).catch(err => { throw PrismaException.createException(err,"User") });
         return user;
     }
@@ -156,14 +152,14 @@ class User extends Model {
         }).catch(err => { throw PrismaException.createException(err,"User") });
         return true;
     }
-    public static async editLogin(login: string, userId: string){
-        const prisma = User.getPrisma();
-        await prisma.user.update({
-            data: { login },
-            where: { id: userId }
-        }).catch(err => { throw PrismaException.createException(err,"User") });
-        return true;
-    }
+    // public static async editLogin(email: string, userId: string){
+    //     const prisma = User.getPrisma();
+    //     await prisma.user.update({
+    //         data: { login },
+    //         where: { id: userId }
+    //     }).catch(err => { throw PrismaException.createException(err,"User") });
+    //     return true;
+    // }
 
 }
 
