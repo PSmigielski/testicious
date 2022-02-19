@@ -19,7 +19,7 @@ class MailerService {
             to: email,
             subject: "Verify your account",
             html: `<h1>Hi!</h1>
-            <p> To verify your email, please visit the following <a href="http://localhost:4000/v1/api/auth/verify/${id}" >link</a></p>
+            <p> To verify your email, please visit the following <a href="${process.env.HOSTNAME}:${process.env.PORT}/v1/api/auth/verify/${id}" >link</a></p>
             <br><p> Cheers! </p>`,
         });
     }
@@ -29,7 +29,7 @@ class MailerService {
             to: email,
             subject: "Reset your password",
             html: `<h1>Hi!</h1>
-            <p> To reset your password, please visit the following <a href="http://localhost:4000/v1/api/auth/reset/${id}" >link</a></p>
+            <p> To reset your password, please visit the following <a href="${process.env.HOSTNAME}:${process.env.PORT}/v1/api/auth/reset/${id}" >link</a></p>
             <br><p> Cheers! </p>`,
         });
     }

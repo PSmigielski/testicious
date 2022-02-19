@@ -1,0 +1,11 @@
+{
+    "type": "object",
+    "properties": {
+        "newPassword": {
+            "type": "string",
+            "pattern": "^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$ %^&*-]).{8,100}$"
+        }
+    },
+    "required": ["newPassword"],
+    "additionalProperties": false
+}

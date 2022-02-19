@@ -4,16 +4,17 @@ import ResetPasswordRequest from "../models/ResetPasswordRequest.model";
 import User from "../models/User.model";
 import VerifyRequest from "../models/VerifyRequest.model";
 import MailerService from "../services/MailerService";
+import EditData from "../types/EditData";
+
 class AuthController {
     public async register(req: Request, res: Response, next: NextFunction) {
-        const { email, login, password } = req.body;
-        const user = new User(email, login, password);
-        const data = await user.createUser().catch(next);
+        const { email, name, surname, phoneNumber, password } = req.body;
+        const data = await new User(email, name, surname, phoneNumber, password).createUser().catch(next);
         if (data) {
             const request = await VerifyRequest.create(data.id).catch(next)
             if (request) {
                 MailerService.sendVerificationMail(email, request.id);
-                return res.json(data);
+                return res.json({message: "You are now registered! Check your email to verify your account"});
             }
         }
     }
@@ -25,8 +26,8 @@ class AuthController {
         }
     }
     public async login(req: Request, res: Response, next: NextFunction) {
-        const { login, password } = req.body;
-        const result = await User.login({ login, password }).catch(next);
+        const { email, password } = req.body;
+        const result = await User.login({ email, password }).catch(next);
         if (result) {
             const tokenExp: Date = new Date();
             tokenExp.setTime(result.jwt.exp as number * 1000);
@@ -69,7 +70,7 @@ class AuthController {
                 return res.json({ message: "reset request has been sent" });
             }
         }else{
-            throw new ApiErrorException("User with this email does not exist!", 404);
+            next(new ApiErrorException("User with this email does not exist!", 404));
         }
     }
     public async reset(req: Request, res: Response, next: NextFunction) {
@@ -77,17 +78,14 @@ class AuthController {
         const { requestId } = req.params
         const result = await User.resetPassword(newPassword, requestId).catch(next);
         if(result){
-            res.json({message: "Password reseted successfully"});
+            return res.json({message: "Password reseted successfully"});
         }
     }
-    public async editLogin(req: Request, res: Response, next: NextFunction){
-        const { login } = req.body;
-        const result = await User.editLogin(login, req.user?.id);
+    public async editAccountData(req: Request, res: Response, next: NextFunction){
+        const data: EditData = req.body;
+        const result = await User.editAccountData(data, req.user?.id);
         if(result){
-            const result2 = await User.logout(req.user?.refTokenId).catch(next);
-            if(result2){
-                return res.clearCookie("BEARER").clearCookie("REFRESH_TOKEN").status(202).json({ message: "You must sign in to complete the login change" });
-            }
+            return res.status(202).json({ message: "Your account details has been edited", data: result });
         }
     }
     public async editPassword(req: Request, res: Response, next: NextFunction){
@@ -95,6 +93,17 @@ class AuthController {
         const result = await User.editPassword(password,newPassword, req.user?.id).catch(next); 
         if(result){
             return res.status(202).json({message: "password updated successfully"});
+        }
+    }
+    public async changeRole(req: Request, res: Response, next: NextFunction){
+        const { role } =  req.body;
+        if(req.params.id == req.user?.id){
+            next(new ApiErrorException("You can't change your own role", 403));
+        } else {
+            const result = await User.changeRole(role, req.params.id).catch(next);
+            if(result){
+                return res.status(202).json({message: `User role has been changed to ${role}`})
+            }
         }
     }
 }

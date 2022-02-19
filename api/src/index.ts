@@ -15,4 +15,4 @@ app.use(cors());
 app.use("/v1/api/auth", authRouter);
 app.use(prismaErrorHandler);
 app.use(errorHandler);
-app.listen(process.env.PORT, () => console.log(`api is running at localhost:${process.env.PORT}`));
+app.listen(process.env.PORT, () => console.log(`api is running at ${process.env.HOSTNAME}:${process.env.PORT}`));
