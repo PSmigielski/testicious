@@ -14,7 +14,7 @@ class AuthController {
             const request = await VerifyRequest.create(data.id).catch(next)
             if (request) {
                 MailerService.sendVerificationMail(email, request.id);
-                return res.json(data);
+                return res.json({message: "You are now registered! Check your email to verify your account"});
             }
         }
     }
