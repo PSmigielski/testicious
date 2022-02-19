@@ -4,6 +4,7 @@ import ResetPasswordRequest from "../models/ResetPasswordRequest.model";
 import User from "../models/User.model";
 import VerifyRequest from "../models/VerifyRequest.model";
 import MailerService from "../services/MailerService";
+import EditData from "../types/EditData";
 class AuthController {
     public async register(req: Request, res: Response, next: NextFunction) {
         const { email, name, surname, phoneNumber, password } = req.body;
@@ -79,16 +80,13 @@ class AuthController {
             res.json({message: "Password reseted successfully"});
         }
     }
-    // public async editLogin(req: Request, res: Response, next: NextFunction){
-    //     const { login } = req.body;
-    //     const result = await User.editLogin(login, req.user?.id);
-    //     if(result){
-    //         const result2 = await User.logout(req.user?.refTokenId).catch(next);
-    //         if(result2){
-    //             return res.clearCookie("BEARER").clearCookie("REFRESH_TOKEN").status(202).json({ message: "You must sign in to complete the login change" });
-    //         }
-    //     }
-    // }
+    public async editAccountData(req: Request, res: Response, next: NextFunction){
+        const data: EditData = req.body;
+        const result = await User.editAccountData(data, req.user?.id);
+        if(result){
+            return res.status(202).json({ message: "Your account details has been edited", data: result });
+        }
+    }
     public async editPassword(req: Request, res: Response, next: NextFunction){
         const { password, newPassword } = req.body;
         const result = await User.editPassword(password,newPassword, req.user?.id).catch(next); 

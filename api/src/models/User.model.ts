@@ -7,6 +7,7 @@ import ResetPasswordRequest from './ResetPasswordRequest.model';
 import PrismaException from '../exceptions/PrismaException';
 import VerifyRequest from "./VerifyRequest.model";
 import IUser from "../types/IUser";
+import EditData from "../types/EditData";
 
 class User extends Model {
     private name: string;
@@ -152,15 +153,13 @@ class User extends Model {
         }).catch(err => { throw PrismaException.createException(err,"User") });
         return true;
     }
-    // public static async editLogin(email: string, userId: string){
-    //     const prisma = User.getPrisma();
-    //     await prisma.user.update({
-    //         data: { login },
-    //         where: { id: userId }
-    //     }).catch(err => { throw PrismaException.createException(err,"User") });
-    //     return true;
-    // }
-
+    public static async editAccountData(data: EditData , userId: string){
+        const prisma = User.getPrisma();
+        return await prisma.user.update({
+            data,
+            where: { id: userId }
+        }).catch(err => { throw PrismaException.createException(err,"User") });
+    }
 }
 
 export default User;
