@@ -1,7 +1,7 @@
 
 # Pepper pizza API
 
-This is a API for pepper pizza page
+This is an API for pepper pizza page
 
 
 
