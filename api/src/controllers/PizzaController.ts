@@ -12,8 +12,7 @@ class PizzaController{
     }
     public async fetch(req: Request, res: Response, next: NextFunction){
         const pizzas = await Pizza.fetchPizzas().catch(next);
-        if(pizzas)
-        {
+        if(pizzas){
             return res.json(pizzas);
         }
     }
