@@ -29,6 +29,13 @@ class Pizza extends Model{
         const pizzas = await prisma.pizza.findMany().catch(err => {throw PrismaException.createException(err,"Pizza")});
         return pizzas;
     }
+
+    public static async removePizza(id: string){
+        const prisma = Pizza.getPrisma();
+        console.log(id);
+        const removePizza = await prisma.pizza.delete({where:{ id }}).catch(err => {throw PrismaException.createException(err,"Pizza")});
+        return removePizza;
+    }
 }
 
 export default Pizza;

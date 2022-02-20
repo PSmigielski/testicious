@@ -13,4 +13,6 @@ pizzaRouter.post("", checkJwt, checkRole(Roles.ADMIN),schemaValidator("/../../sc
 
 pizzaRouter.get("", checkJwt, pizzaController.fetch.bind(pizzaController));
 
+pizzaRouter.delete("/:id", checkJwt, checkRole(Roles.ADMIN), pizzaController.remove.bind(pizzaController));
+
 export default pizzaRouter;

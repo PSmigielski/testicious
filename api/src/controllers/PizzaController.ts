@@ -17,6 +17,12 @@ class PizzaController{
             return res.json(pizzas);
         }
     }
+    public async remove(req: Request, res: Response, next: NextFunction){
+        const remove = await Pizza.removePizza(req.params.id).catch(next);
+        if(remove){
+            return res.status(201).json({message: "Pizza has been removed!"});
+        }
+    }
 }
 
 export default PizzaController;
