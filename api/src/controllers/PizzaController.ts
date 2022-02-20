@@ -16,6 +16,14 @@ class PizzaController{
             return res.json(pizzas);
         }
     }
+    public async update(req: Request, res: Response, next: NextFunction){
+        const data: IPizza = req.body;
+        const id = req.params.id;
+        const updatedPizza = await Pizza.updatePizza(data, id).catch(next);
+        if(updatedPizza){
+            return res.status(202).json({message: "Pizza has been updated!", updatedPizza});
+        }
+    }
 }
 
 export default PizzaController;
