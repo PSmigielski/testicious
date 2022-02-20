@@ -23,6 +23,12 @@ class Pizza extends Model{
         }).catch(err => { throw PrismaException.createException(err,"Pizza") });
         return pizza;
     }
+
+    public static async fetchPizzas(){
+        const prisma = Pizza.getPrisma();
+        const pizzas = await prisma.pizza.findMany().catch(err => {throw PrismaException.createException(err,"Pizza")});
+        return pizzas;
+    }
 }
 
 export default Pizza;

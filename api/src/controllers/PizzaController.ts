@@ -10,6 +10,13 @@ class PizzaController{
             return res.status(201).json({message: "Pizza has been added!", pizza})
         }
     }
+    public async fetch(req: Request, res: Response, next: NextFunction){
+        const pizzas = await Pizza.fetchPizzas().catch(next);
+        if(pizzas)
+        {
+            return res.json(pizzas);
+        }
+    }
 }
 
 export default PizzaController;

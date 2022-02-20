@@ -11,4 +11,6 @@ const pizzaController = new PizzaController();
 
 pizzaRouter.post("", checkJwt, checkRole(Roles.ADMIN),schemaValidator("/../../schemas/pizza.schema.json"), pizzaController.create.bind(pizzaController));
 
+pizzaRouter.get("", checkJwt, pizzaController.fetch.bind(pizzaController));
+
 export default pizzaRouter;
