@@ -32,9 +32,16 @@ class Pizza extends Model{
 
     public static async removePizza(id: string){
         const prisma = Pizza.getPrisma();
-        console.log(id);
         const removePizza = await prisma.pizza.delete({where:{ id }}).catch(err => {throw PrismaException.createException(err,"Pizza")});
         return removePizza;
+    }
+
+    public static async updatePizza(data: IPizza, id: string){
+        const prisma = Pizza.getPrisma();
+        const pizza = await prisma.pizza.update({
+            data, where: {id}
+        }).catch(err => {throw PrismaException.createException(err,"Pizza")});
+        return pizza;
     }
 }
 
