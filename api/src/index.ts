@@ -5,6 +5,7 @@ import dotenv from "dotenv";
 import errorHandler from "./middleware/errorHandler";
 import authRouter from "./routers/Auth.router";
 import prismaErrorHandler from "./middleware/prismaErrorHandler";
+import pizzaRouter from "./routers/Pizza.router";
 
 
 dotenv.config();
@@ -13,6 +14,7 @@ app.use(cookieParser());
 app.use(express.json());
 app.use(cors());
 app.use("/v1/api/auth", authRouter);
+app.use("/v1/api/pizzas", pizzaRouter);
 app.use(prismaErrorHandler);
 app.use(errorHandler);
 app.listen(process.env.PORT, () => console.log(`api is running at ${process.env.HOSTNAME}:${process.env.PORT}`));

@@ -29,6 +29,13 @@ enum Role{
   ADMIN
 }
 
+model Pizza {
+  id        String        @id @default(uuid()) @db.Uuid
+  name      String        @db.VarChar(100)
+  price     Decimal       @db.Money
+  toppings  String[]      @db.VarChar(100)
+}
+
 model VerifyRequest {
   id     String @id @default(uuid()) @db.Uuid
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)

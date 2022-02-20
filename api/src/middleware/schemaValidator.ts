@@ -14,7 +14,7 @@ const schemaValidator = (pathToSchema: string) => {
         const validate: ValidateFunction = ajv.compile(schema)
         if (!validate(req.body)) {
             if (validate.errors !== undefined && validate.errors !== null) {
-                //console.log(validate.errors);
+                console.log(validate.errors);
                 switch(validate.errors[0].keyword){
                     case "minProperties":
                         throw new ApiErrorException(`${validate.errors[0].params.limit} param/s required`, 400);
@@ -50,6 +50,15 @@ const schemaValidator = (pathToSchema: string) => {
                             }
                         });
                         throw new ApiErrorException(`${validate.errors[0].instancePath.substring(1)} may have values ${acceptedValues}`, 400);
+                    break;
+                    case "minItems":
+                        throw new ApiErrorException(`${validate.errors[0].instancePath.substring(1)} requires at least ${validate.errors[0].params.limit} item/s`, 400);
+                    break;
+                    case "minimum":
+                        throw new ApiErrorException(`${validate.errors[0].instancePath.substring(1)} must be greater or equal than ${validate.errors[0].params.limit}`, 400);
+                    break;
+                    case "maximum":
+                        throw new ApiErrorException(`${validate.errors[0].instancePath.substring(1)} must be lower or equal than ${validate.errors[0].params.limit}`, 400);
                     break;
                     default:
                         throw new ApiErrorException(`Something went wrong`, 500);
