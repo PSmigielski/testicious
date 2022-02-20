@@ -15,7 +15,7 @@ class MailerService {
     }
     public static sendVerificationMail(email: string, id: string){
         MailerService.sendMail({
-            from: "Daily Routine",
+            from: "Pepper Pizza",
             to: email,
             subject: "Verify your account",
             html: `<h1>Hi!</h1>
@@ -25,7 +25,7 @@ class MailerService {
     }
     public static sendResetRequest(email:string, id: string){
         MailerService.sendMail({
-            from: "Daily Routine",
+            from: "Pepper Pizza",
             to: email,
             subject: "Reset your password",
             html: `<h1>Hi!</h1>

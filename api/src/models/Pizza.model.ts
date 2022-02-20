@@ -21,7 +21,7 @@ class Pizza extends Model{
                 price: this.price
             }
         }).catch(err => { throw PrismaException.createException(err,"Pizza") });
-        return pizza
+        return pizza;
     }
 }
 
