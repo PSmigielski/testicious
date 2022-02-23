@@ -22,22 +22,23 @@ model User {
   VerifyRequest        VerifyRequest?
   RefreshToken         RefreshToken[]
   ResetPasswordRequest ResetPasswordRequest[]
-  cart                 Cart?
+  cart                 Cart[]
 }
 
 model Cart {
   id      String    @id @default(uuid()) @db.Uuid
-  user    User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user    User?      @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId  String    @unique @db.Uuid
   items   Items[]
 }
 
 model Items {
-  id      String      @id @default(uuid()) @db.Uuid
-  cartId  String      @db.Uuid
-  cart    Cart        @relation(fields: [cartId], references: [id], onDelete: Cascade)
-  pizzaId String      @db.Uuid
-  pizza   Pizza       @relation(fields: [pizzaId], references: [id], onDelete: Cascade)
+  id        String      @id @default(uuid()) @db.Uuid
+  cartId    String      @db.Uuid
+  quantity  Int         @db.Integer
+  cart      Cart        @relation(fields: [cartId], references: [id], onDelete: Cascade)
+  pizzaId   String      @db.Uuid
+  pizza     Pizza       @relation(fields: [pizzaId], references: [id], onDelete: Cascade)
 }
 
 enum Role{

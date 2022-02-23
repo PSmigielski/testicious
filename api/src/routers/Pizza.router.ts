@@ -11,7 +11,7 @@ const pizzaController = new PizzaController();
 
 pizzaRouter.post("", checkJwt, checkRole(Roles.ADMIN),schemaValidator("/../../schemas/pizza.schema.json"), pizzaController.create.bind(pizzaController));
 pizzaRouter.put("/:id", checkJwt, checkRole(Roles.ADMIN), schemaValidator("/../../schemas/pizzaUpdate.schema.json"), pizzaController.update.bind(pizzaController));
-pizzaRouter.get("", checkJwt, pizzaController.fetch.bind(pizzaController));
+pizzaRouter.get("", pizzaController.fetch.bind(pizzaController));
 pizzaRouter.delete("/:id", checkJwt, checkRole(Roles.ADMIN), pizzaController.remove.bind(pizzaController));
 
 export default pizzaRouter;
