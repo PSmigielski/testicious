@@ -1,0 +1,14 @@
+.CutleryLine{
+    width: 45%;
+    height: 3px;
+    background-color: #464E55;
+    border: none;
+}
+/* .CutleryIcon{
+
+} */
+.Wraper{
+    display: flex;
+    flex-direction: row;
+    width: 25vw;
+}

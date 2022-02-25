@@ -1,18 +1,11 @@
 import React from "react";
-import './css.css';
-import Logo from './Logo';
-import Cutlery from './CutleryLine';
-import Menu from './MenuFields';
+import Menu from "./components/organisms/Menu";
+import './main.css';
 
 const App = () => {
 
   return(
-    <div className="MenuOrganism">
-      <Logo />
-      <Cutlery />
-      <Menu />
-    </div>
-     
+    <Menu />
   )
 
 }

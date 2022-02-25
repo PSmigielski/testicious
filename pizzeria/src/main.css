@@ -1,0 +1,14 @@
+@import url('https://fonts.googleapis.com/css2?family=Maven+Pro&display=swap');
+* {
+    margin: 0px;
+    padding: 0px;
+    box-sizing: border-box;
+}
+body{
+    background: linear-gradient(0deg, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)), radial-gradient(58.65% 185.35% at 41.35% 34.07%, #18252F 0%, #283440 56.25%, #0D0D0F 100%);
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+    background-repeat: no-repeat;
+    font-family: 'Maven Pro', sans-serif;
+}
