@@ -1,11 +1,17 @@
 .MenuWrapper{
     color: #FFFFFF;
     list-style-type: none;
+    width: 30vw;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    
 }
 .MenuWrapper > li{
     border-bottom: 3px solid #464E55 ;
-    width: 10vw;
+    width: 11.5vw;
     text-align: center;
     margin-bottom: 3vh;
-    font-size: 2.25em;
+    font-size: 2.2em;
 }

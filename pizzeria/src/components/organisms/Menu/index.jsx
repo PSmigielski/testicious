@@ -6,12 +6,11 @@ import "./index.css";
 
 const Menu = () => {
     return (
-        <div className="MenuWrapper">
-        <Logo />
-        <CutleryLine />
-        <MenuLinks />
-      </div>
-       
+        <nav className="MenuWrapper">
+          <Logo />
+          <CutleryLine />
+          <MenuLinks />
+        </nav>
     )
 }
 
