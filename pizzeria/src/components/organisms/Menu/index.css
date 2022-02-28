@@ -1,17 +1,10 @@
-.MenuWrapper{
+.menuWrapper{
     color: #FFFFFF;
-    list-style-type: none;
-    width: 30vw;
+    width: 30%;
+    height: 90%;
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: flex-start;
     align-items: center;
-    
-}
-.MenuWrapper > li{
-    border-bottom: 3px solid #464E55 ;
-    width: 11.5vw;
-    text-align: center;
-    margin-bottom: 3vh;
-    font-size: 2.2em;
+    border-right: 3px solid var(--border);
 }

@@ -1,6 +1,4 @@
-@media screen and (max-width: 1000px){
-    .Logo{
-        width: 400px;
-        height: auto;
-    }
+.logo{
+    width: 100%;
+    height: auto;
 }

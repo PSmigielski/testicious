@@ -6,7 +6,7 @@ import "./index.css";
 
 const Menu = () => {
     return (
-        <nav className="MenuWrapper">
+        <nav className="menuWrapper">
           <Logo />
           <CutleryLine />
           <MenuLinks />

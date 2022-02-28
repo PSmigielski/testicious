@@ -4,9 +4,9 @@ import './index.css';
 const CutleryLine = () => {
     return (
         <div className="Wraper">
-            <hr className="CutleryLine"/>
+            <div className="CutleryLine"></div>
             <img src={pic} alt="Cutlery Icon" className="CutleryIcon"/>
-            <hr className="CutleryLine"/>
+            <div className="CutleryLine"></div>
         </div>
     )
     

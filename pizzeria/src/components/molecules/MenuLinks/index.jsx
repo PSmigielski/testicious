@@ -1,5 +1,6 @@
 import React from "react";
 import MenuLink from "../../atoms/MenuLink";
+import "./index.css";
 
 const MenuLinks = () => {
     const links = [
@@ -24,7 +25,7 @@ const MenuLinks = () => {
             to: "/contact"
         }
     ]
-    return (<ul className="MenuWrapper">{links.map((el, idx) => (<MenuLink name={el.name} to={el.to} key={idx} />))}</ul>)
+    return (<ul className="menuLinksWrapper">{links.map((el, idx) => (<MenuLink name={el.name} to={el.to} key={idx} />))}</ul>)
 }
 
 export default MenuLinks
