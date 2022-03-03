@@ -3,14 +3,39 @@
     height: 100%;
     display: flex;
     align-items: flex-start;
-    justify-content: flex-startv;
+    justify-content: flex-start;
+    padding-left: 20px;
 }
-
 .pizzaSlices{
+    height: 100%;
+    width: 300px;
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    align-items: flex-start;
-
     position: relative;
+}
+.pizzaSlice:first-child{
+    top: 20px;
+}
+.pizzaSlice:nth-child(2){
+    top: calc(33vh - 80px);
+    width: calc(33vw - 220px);
+    height: auto;
+}
+.pizzaSlice:nth-child(3){
+    top: calc(33vh + 150px);
+}
+@media screen and (max-width: 1700px) {
+    .pizzaSlice:nth-child(2){
+        top: calc(33vh - 40px);
+        width: calc(33vw - 220px);
+        height: auto;
+    }
+}
+
+@media screen and (max-width: 860px) {
+    .pizzaSlice:nth-child(2){
+        top: calc(33vh - 40px);
+        width: calc(33vw + 60px);
+        height: auto;
+    }
 }
