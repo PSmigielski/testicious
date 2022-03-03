@@ -24,7 +24,7 @@ const PizzaSlice = ({imageType}) => {
         }
     },[])
     return (
-        <img src={imagePath} alt="Pizza Slice" />
+        <img src={imagePath} alt="Pizza Slice" className="pizzaSlice"/>
     );
 }
 
