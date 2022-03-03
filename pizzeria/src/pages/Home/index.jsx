@@ -1,5 +1,6 @@
 import React from "react";
 import PizzaSlice from "../../components/atoms/PizzaSlice";
+import PepperPic from "../../components/atoms/PepperPic";
 import "./index.css";
 
 const Home = () => {
@@ -10,6 +11,7 @@ const Home = () => {
                 <PizzaSlice imageType={2} />
                 <PizzaSlice imageType={3} />
             </div>
+                <PepperPic></PepperPic>
         </div>
     );  
 }

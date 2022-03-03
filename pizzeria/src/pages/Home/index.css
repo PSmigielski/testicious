@@ -5,6 +5,8 @@
     align-items: flex-start;
     justify-content: flex-start;
     padding-left: 20px;
+
+    position: relative;
 }
 .pizzaSlices{
     height: 100%;
