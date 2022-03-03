@@ -4,9 +4,11 @@ import "./index.css";
 
 const Home = () => {
     return (<div className="homeWrapper">
-        <PizzaSlice imageType={1} />
-        <PizzaSlice imageType={2} />
-        <PizzaSlice imageType={3} />
+        <div className="pizzaSlices">
+            <PizzaSlice imageType={1} />
+            <PizzaSlice imageType={2} />
+            <PizzaSlice imageType={3} />
+        </div>
     </div>);  
 }
 
