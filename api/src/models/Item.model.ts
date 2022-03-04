@@ -13,10 +13,10 @@ class Item extends Model {
         this.quantity = quantity;
     }
     public async create(){
-        const prisma = Model.getPrisma();
+        const prisma = Item.getPrisma();
         const hasItem = await Item.getItemByPizzaId(this.pizzaId, this.cartId)
         if(hasItem.length != 0){
-            console.log("duap")
+            this.quantity += hasItem[0].quantity;
             await Item.removeItem(hasItem[0].id);
         }
         const item = await prisma.items.create({data:{
@@ -36,6 +36,12 @@ class Item extends Model {
         const removedItem = await prisma.items.delete({where:{id}})
         .catch(err => { throw PrismaException.createException(err,"Item") });
         return removedItem;
+    }
+    public static async edit(id: string, quantity: number){
+        const prisma = Item.getPrisma();
+        const updatedItem = await prisma.items.update({where:{id}, data:{quantity}})
+        .catch(err => { throw PrismaException.createException(err,"Item") });
+        return updatedItem;
     }
 }
 

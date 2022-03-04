@@ -57,7 +57,7 @@ class AuthController {
                     .status(200).json({ message: "token has been refreshed" });
             }
         } else {
-            next(new ApiErrorException("REFRESH_TOKEN cookie not found", 401))
+            return next(new ApiErrorException("REFRESH_TOKEN cookie not found", 401));
         }
     }
     public async sendResetRequest(req: Request, res: Response, next: NextFunction) {
@@ -98,7 +98,7 @@ class AuthController {
     public async changeRole(req: Request, res: Response, next: NextFunction){
         const { role } =  req.body;
         if(req.params.id == req.user?.id){
-            next(new ApiErrorException("You can't change your own role", 403));
+            return next(new ApiErrorException("You can't change your own role", 403));
         } else {
             const result = await User.changeRole(role, req.params.id).catch(next);
             if(result){
