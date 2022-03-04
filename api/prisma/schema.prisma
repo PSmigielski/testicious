@@ -25,6 +25,13 @@ model User {
   cart                 Cart[]
 }
 
+model Topping {
+  id        String        @id @default(uuid()) @db.Uuid
+  name      String        @db.VarChar(100)
+  price     Decimal       @db.Money
+}
+
+
 model Cart {
   id      String    @id @default(uuid()) @db.Uuid
   user    User?      @relation(fields: [userId], references: [id], onDelete: Cascade)
