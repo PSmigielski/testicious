@@ -5,6 +5,6 @@ const cartRouter = express.Router();
 const cartController = new CartController();
 
 cartRouter.post("", checkJwt, cartController.create.bind(cartController));
-
+cartRouter.get("/:cartId", checkJwt, cartController.getItems.bind(cartController));
 
 export default cartRouter;

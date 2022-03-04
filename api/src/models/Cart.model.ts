@@ -28,6 +28,21 @@ class Cart extends Model{
         }
         return true;
     }
+    public static async getItems(id: string){
+        const prisma = Cart.getPrisma();
+        const items = await prisma.cart.findUnique({where: {id}, include:{
+            items:{
+                include:{
+                    pizza:{
+                        select:{
+                            price:true
+                        }
+                    }
+                }
+            }
+        }}).catch(err => { throw PrismaException.createException(err,"Cart") });
+        return items;
+    }
 }
 
 export default Cart;
