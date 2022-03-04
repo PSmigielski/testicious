@@ -43,6 +43,18 @@ class Cart extends Model{
         }}).catch(err => { throw PrismaException.createException(err,"Cart") });
         return items;
     }
+    public static async checkStatus(id: string){
+        const prisma = Cart.getPrisma();
+        const cart = await prisma.cart.findUnique({where:{id}, select: {isActive:true}})
+        .catch(err => { throw PrismaException.createException(err,"Cart") });
+        return cart?.isActive;
+    }
+    public static async archivise(id: string){
+        const prisma = Cart.getPrisma();
+        const updatedCart = await prisma.cart.update({where: {id}, data: {isActive:false}})
+        .catch(err => { throw PrismaException.createException(err,"Cart") });
+        return updatedCart;
+    }
 }
 
 export default Cart;

@@ -1,4 +1,4 @@
-import e, { NextFunction, Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import ApiErrorException from "../exceptions/ApiErrorException";
 import Cart from "../models/Cart.model";
 import Item from "../models/Item.model";
@@ -6,6 +6,9 @@ import Item from "../models/Item.model";
 class ItemController {
     public async create(req: Request, res: Response, next: NextFunction){
         const { cartId, pizzaId } = req.params;
+        if(!await Cart.checkStatus(cartId)){
+            return next(new ApiErrorException("This cart is archivised", 403));
+        }
         if(!await Cart.isOwner(req.user?.id, cartId)){
             return next(new ApiErrorException("This cart does not belong to you!", 403))
         }else{

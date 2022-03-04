@@ -30,6 +30,7 @@ model Cart {
   user    User?      @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId  String    @unique @db.Uuid
   items   Items[]
+  isActive Boolean @default(true) @db.Boolean
 }
 
 model Items {

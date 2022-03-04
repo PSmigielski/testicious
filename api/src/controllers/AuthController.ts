@@ -1,5 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import ApiErrorException from "../exceptions/ApiErrorException";
+import Cart from "../models/Cart.model";
 import ResetPasswordRequest from "../models/ResetPasswordRequest.model";
 import User from "../models/User.model";
 import VerifyRequest from "../models/VerifyRequest.model";
@@ -11,6 +12,7 @@ class AuthController {
         const { email, name, surname, phoneNumber, password } = req.body;
         const data = await new User(email, name, surname, phoneNumber, password).createUser().catch(next);
         if (data) {
+            await new Cart(data.id).create().catch(next);
             const request = await VerifyRequest.create(data.id).catch(next)
             if (request) {
                 MailerService.sendVerificationMail(email, request.id);
