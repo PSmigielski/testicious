@@ -1,4 +1,3 @@
-import ApiErrorException from "../exceptions/ApiErrorException";
 import PrismaException from "../exceptions/PrismaException";
 import Model from "./Model";
 
