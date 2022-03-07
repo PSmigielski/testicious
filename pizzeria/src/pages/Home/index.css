@@ -16,17 +16,17 @@
     position: relative;
 }
 .pizzaSlice:first-child{
-    top: 20px;
+    top: 3vh;
 }
 .pizzaSlice:nth-child(2){
-    top: calc(33vh - 80px);
-    width: calc(33vw - 220px);
+    top: 25vh;
+    width: 42vh;
     height: auto;
 }
 .pizzaSlice:nth-child(3){
-    top: calc(33vh + 150px);
+    top: 48vh;
 }
-@media screen and (max-width: 1700px) {
+/* @media screen and (max-width: 1700px) {
     .pizzaSlice:nth-child(2){
         top: calc(33vh - 40px);
         width: calc(33vw - 220px);
@@ -40,4 +40,4 @@
         width: calc(33vw + 60px);
         height: auto;
     }
-}
+} */
