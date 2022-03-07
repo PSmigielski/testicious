@@ -10,11 +10,12 @@
 }
 .pizzaSlices{
     height: 100%;
-    width: 300px;
+    width: 400px;
     display: flex;
     flex-direction: column;
     position: relative;
 }
+
 .pizzaSlice:first-child{
     top: 3vh;
 }
@@ -26,6 +27,10 @@
 .pizzaSlice:nth-child(3){
     top: 48vh;
 }
+
+
+
+
 /* @media screen and (max-width: 1700px) {
     .pizzaSlice:nth-child(2){
         top: calc(33vh - 40px);

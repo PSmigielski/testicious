@@ -3,4 +3,7 @@
     bottom: 1em;
     right: 1em;
 
+    max-width: 400px;
+    max-height: 300px;
+
 }
