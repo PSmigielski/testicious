@@ -27,7 +27,7 @@ model User {
 
 model Topping {
   id        String        @id @default(uuid()) @db.Uuid
-  name      String        @db.VarChar(100)
+  name      String        @db.VarChar(100) @unique
   price     Decimal       @db.Money
 }
 
@@ -54,12 +54,13 @@ enum Role{
   ADMIN
 }
 
-model Pizza {
+// dodać potem toppingi jako entity
+model Pizza { 
   id        String        @id @default(uuid()) @db.Uuid
-  name      String        @db.VarChar(100)
+  name      String        @db.VarChar(100) @unique
   price     Decimal       @db.Money
   toppings  String[]      @db.VarChar(100)
-  item      Items[]     
+  item      Items[]
 }
 
 model VerifyRequest {
