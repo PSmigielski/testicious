@@ -15,6 +15,19 @@ class ToppingController {
             return res.status(200).json({toppings})
         }
     }
+    public async removeTopping(req: Request, res: Response, next: NextFunction){
+        const removedTopping = await Topping.removeTopping(req.params?.toppingId).catch(next);
+        if(removedTopping){
+            return res.status(202).json({message: "Topping has been removed", topping: removedTopping});
+        }
+    }
+    public async editTopping(req: Request, res: Response, next: NextFunction){
+        const data: ITopping = req.body;
+        const updatedTopping = await Topping.editTopping(req.params?.toppingId, data).catch(next);
+        if(updatedTopping){
+            return res.status(202).json({message: "Topping has been updated", topping: updatedTopping});
+        }
+    }
 }
 
 export default ToppingController;

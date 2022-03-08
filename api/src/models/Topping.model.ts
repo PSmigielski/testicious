@@ -19,8 +19,21 @@ class Topping extends Model{
     }
     public static async fetchAllToppings(){
         const prisma = Topping.getPrisma();
-        const toppings = await prisma.topping.findMany().catch(err => { throw PrismaException.createException(err,"Topping") });
-        return toppings
+        const toppings = await prisma.topping.findMany()
+        .catch(err => { throw PrismaException.createException(err,"Topping") });
+        return toppings;
+    }
+    public static async removeTopping(id: string){
+        const prisma = Topping.getPrisma();
+        const removedTopping = prisma.topping.delete({where:{id}})
+        .catch(err => { throw PrismaException.createException(err,"Topping") });
+        return removedTopping;
+    }
+    public static async editTopping(id:string,{name, price}: ITopping){
+        const prisma = Topping.getPrisma();
+        const updatedTopping = prisma.topping.update({where:{id}, data:{name, price}})
+        .catch(err => { throw PrismaException.createException(err,"Topping") });
+        return updatedTopping
     }
 }
 
