@@ -9,5 +9,6 @@ const toppingController = new ToppingController();
 const toppingRouter = express.Router();
 
 toppingRouter.post("", checkJwt, checkRole(Roles.ADMIN), schemaValidator("/../../schemas/topping.schema.json"), toppingController.create.bind(toppingController));
+toppingRouter.get("", checkJwt, checkRole(Roles.ADMIN), toppingController.show.bind(toppingController));
 
 export default toppingRouter;

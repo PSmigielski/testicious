@@ -17,6 +17,11 @@ class Topping extends Model{
         }}).catch(err => { throw PrismaException.createException(err,"Topping") });
         return topping;
     }
+    public static async fetchAllToppings(){
+        const prisma = Topping.getPrisma();
+        const toppings = await prisma.topping.findMany().catch(err => { throw PrismaException.createException(err,"Topping") });
+        return toppings
+    }
 }
 
 export default Topping;
