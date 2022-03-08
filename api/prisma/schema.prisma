@@ -29,6 +29,7 @@ model Topping {
   id        String        @id @default(uuid()) @db.Uuid
   name      String        @db.VarChar(100) @unique
   price     Decimal       @db.Money
+  Pizzas    ToppingsOnPizzas[]
 }
 
 
@@ -59,8 +60,16 @@ model Pizza {
   id        String        @id @default(uuid()) @db.Uuid
   name      String        @db.VarChar(100) @unique
   price     Decimal       @db.Money
-  toppings  String[]      @db.VarChar(100)
+  toppings  ToppingsOnPizzas[]
   item      Items[]
+}
+model ToppingsOnPizzas{
+  pizza   Pizza   @relation(fields: [pizzaId], references: [id], onDelete: Cascade)
+  pizzaId   String  @db.Uuid
+  topping   Topping   @relation(fields: [toppingId], references: [id], onDelete: Cascade)
+  toppingId  String   @db.Uuid
+
+  @@id([pizzaId, toppingId])
 }
 
 model VerifyRequest {

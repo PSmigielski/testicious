@@ -1,3 +1,4 @@
+import { Prisma } from "@prisma/client";
 import PrismaException from "../exceptions/PrismaException";
 import Model from "./Model";
 
@@ -34,6 +35,16 @@ class Topping extends Model{
         const updatedTopping = prisma.topping.update({where:{id}, data:{name, price}})
         .catch(err => { throw PrismaException.createException(err,"Topping") });
         return updatedTopping
+    }
+    public static async fetchToppingsById(toppingsIds: string[]){
+        const prisma = Topping.getPrisma();
+        let toppings: any = [];
+        for(const el of toppingsIds){
+            const topping = await prisma.topping.findUnique({where:{id: el}})
+            .catch(err => { throw PrismaException.createException(err,"Topping") });
+            toppings.push(topping)
+        }
+        return toppings;
     }
 }
 
