@@ -55,7 +55,6 @@ enum Role{
   ADMIN
 }
 
-// dodać potem toppingi jako entity
 model Pizza { 
   id        String        @id @default(uuid()) @db.Uuid
   name      String        @db.VarChar(100) @unique

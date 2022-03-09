@@ -5,20 +5,29 @@ import Model from "./Model";
 class Pizza extends Model{
     private name: string;
     private price: number;
-    private toppings: string[];
+    private toppings: {toppingId: string}[];
     constructor({name, price, toppings}: IPizza){
         super();
         this.name = name;
         this.price = price;
-        this.toppings = toppings;
+        this.toppings = toppings.map((el: string) => ({ toppingId: el}));
     }
     public async create(){
         const prisma = Pizza.getPrisma();
         const pizza = await prisma.pizza.create({
             data:{
                 name: this.name,
-                toppings: this.toppings,
-                price: this.price
+                price: this.price,
+                toppings: {
+                    create: this.toppings
+                }
+            },
+            include:{
+                toppings: {
+                    select:{
+                        topping: true
+                    }
+                }
             }
         }).catch(err => { throw PrismaException.createException(err,"Pizza") });
         return pizza;
@@ -36,10 +45,25 @@ class Pizza extends Model{
         return removePizza;
     }
 
-    public static async updatePizza(data: IPizza, id: string){
+    public static async updatePizza({name, price, toppings}: {name: string, price: number, toppings: string[]}, id: string){
         const prisma = Pizza.getPrisma();
+        if(toppings){
+            await prisma.toppingsOnPizzas.deleteMany({where:{pizzaId: id}})
+            for(const toppingId of toppings){
+                await prisma.toppingsOnPizzas.create({data:{toppingId, pizzaId: id}})
+            }
+        }
         const pizza = await prisma.pizza.update({
-            data, where: {id}
+            data: {
+                name, price
+            }, where: {id},
+            include:{
+                toppings: {
+                    select:{
+                        topping: true
+                    }
+                }
+            }
         }).catch(err => {throw PrismaException.createException(err,"Pizza")});
         return pizza;
     }

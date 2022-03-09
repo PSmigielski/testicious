@@ -36,16 +36,7 @@ class Topping extends Model{
         .catch(err => { throw PrismaException.createException(err,"Topping") });
         return updatedTopping
     }
-    public static async fetchToppingsById(toppingsIds: string[]){
-        const prisma = Topping.getPrisma();
-        let toppings: any = [];
-        for(const el of toppingsIds){
-            const topping = await prisma.topping.findUnique({where:{id: el}})
-            .catch(err => { throw PrismaException.createException(err,"Topping") });
-            toppings.push(topping)
-        }
-        return toppings;
-    }
+    
 }
 
 export default Topping;
