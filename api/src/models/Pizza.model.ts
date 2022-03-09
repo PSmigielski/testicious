@@ -1,3 +1,4 @@
+import ApiErrorException from "../exceptions/ApiErrorException";
 import PrismaException from "../exceptions/PrismaException";
 import IPizza from "../types/IPizza";
 import Model from "./Model";
@@ -44,14 +45,25 @@ class Pizza extends Model{
         const removePizza = await prisma.pizza.delete({where:{ id }}).catch(err => {throw PrismaException.createException(err,"Pizza")});
         return removePizza;
     }
-
+    private static async updateToppings(toppings: string[], id: string){
+        const prisma = Pizza.getPrisma();
+        await prisma.toppingsOnPizzas.deleteMany({where:{pizzaId: id}})
+        .catch(err => {throw PrismaException.createException(err,"toppingsOnPizzas")});
+        for(const toppingId of toppings){
+            const topping = await prisma.toppingsOnPizzas.findMany({where:{toppingId}})
+            .catch(err => {throw PrismaException.createException(err,"toppingsOnPizzas")});
+            if(topping.length != 0){
+                await prisma.toppingsOnPizzas.create({data:{toppingId, pizzaId: id}})
+                .catch(err => {throw PrismaException.createException(err,"toppingsOnPizzas")});
+            }else{
+                throw new ApiErrorException("Topping with this id does not exist!",404)
+            }
+        }
+    }
     public static async updatePizza({name, price, toppings}: {name: string, price: number, toppings: string[]}, id: string){
         const prisma = Pizza.getPrisma();
         if(toppings){
-            await prisma.toppingsOnPizzas.deleteMany({where:{pizzaId: id}})
-            for(const toppingId of toppings){
-                await prisma.toppingsOnPizzas.create({data:{toppingId, pizzaId: id}})
-            }
+            await Pizza.updateToppings(toppings, id)
         }
         const pizza = await prisma.pizza.update({
             data: {
