@@ -1,7 +1,7 @@
 import React from "react";
 import PizzaSlice from "../../components/atoms/PizzaSlice";
 import PepperPic from "../../components/atoms/PepperPic";
-import RightSideBar from "../../components/atoms/RightSideBar";
+import Hamburger from "../../components/atoms/Hamburger";
 import "./index.css";
 
 const Home = () => {
@@ -13,7 +13,7 @@ const Home = () => {
                 <PizzaSlice imageType={3} />
             </div>
                 <PepperPic />
-                <RightSideBar />
+                <Hamburger />
         </div>
     );  
 }
