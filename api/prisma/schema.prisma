@@ -25,6 +25,14 @@ model User {
   cart                 Cart[]
 }
 
+model Topping {
+  id        String        @id @default(uuid()) @db.Uuid
+  name      String        @db.VarChar(100) @unique
+  price     Decimal       @db.Money
+  Pizzas    ToppingsOnPizzas[]
+}
+
+
 model Cart {
   id      String    @id @default(uuid()) @db.Uuid
   user    User?      @relation(fields: [userId], references: [id], onDelete: Cascade)
@@ -47,12 +55,20 @@ enum Role{
   ADMIN
 }
 
-model Pizza {
+model Pizza { 
   id        String        @id @default(uuid()) @db.Uuid
-  name      String        @db.VarChar(100)
+  name      String        @db.VarChar(100) @unique
   price     Decimal       @db.Money
-  toppings  String[]      @db.VarChar(100)
-  item      Items[]     
+  toppings  ToppingsOnPizzas[]
+  item      Items[]
+}
+model ToppingsOnPizzas{
+  pizza   Pizza   @relation(fields: [pizzaId], references: [id], onDelete: Cascade)
+  pizzaId   String  @db.Uuid
+  topping   Topping   @relation(fields: [toppingId], references: [id], onDelete: Cascade)
+  toppingId  String   @db.Uuid
+
+  @@id([pizzaId, toppingId])
 }
 
 model VerifyRequest {
