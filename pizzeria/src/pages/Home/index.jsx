@@ -3,8 +3,10 @@ import PizzaSlice from "../../components/atoms/PizzaSlice";
 import PepperPic from "../../components/atoms/PepperPic";
 import Hamburger from "../../components/atoms/Hamburger";
 import "./index.css";
+import { useState } from "react";
 
 const Home = () => {
+
     return (
         <div className="homeWrapper">
             <div className="pizzaSlices">

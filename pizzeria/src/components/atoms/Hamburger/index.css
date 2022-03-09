@@ -9,7 +9,6 @@
     width: 80px;
     height: 80px;
     cursor: pointer;
-    
 }
 
 .hamburger_line{
@@ -17,9 +16,7 @@
     height: 4px;
     background-color: #FFFFFF;
     border-radius: 10px;
-    /* box-shadow: 0 2px 5px rgba(255, 255, 255, .3); */
-    transition: all .5s ease-in-out;
-    
+    transition: all .5s ease-in-out; 
 }
 
 .hamburger_line::after, .hamburger_line::before{
@@ -29,14 +26,40 @@
     height: 4px;
     background-color: #FFFFFF;
     border-radius: 10px;
-    /* box-shadow: 0 2px 5px rgba(255, 255, 255, .3); */
     transition: all .5s ease-in-out;
-    
 }
 
 .hamburger_line::after{
     transform: translateY(15px);
 }
+
 .hamburger_line::before{
     transform: translateY(-15px);
+}
+
+.hamburger_line_active{
+    width: 40px;
+    height: 4px;
+    background-color: #FFFFFF;
+    border-radius: 10px;
+    transition: all .5s ease-in-out;
+    background-color: transparent;
+}
+
+.hamburger_line_active::before, .hamburger_line_active::after{
+    content: '';
+    position: absolute;
+    width: 40px;
+    height: 4px;
+    background-color: #FFFFFF;
+    border-radius: 10px;
+    transition: all .5s ease-in-out;
+}
+
+.hamburger_line_active::before{
+    transform: rotate(45deg);
+}
+
+.hamburger_line_active::after{
+    transform: rotate(-45deg);
 }
