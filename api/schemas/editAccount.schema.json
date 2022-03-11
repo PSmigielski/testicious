@@ -1,0 +1,22 @@
+{
+    "type": "object",
+    "properties": {
+        "name": {
+            "type": "string",
+            "minLength": 2,
+            "maxLength": 100
+        },
+        "surname": {
+            "type": "string",
+            "minLength": 2,
+            "maxLength": 100
+        },
+        "phoneNumber": {
+            "type": "string",
+            "minLength": 9,
+            "maxLength": 9
+        }
+    },
+    "minProperties": 1,
+    "additionalProperties": false
+}

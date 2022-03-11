@@ -1,3 +1,6 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
 generator client {
   provider = "prisma-client-js"
 }
@@ -9,13 +12,63 @@ datasource db {
 
 model User {
   id                   String                 @id @default(uuid()) @db.Uuid
-  login                String                 @unique @db.VarChar(100)
+  name                 String                 @db.VarChar(100)
+  surname              String                 @db.VarChar(100)
+  phoneNumber          String                 @db.Char(9)
   password             String                 @db.Text
   email                String                 @unique @db.VarChar(100)
+  role                 Role                   @default(USER)
   isVerified           Boolean                @default(false)
   VerifyRequest        VerifyRequest?
   RefreshToken         RefreshToken[]
   ResetPasswordRequest ResetPasswordRequest[]
+  cart                 Cart[]
+}
+
+model Topping {
+  id        String        @id @default(uuid()) @db.Uuid
+  name      String        @db.VarChar(100) @unique
+  price     Decimal       @db.Money
+  Pizzas    ToppingsOnPizzas[]
+}
+
+
+model Cart {
+  id      String    @id @default(uuid()) @db.Uuid
+  user    User?      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId  String    @unique @db.Uuid
+  items   Items[]
+  isActive Boolean @default(true) @db.Boolean
+}
+
+model Items {
+  id        String      @id @default(uuid()) @db.Uuid
+  cartId    String      @db.Uuid
+  quantity  Int         @db.Integer
+  cart      Cart        @relation(fields: [cartId], references: [id], onDelete: Cascade)
+  pizzaId   String      @db.Uuid
+  pizza     Pizza       @relation(fields: [pizzaId], references: [id], onDelete: Cascade)
+}
+
+enum Role{
+  USER
+  ADMIN
+}
+
+model Pizza { 
+  id        String        @id @default(uuid()) @db.Uuid
+  name      String        @db.VarChar(100) @unique
+  price     Decimal       @db.Money
+  toppings  ToppingsOnPizzas[]
+  item      Items[]
+}
+model ToppingsOnPizzas{
+  pizza   Pizza   @relation(fields: [pizzaId], references: [id], onDelete: Cascade)
+  pizzaId   String  @db.Uuid
+  topping   Topping   @relation(fields: [toppingId], references: [id], onDelete: Cascade)
+  toppingId  String   @db.Uuid
+
+  @@id([pizzaId, toppingId])
 }
 
 model VerifyRequest {

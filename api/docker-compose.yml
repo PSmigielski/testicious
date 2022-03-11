@@ -6,7 +6,7 @@ services:
     image: "postgres:${POSTGRES_VERSION}"
     restart: always
     environment:
-      - POSTGRES_DB=dailyRoutine
+      - POSTGRES_DB=pizzaPolaka
       - "POSTGRES_USER=${POSTGRES_USER}"
       - "POSTGRES_PASSWORD=${POSTGRES_PASSWORD}"
     volumes:
