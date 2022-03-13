@@ -11,7 +11,7 @@ const productController = new ProductController();
 
 productRouter.post("/:categoryId", checkJwt, checkRole(Roles.ADMIN),schemaValidator("/../../schemas/product.schema.json"), productController.create.bind(productController));
 productRouter.put("/:categoryId/:id", checkJwt, checkRole(Roles.ADMIN), schemaValidator("/../../schemas/productUpdate.schema.json"), productController.update.bind(productController));
-productRouter.get("", productController.fetch.bind(productController));
+productRouter.get("/:categoryId", productController.fetch.bind(productController));
 productRouter.delete("/:id", checkJwt, checkRole(Roles.ADMIN), productController.remove.bind(productController));
 
 export default productRouter;

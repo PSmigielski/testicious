@@ -1,3 +1,6 @@
+import { Topping, Product as PrismaProduct } from "@prisma/client";
+import { timeStamp } from "console";
+import { format } from "path";
 import ApiErrorException from "../exceptions/ApiErrorException";
 import PrismaException from "../exceptions/PrismaException";
 import IProduct from "../types/IProduct";
@@ -17,6 +20,7 @@ class Product extends Model{
     }
     public async create(){
         const prisma = Product.getPrisma();
+        console.log(this.toppings, this.categoryId)
         if(typeof this.toppings !== undefined){
             const product = await prisma.product.create({
                 data:{
@@ -27,28 +31,15 @@ class Product extends Model{
                         create: this.toppings
                     }
                 },
-                include:{
-                    toppings: {
-                        select:{
-                            topping: true
-                        }
-                    }
-                }
+                include:{ toppings: { select:{ topping: true } } }
             }).catch(err => { throw PrismaException.createException(err,"Product") });
-            return product;
+            return Product.formatDbData(product);
         }else{
             const product = await prisma.product.create({
                 data:{
                     name: this.name,
                     price: this.price,
                     categoryId: this.categoryId
-                },
-                include:{
-                    toppings: {
-                        select:{
-                            topping: true
-                        }
-                    }
                 }
             }).catch(err => { throw PrismaException.createException(err,"Product") });
             return product;
@@ -57,8 +48,32 @@ class Product extends Model{
 
     public static async fetchProducts(categoryId: string){
         const prisma = Product.getPrisma();
-        const products = await prisma.product.findMany({where: {categoryId}}).catch(err => {throw PrismaException.createException(err,"Product")});
-        return products;
+        const products = await prisma.product.findMany({where: {categoryId}, 
+            include:{ toppings: { select:{ topping: true } } }})
+        .catch(err => {throw PrismaException.createException(err,"Product")});
+        const formattedProducts = new Array<PrismaProduct & { toppings: Array<ITopping & { id: string }> }>();
+        for(const el of products){
+            formattedProducts.push(Product.formatDbData(el));
+        }
+        return formattedProducts;
+    }
+    private static formatDbData(data:PrismaProduct & { toppings: { topping: Topping }[]; }){
+        let flatObjArr = new Array<ITopping & { id: string }>();
+        data.toppings.forEach((el) => {
+            let obj: {id: string, name: string, price: number} = {id: "", name: "", price: 0};
+            obj.id = el.topping.id
+            obj.name = el.topping.name
+            obj.price = (el.topping.price as unknown) as number;
+            flatObjArr.push(obj);
+        })
+        let formattedObj = {
+            id: data.id,
+            name: data.name,
+            price: data.price,
+            categoryId: data.categoryId,
+            toppings: flatObjArr
+        }
+        return formattedObj;
     }
 
     public static async removeProduct(id: string){
@@ -86,7 +101,7 @@ class Product extends Model{
         if(toppings){
             await Product.updateToppings(toppings, id)
         }
-        const pizza = await prisma.product.update({
+        const product = await prisma.product.update({
             data: {
                 name, price, categoryId
             }, where: {id},
@@ -98,7 +113,7 @@ class Product extends Model{
                 }
             }
         }).catch(err => {throw PrismaException.createException(err,"Product")});
-        return pizza;
+        return Product.formatDbData(product);
     }
 }
 
