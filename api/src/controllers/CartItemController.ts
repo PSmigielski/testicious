@@ -16,9 +16,9 @@ class CartItemController {
             if(quantity <= 0 ||isNaN(quantity)){
                 return next(new ApiErrorException("invalid quantity format", 400));
             } 
-            const item = await new CartItem({cartId, productId, quantity}).create().catch(next);
-            if(item){
-                return res.status(200).json({message: "Item has been added to cart"});
+            const cartItem = await new CartItem({cartId, productId, quantity}).create().catch(next);
+            if(cartItem){
+                return res.status(200).json({message: "Item has been added to cart", cartItem});
             }
         }
     }
@@ -27,9 +27,9 @@ class CartItemController {
         if(!await Cart.isOwner(req.user?.id, cartId)){
             return next(new ApiErrorException("This cart does not belong to you!", 403));
         } else {
-            const removedItem = await CartItem.removeItem(itemId).catch(next);
-            if(removedItem){
-                return res.status(202).json({message: "Item has been removed!", removedItem})
+            const removedCartItem = await CartItem.removeItem(itemId).catch(next);
+            if(removedCartItem){
+                return res.status(202).json({message: "Item has been removed!", removedCartItem})
             }
         }
     }
@@ -42,9 +42,9 @@ class CartItemController {
             if(quantity <= 0 ||isNaN(quantity)){
                 return next(new ApiErrorException("invalid quantity format", 400));
             } 
-            const updatedItem = await CartItem.edit(itemId, quantity).catch(next);
-            if(updatedItem){
-                return res.status(202).json({message: "Item has been updated", updatedItem});
+            const updatedCartItem = await CartItem.edit(itemId, quantity).catch(next);
+            if(updatedCartItem){
+                return res.status(202).json({message: "Item has been updated", updatedCartItem});
             }
         }
     }

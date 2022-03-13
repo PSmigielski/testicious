@@ -1,6 +1,4 @@
 import { Topping, Product as PrismaProduct } from "@prisma/client";
-import { timeStamp } from "console";
-import { format } from "path";
 import ApiErrorException from "../exceptions/ApiErrorException";
 import PrismaException from "../exceptions/PrismaException";
 import IProduct from "../types/IProduct";
