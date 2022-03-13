@@ -2,7 +2,6 @@ import express from "express";
 import AuthController from "../controllers/AuthController";
 import checkJwt from "../middleware/checkJwt";
 import checkRole from "../middleware/checkRole";
-import errorHandler from "../middleware/errorHandler";
 import schemaValidator from "../middleware/schemaValidator";
 import Roles from "../types/Roles";
 
