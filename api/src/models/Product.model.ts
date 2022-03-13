@@ -8,7 +8,7 @@ class Product extends Model{
     private price: number;
     private categoryId: string;
     private toppings: {toppingId: string}[] | undefined;
-    constructor({name, price, categoryId, toppings}: IProduct){
+    constructor({name, price, toppings}: IProduct, categoryId: string){
         super();
         this.name = name;
         this.price = price;
@@ -81,7 +81,7 @@ class Product extends Model{
             }
         }
     }
-    public static async updateProduct({name, price,categoryId, toppings}: IProduct, id: string){
+    public static async updateProduct({name, price, toppings}: IProduct, categoryId: string, id: string){
         const prisma = Product.getPrisma();
         if(toppings){
             await Product.updateToppings(toppings, id)
