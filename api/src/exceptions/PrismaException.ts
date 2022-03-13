@@ -35,6 +35,10 @@ class PrismaException extends Error{
                         this.statusCode = 409;
                         errorMessage = `${this.prismaErrorEntity} with this ${this.prismaMetadata?.target[0]} exist`
                         break;
+                    case "P2003":
+                        this.statusCode = 409;
+                        errorMessage = `Foreign key constraint failed`
+                        break;
                     case "P2025":
                         this.statusCode = 404;
                         errorMessage = `this ${this.prismaErrorEntity} does not exist`;

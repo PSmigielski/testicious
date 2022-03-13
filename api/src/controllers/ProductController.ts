@@ -6,7 +6,6 @@ class ProductController{
     public async create(req: Request, res: Response, next: NextFunction){
         const data: IProduct = req.body;
         const categoryId = req.params.categoryId;
-        console.log(data, categoryId);
         const product = await new Product(data, categoryId).create().catch(next);
         if(product){
             return res.status(201).json({message: "Product has been added!", product})

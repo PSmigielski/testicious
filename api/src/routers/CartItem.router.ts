@@ -1,12 +1,13 @@
 import express from "express";
 import ItemController from "../controllers/CartItemController";
 import checkJwt from "../middleware/checkJwt";
+import checkUuid from "../middleware/checkUuid";
 
 const cartItemController = new ItemController();
 const cartItemRouter = express.Router();
 
-cartItemRouter.post("/:cartId/:pizzaId", checkJwt, cartItemController.create.bind(cartItemController));
-cartItemRouter.delete("/:cartId/:itemId", checkJwt, cartItemController.remove.bind(cartItemController));
-cartItemRouter.put("/:cartId/:itemId", checkJwt, cartItemController.edit.bind(cartItemController));
+cartItemRouter.post("/:cartId/:pizzaId", checkJwt, checkUuid(["cartId", "pizzaId"]), cartItemController.create.bind(cartItemController));
+cartItemRouter.delete("/:cartId/:itemId", checkJwt, checkUuid(["cartId", "itemId"]), cartItemController.remove.bind(cartItemController));
+cartItemRouter.put("/:cartId/:itemId", checkJwt, checkUuid(["cartId", "itemId"]), cartItemController.edit.bind(cartItemController));
 
 export default cartItemRouter;

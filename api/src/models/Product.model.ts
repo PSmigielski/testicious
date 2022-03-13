@@ -18,7 +18,6 @@ class Product extends Model{
     }
     public async create(){
         const prisma = Product.getPrisma();
-        console.log(this.toppings, this.categoryId)
         if(typeof this.toppings !== undefined){
             const product = await prisma.product.create({
                 data:{
