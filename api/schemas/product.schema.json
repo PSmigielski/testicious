@@ -18,8 +18,7 @@
     },
     "required": [
         "name",
-        "price",
-        "toppings"
+        "price"
     ],
     "additionalProperties": false
 }

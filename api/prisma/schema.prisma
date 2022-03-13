@@ -29,25 +29,31 @@ model Topping {
   id        String        @id @default(uuid()) @db.Uuid
   name      String        @db.VarChar(100) @unique
   price     Decimal       @db.Money
-  Pizzas    ToppingsOnPizzas[]
+  products  ToppingsOnPizzas[]
+}
+
+model Category {
+  id      String        @id @default(uuid()) @db.Uuid
+  name    String        @unique @db.VarChar(100)
+  products  Product[]
 }
 
 
 model Cart {
-  id      String    @id @default(uuid()) @db.Uuid
-  user    User?      @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId  String    @unique @db.Uuid
-  items   Items[]
+  id       String    @id @default(uuid()) @db.Uuid
+  user     User?      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId   String    @unique @db.Uuid
+  items    CartItem[]
   isActive Boolean @default(true) @db.Boolean
 }
 
-model Items {
+model CartItem {
   id        String      @id @default(uuid()) @db.Uuid
   cartId    String      @db.Uuid
   quantity  Int         @db.Integer
   cart      Cart        @relation(fields: [cartId], references: [id], onDelete: Cascade)
-  pizzaId   String      @db.Uuid
-  pizza     Pizza       @relation(fields: [pizzaId], references: [id], onDelete: Cascade)
+  productId String      @db.Uuid
+  product   Product     @relation(fields: [productId], references: [id], onDelete: Cascade)
 }
 
 enum Role{
@@ -55,20 +61,22 @@ enum Role{
   ADMIN
 }
 
-model Pizza { 
+model Product { 
   id        String        @id @default(uuid()) @db.Uuid
   name      String        @db.VarChar(100) @unique
   price     Decimal       @db.Money
   toppings  ToppingsOnPizzas[]
-  item      Items[]
+  item      CartItem[]
+  category  Category      @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  categoryId  String      @db.Uuid 
 }
 model ToppingsOnPizzas{
-  pizza   Pizza   @relation(fields: [pizzaId], references: [id], onDelete: Cascade)
-  pizzaId   String  @db.Uuid
-  topping   Topping   @relation(fields: [toppingId], references: [id], onDelete: Cascade)
-  toppingId  String   @db.Uuid
+  item          Product   @relation(fields: [productId], references: [id], onDelete: Cascade)
+  productId     String  @db.Uuid
+  topping       Topping   @relation(fields: [toppingId], references: [id], onDelete: Cascade)
+  toppingId     String   @db.Uuid
 
-  @@id([pizzaId, toppingId])
+  @@id([productId, toppingId])
 }
 
 model VerifyRequest {
