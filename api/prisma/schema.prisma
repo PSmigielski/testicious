@@ -65,6 +65,7 @@ model Product {
   id        String        @id @default(uuid()) @db.Uuid
   name      String        @db.VarChar(100) @unique
   price     Decimal       @db.Money
+  imageUrl  String        @db.VarChar(200) @unique
   toppings  ToppingsOnPizzas[]
   item      CartItem[]
   category  Category      @relation(fields: [categoryId], references: [id], onDelete: Cascade)

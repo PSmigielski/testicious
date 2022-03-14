@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import fs from "fs";
 import ApiErrorException from "../exceptions/ApiErrorException";
+import FileService from "../services/FileService";
 
 class UploadController {
     public create(req: Request, res: Response, next: NextFunction){
@@ -9,18 +10,12 @@ class UploadController {
         }
         return res.status(201).json({message: "image has been uploaded", link: `${process.env.HOSTNAME}:${process.env.PORT}/${req.file?.path}`})
     };
-    public remove(req: Request, res: Response, next: NextFunction){
-        const fileName = req.query.name;
-        fs.unlink(`${__dirname}/../../uploads/${fileName}`, (err)=>{
-            if(err){
-                if(err.code == "ENOENT"){
-                    return next(new ApiErrorException("This file does not exist",404));
-                }else{
-                    return next(new ApiErrorException("file removal went wrong",500));
-                }
-            }
-            res.status(202).json({message: "file has been removed"});
-        })
+    public async remove(req: Request, res: Response, next: NextFunction){
+        const fileName = req.query.name as string;
+        const result = await FileService.removeFile(fileName).catch(next)
+        if(result){
+            return res.status(202).json({message: "file has been removed"});
+        }
     }
 }
 

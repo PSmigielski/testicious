@@ -1,6 +1,6 @@
 import { v4 as uuidv4 } from 'uuid';
-import express, { Request } from "express";
-import multer, { FileFilterCallback } from "multer";
+import express from "express";
+import multer from "multer";
 import path from "path";
 import UploadController from '../controllers/UploadController';
 import checkJwt from '../middleware/checkJwt';
@@ -29,6 +29,7 @@ const upload = multer({ storage, limits: { fileSize: 1024*1024*2, files: 1 },
     } 
 });
 const uploadContoller = new UploadController();
+
 uploadRouter.post("",checkJwt, checkRole(Roles.ADMIN), upload.single("photo"), uploadContoller.create.bind(uploadContoller));
 uploadRouter.delete("", checkJwt, checkRole(Roles.ADMIN), uploadContoller.remove.bind(uploadContoller));
 

@@ -1,6 +1,7 @@
 import { Topping, Product as PrismaProduct } from "@prisma/client";
 import ApiErrorException from "../exceptions/ApiErrorException";
 import PrismaException from "../exceptions/PrismaException";
+import FileService from "../services/FileService";
 import IProduct from "../types/IProduct";
 import Model from "./Model";
 
@@ -8,11 +9,13 @@ class Product extends Model{
     private name: string;
     private price: number;
     private categoryId: string;
+    private imageUrl: string;
     private toppings: {toppingId: string}[] | undefined;
-    constructor({name, price, toppings}: IProduct, categoryId: string){
+    constructor({name, price, imageUrl ,toppings}: IProduct, categoryId: string){
         super();
         this.name = name;
         this.price = price;
+        this.imageUrl = imageUrl;
         this.categoryId = categoryId;
         this.toppings = toppings?.map((el: string) => ({ toppingId: el}));
     }
@@ -23,6 +26,7 @@ class Product extends Model{
                 data:{
                     name: this.name,
                     price: this.price,
+                    imageUrl: this.imageUrl,
                     categoryId: this.categoryId,
                     toppings: {
                         create: this.toppings
@@ -34,6 +38,7 @@ class Product extends Model{
         }else{
             const product = await prisma.product.create({
                 data:{
+                    imageUrl: this.imageUrl,
                     name: this.name,
                     price: this.price,
                     categoryId: this.categoryId
@@ -67,6 +72,7 @@ class Product extends Model{
             id: data.id,
             name: data.name,
             price: data.price,
+            imageUrl: data.imageUrl,
             categoryId: data.categoryId,
             toppings: flatObjArr
         }
@@ -75,16 +81,19 @@ class Product extends Model{
 
     public static async removeProduct(id: string){
         const prisma = Product.getPrisma();
-        const removePizza = await prisma.product.delete({where:{ id }}).catch(err => {throw PrismaException.createException(err,"Product")});
-        return removePizza;
+        const removedProduct = await prisma.product.delete({where:{ id }}).catch(err => {throw PrismaException.createException(err,"Product")});
+        await FileService.removeFile(removedProduct.imageUrl.substring(removedProduct.imageUrl.indexOf("uploads/")+8), false).catch(err => {throw err});
+        return removedProduct;
     }
     private static async updateToppings(toppings: string[], id: string){
         const prisma = Product.getPrisma();
         await prisma.toppingsOnPizzas.deleteMany({where:{productId: id}})
         .catch(err => {throw PrismaException.createException(err,"toppingsOnPizzas")});
         for(const toppingId of toppings){
-            const topping = await prisma.toppingsOnPizzas.findMany({where:{toppingId}})
+            console.log(toppings)
+            const topping = await prisma.topping.findMany({where:{id: toppingId}})
             .catch(err => {throw PrismaException.createException(err,"toppingsOnPizzas")});
+            console.log(topping)
             if(topping.length != 0){
                 await prisma.toppingsOnPizzas.create({data:{toppingId, productId: id}})
                 .catch(err => {throw PrismaException.createException(err,"toppingsOnPizzas")});
@@ -93,14 +102,24 @@ class Product extends Model{
             }
         }
     }
-    public static async updateProduct({name, price, toppings}: IProduct, categoryId: string, id: string){
+    public static async getProductImageUrl(id:string) {
+        const prisma = Product.getPrisma();
+        const product = await prisma.product.findUnique({where: {id}, select: {imageUrl:true}})
+        .catch(err => {throw PrismaException.createException(err,"Product")});
+        return product?.imageUrl;
+    }
+    public static async updateProduct({name, price, imageUrl ,toppings}: IProduct, categoryId: string, id: string){
         const prisma = Product.getPrisma();
         if(toppings){
             await Product.updateToppings(toppings, id)
         }
+        const oldUrl = await Product.getProductImageUrl(id)
+        if(imageUrl&& typeof oldUrl == "string" && oldUrl != imageUrl){
+            await FileService.removeFile(oldUrl.substring(oldUrl.indexOf("uploads/")+8), false).catch(err => {throw err});
+        }
         const product = await prisma.product.update({
             data: {
-                name, price, categoryId
+                name, price, categoryId, imageUrl
             }, where: {id},
             include:{
                 toppings: {

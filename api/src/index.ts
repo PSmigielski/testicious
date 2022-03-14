@@ -10,7 +10,7 @@ import cartRouter from "./routers/Cart.router";
 import cartItemRouter from "./routers/CartItem.router";
 import toppingRouter from "./routers/Topping.router";
 import categoryRouter from "./routers/Category.router";
-import uploadRouter from "./routers/upload.router";
+import uploadRouter from "./routers/Upload.router";
 
 dotenv.config();
 const app: Express = express();
