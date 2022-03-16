@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect} from "react";
 import PizzaSlice from "../../components/atoms/PizzaSlice";
 import PepperPic from "../../components/atoms/PepperPic";
 import Hamburger from "../../components/atoms/Hamburger";
@@ -14,6 +14,11 @@ import icon1 from "../../assets/mini_icon_1.svg"
 
 const Home = () => {
     
+    useEffect(() => {
+        setInterval(() => {
+            
+        }, 1000);
+    }, []);
 
     return (
         <div className="homeWrapper">
@@ -23,7 +28,7 @@ const Home = () => {
                 <PizzaSlice imageType={3} />
             </div>
             <div className="particles">
-                <Particle image={icon1} />
+                <Particle image={icon1} top={"100px"} />
                 {/* <Particle image={icon2} />
                 <Particle image={icon3} />
                 <Particle image={icon4} />
