@@ -24,7 +24,7 @@ app.use("/v1/api/carts", cartRouter);
 app.use("/v1/api/cartItems", cartItemRouter);
 app.use("/v1/api/toppings", toppingRouter);
 app.use("/v1/api/categories", categoryRouter);
-app.use("/v1/api/upload", uploadRouter)
+app.use("/v1/api/upload", uploadRouter);
 app.use(prismaErrorHandler);
 app.use(errorHandler);
 app.listen(process.env.PORT, () => console.log(`api is running at ${process.env.HOSTNAME}:${process.env.PORT}`));

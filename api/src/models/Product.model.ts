@@ -48,10 +48,16 @@ class Product extends Model{
         }
     }
 
-    public static async fetchProducts(categoryId: string){
+    public static async fetchProducts(categoryName: string){
         const prisma = Product.getPrisma();
-        const products = await prisma.product.findMany({where: {categoryId}, 
-            include:{ toppings: { select:{ topping: true } } }})
+        const products = await prisma.product.findMany({ 
+            where:{
+                category:{
+                    name: categoryName
+                }
+            },
+            include: {toppings: {select: { topping: true } } }
+        })
         .catch(err => {throw PrismaException.createException(err,"Product")});
         const formattedProducts = new Array<PrismaProduct & { toppings: Array<ITopping & { id: string }> }>();
         for(const el of products){

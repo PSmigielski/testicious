@@ -12,8 +12,8 @@ class ProductController{
         }
     }
     public async fetch(req: Request, res: Response, next: NextFunction){
-        const categoryId = req.params.categoryId;
-        const products = await Product.fetchProducts(categoryId).catch(next);
+        const categoryName = req.query.name as string;
+        const products = await Product.fetchProducts(categoryName).catch(next);
         if(products){
             return res.json(products);
         }
