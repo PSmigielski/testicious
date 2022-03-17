@@ -1,6 +1,3 @@
-
-import React, {useRef} from "react";
-
 import React, {useEffect, useRef} from "react";
 
 import PizzaSlice from "../../components/atoms/PizzaSlice";
@@ -18,12 +15,14 @@ import icon1 from "../../assets/mini_icon_1.svg"
 // import icon7 from "../../assets/mini_icon_7.svg"
 
 const Home = () => {
-    
     const particle = useRef();
     useEffect(()=>{
-        console.log(particle.current)
-        particle.current.style.setProperty('--x','100px');
+        let x = 0;
+        console.log(x);
+        particle.current.style.setProperty('--x',`${x}px`);
+        x++;
     }, []);
+
     return (
         <div className="homeWrapper">
             <div className="pizzaSlices">
@@ -31,7 +30,7 @@ const Home = () => {
                 <PizzaSlice imageType={2} />
                 <PizzaSlice imageType={3} />
             </div>
-            <div className="particles">
+            <div className="particles"> 
                 <Particle image={icon1} ref={particle}/>
 
                 {/* <Particle image={icon2} />
