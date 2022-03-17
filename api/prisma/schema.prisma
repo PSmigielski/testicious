@@ -45,6 +45,10 @@ model Cart {
   userId   String    @unique @db.Uuid
   items    CartItem[]
   isActive Boolean @default(true) @db.Boolean
+  overallPrice  Decimal @db.Money @default(0)
+  appliedDiscount Discount @relation(fields: [appliedDiscountId], references: [id], onDelete: Cascade)
+  appliedDiscountId String @db.Uuid
+  overallPriceAfterDiscount Decimal? @db.Money 
 }
 
 model CartItem {
@@ -59,6 +63,13 @@ model CartItem {
 enum Role{
   USER
   ADMIN
+}
+
+model Discount {
+  id    String    @id @default(uuid()) @db.Uuid
+  code  String    @db.VarChar(20) @unique
+  precent Int     @db.Integer 
+  cart  Cart[]
 }
 
 model Product { 
