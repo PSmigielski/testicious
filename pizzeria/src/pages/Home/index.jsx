@@ -14,6 +14,10 @@ import icon1 from "../../assets/mini_icon_1.svg"
 
 const Home = () => {
     
+    const particle = useRef(null);
+    console.log(particle.current)
+
+    particle.current.style.setProperty('--x','100px');
 
     return (
         <div className="homeWrapper">
@@ -23,7 +27,7 @@ const Home = () => {
                 <PizzaSlice imageType={3} />
             </div>
             <div className="particles">
-                <Particle image={icon1} />
+                <Particle image={icon1} ref={particle}/>
 
                 {/* <Particle image={icon2} />
                 <Particle image={icon3} />

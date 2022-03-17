@@ -32,7 +32,7 @@
 }
 
 .particle{
-    --x: 0;
-    --y: 0;
+    --x: 0px;
+    --y: 0px;
     transform: translate(var(--x),var(--y));
 }
