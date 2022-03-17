@@ -1,10 +1,15 @@
+
 import React, {useRef} from "react";
+
+import React, {useEffect, useRef} from "react";
+
 import PizzaSlice from "../../components/atoms/PizzaSlice";
 import PepperPic from "../../components/atoms/PepperPic";
 import Hamburger from "../../components/atoms/Hamburger";
 import Particle from "../../components/atoms/Particle";
 import "./index.css";
 import icon1 from "../../assets/mini_icon_1.svg"
+
 // import icon2 from "../../assets/mini_icon_2.svg"
 // import icon3 from "../../assets/mini_icon_3.svg"
 // import icon4 from "../../assets/mini_icon_4.svg"
@@ -14,11 +19,11 @@ import icon1 from "../../assets/mini_icon_1.svg"
 
 const Home = () => {
     
-    const particle = useRef(null);
-    console.log(particle.current)
-
-    particle.current.style.setProperty('--x','100px');
-
+    const particle = useRef();
+    useEffect(()=>{
+        console.log(particle.current)
+        particle.current.style.setProperty('--x','100px');
+    }, []);
     return (
         <div className="homeWrapper">
             <div className="pizzaSlices">
