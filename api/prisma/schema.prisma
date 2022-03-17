@@ -23,6 +23,7 @@ model User {
   RefreshToken         RefreshToken[]
   ResetPasswordRequest ResetPasswordRequest[]
   cart                 Cart[]
+  transactions         Transaction[]
 }
 
 model Topping {
@@ -49,6 +50,7 @@ model Cart {
   appliedDiscount Discount @relation(fields: [appliedDiscountId], references: [id], onDelete: Cascade)
   appliedDiscountId String @db.Uuid
   overallPriceAfterDiscount Decimal? @db.Money 
+  transaction  Transaction?
 }
 
 model CartItem {
@@ -70,6 +72,14 @@ model Discount {
   code  String    @db.VarChar(20) @unique
   precent Int     @db.Integer 
   cart  Cart[]
+}
+
+model Transaction {
+  id      String @id @default(uuid()) @db.Uuid
+  user    User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId  String @db.Uuid
+  cart    Cart   @relation(fields: [cartId], references: [id], onDelete: Cascade)
+  cartId  String @db.Uuid
 }
 
 model Product { 
