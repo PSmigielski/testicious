@@ -1,4 +1,4 @@
-import React, {useState ,useEffect} from "react";
+import React, {useState ,useEffect, useRef} from "react";
 import PizzaSlice from "../../components/atoms/PizzaSlice";
 import PepperPic from "../../components/atoms/PepperPic";
 import Hamburger from "../../components/atoms/Hamburger";
@@ -14,20 +14,6 @@ import icon1 from "../../assets/mini_icon_1.svg"
 
 const Home = () => {
     
-    let x = 10;
-    const [style,setStyle] = useState();
-
-    // setStyle(x);
-    const test1 = () =>{
-        setInterval(() => {
-            x++;
-            setStyle(`${x}px`);
-            
-            
-        }, 10000);
-    }
-
-    // setInterval(console.log(x++),1000);
 
     return (
         <div className="homeWrapper">
@@ -37,7 +23,7 @@ const Home = () => {
                 <PizzaSlice imageType={3} />
             </div>
             <div className="particles">
-                <Particle image={icon1} onload={test1()}/>
+                <Particle image={icon1} />
 
                 {/* <Particle image={icon2} />
                 <Particle image={icon3} />
@@ -53,9 +39,14 @@ const Home = () => {
 }
 
 
-// top={
-//     setInterval(()=>{
-//         x+=50;
-//         return `${x}px`
-//     },100)}
+                //top={
+                    // setInterval(()=>{
+                    //     x+=50;
+                    //     console.log(x);
+                    //     return `${x}px`;
+                    // },1000)
+                    // style
+               // } 
+    
+
 export default Home;

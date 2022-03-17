@@ -8,6 +8,7 @@
 
     position: relative;
 }
+
 .pizzaSlices{
     height: 100%;
     width: 400px;
@@ -19,28 +20,19 @@
 .pizzaSlice:first-child{
     top: 3vh;
 }
+
 .pizzaSlice:nth-child(2){
     top: 25vh;
     width: 42vh;
     height: auto;
 }
+
 .pizzaSlice:nth-child(3){
     top: 48vh;
 }
 
-
-/* @media screen and (max-width: 1700px) {
-    .pizzaSlice:nth-child(2){
-        top: calc(33vh - 40px);
-        width: calc(33vw - 220px);
-        height: auto;
-    }
+.particle{
+    --x: 0;
+    --y: 0;
+    transform: translate(var(--x),var(--y));
 }
-
-@media screen and (max-width: 860px) {
-    .pizzaSlice:nth-child(2){
-        top: calc(33vh - 40px);
-        width: calc(33vw + 60px);
-        height: auto;
-    }
-} */
