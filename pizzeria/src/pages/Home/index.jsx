@@ -1,4 +1,4 @@
-import React, {useState ,useEffect, useRef} from "react";
+import React, {useRef} from "react";
 import PizzaSlice from "../../components/atoms/PizzaSlice";
 import PepperPic from "../../components/atoms/PepperPic";
 import Hamburger from "../../components/atoms/Hamburger";
