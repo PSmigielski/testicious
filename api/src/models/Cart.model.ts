@@ -32,7 +32,7 @@ class Cart extends Model{
         const items = await prisma.cart.findUnique({where: {id}, include:{
             items:{
                 include:{
-                    pizza:{
+                    product:{
                         select:{
                             price:true
                         }

@@ -11,6 +11,10 @@
             "minimum": 0,
             "maximum": 500
         },
+        "imageUrl":{
+            "type": "string",
+            "maxLength": 200
+        },
         "toppings": {
             "type":"array",
             "minItems": 1
@@ -19,7 +23,7 @@
     "required": [
         "name",
         "price",
-        "toppings"
+        "imageUrl"
     ],
     "additionalProperties": false
 }
