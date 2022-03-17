@@ -7,6 +7,7 @@ import checkJwt from '../middleware/checkJwt';
 import Roles from '../types/Roles';
 import checkRole from '../middleware/checkRole';
 import ApiErrorException from '../exceptions/ApiErrorException';
+import scanFile from '../middleware/scanFile';
 
 
 const uploadRouter = express.Router();
@@ -30,7 +31,7 @@ const upload = multer({ storage, limits: { fileSize: 1024*1024*2, files: 1 },
 });
 const uploadContoller = new UploadController();
 
-uploadRouter.post("",checkJwt, checkRole(Roles.ADMIN), upload.single("photo"), uploadContoller.create.bind(uploadContoller));
+uploadRouter.post("",checkJwt, checkRole(Roles.ADMIN), upload.single("photo"), scanFile ,uploadContoller.create.bind(uploadContoller));
 uploadRouter.delete("", checkJwt, checkRole(Roles.ADMIN), uploadContoller.remove.bind(uploadContoller));
 
 export default uploadRouter;
