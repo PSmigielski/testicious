@@ -8,8 +8,8 @@ const scanFile = async (req: Request,res: Response, next: NextFunction) => {
         scanRecursively: false,
         debugMode: true,
         clamdscan: {
-            host: "127.0.0.1",
-            port: 3310
+            host: process.env.CLAMAV_HOST as string,
+            port: parseInt(process.env.CLAMAV_PORT as string)
         }
     });
     if(req.file?.path){
