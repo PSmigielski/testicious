@@ -6,11 +6,11 @@ class Discount extends Model{
     private code: string;
     private precent: number;
     private expDate: Date;
-    constructor(code: string, precent: number, expDate: Date){
+    constructor(data: IDiscount){
         super();
-        this.code = code;
-        this.precent = precent;
-        this.expDate = expDate;
+        this.code = data.code;
+        this.precent = data.precent;
+        this.expDate = data.expDate;
     }  
     public async create(){
         const prisma = Discount.getPrisma();
