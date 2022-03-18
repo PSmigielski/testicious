@@ -3,20 +3,20 @@ import IDiscount from "../types/IDiscount";
 import Model from "./Model";
 
 class Discount extends Model{
-    private code: string;
-    private precent: number;
-    private expDate: Date;
+    private code: string | undefined;
+    private precent: number | undefined;
+    private expDate: Date ;
     constructor(data: IDiscount){
         super();
         this.code = data.code;
         this.precent = data.precent;
-        this.expDate = data.expDate;
+        this.expDate = new Date(data?.expDate as number *1000);
     }  
     public async create(){
         const prisma = Discount.getPrisma();
         const discount = await prisma.discount.create({data: {
-            code: this.code,
-            precent: this.precent,
+            code: this.code as string,
+            precent: this.precent as number,
             expirationDate: this.expDate
         }})
         .catch(err => {throw PrismaException.createException(err,"Discount")});
@@ -28,11 +28,23 @@ class Discount extends Model{
         .catch(err => {throw PrismaException.createException(err,"Discount")});
         return removedDiscount
     }
-    public static async edit(id: string, data: IDiscount){
+    //fix
+    public static async edit(id: string, {code, precent, expDate}: IDiscount){
         const prisma = Discount.getPrisma();
-        const updatedDiscount = await prisma.discount.update({where: {id}, data})
-        .catch(err => {throw PrismaException.createException(err,"Discount")});
-        return updatedDiscount;
+        if(expDate){
+            const date = new Date(expDate*1000)
+            const updatedDiscount = await prisma.discount.update({where: {id}, data: {
+                code, precent, expirationDate: date
+            }})
+            .catch(err => {throw PrismaException.createException(err,"Discount")});
+            return updatedDiscount;
+        }else{
+            const updatedDiscount = await prisma.discount.update({where: {id}, data: {
+                code, precent
+            }})
+            .catch(err => {throw PrismaException.createException(err,"Discount")});
+            return updatedDiscount;
+        }
     }
     public static async fetchAll(){
         const prisma = Discount.getPrisma();

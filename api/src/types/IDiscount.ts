@@ -1,6 +1,6 @@
 interface IDiscount{
     code: string,
-    precent: number
-    expDate: Date
+    precent: number,
+    expDate: number
 }
 export default IDiscount;

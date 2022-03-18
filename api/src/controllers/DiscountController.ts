@@ -32,3 +32,5 @@ class DiscountController{
         }
     }
 }
+
+export default DiscountController;
