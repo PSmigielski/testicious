@@ -1,3 +1,4 @@
+import { Decimal } from "@prisma/client/runtime";
 import { NextFunction, Request, Response } from "express";
 import ApiErrorException from "../exceptions/ApiErrorException";
 import Cart from "../models/Cart.model";
@@ -18,7 +19,9 @@ class CartItemController {
             } 
             const cartItem = await new CartItem({cartId, productId, quantity}).create().catch(next);
             if(cartItem){
-                return res.status(200).json({message: "Item has been added to cart", cartItem});
+                const price = cartItem.product.price.mul(cartItem.quantity) as Decimal
+                const overallPrice = await Cart.updateOverallPrice(price, cartItem.cartId).catch(next)
+                return res.status(200).json({message: "Item has been added to cart", cartItem, overallPrice});
             }
         }
     }
@@ -29,7 +32,9 @@ class CartItemController {
         } else {
             const removedCartItem = await CartItem.removeItem(itemId).catch(next);
             if(removedCartItem){
-                return res.status(202).json({message: "Item has been removed!", removedCartItem})
+                const price = removedCartItem.product.price.mul(removedCartItem.quantity) as Decimal
+                const overallPrice = await Cart.updateOverallPrice(price.mul(-1), removedCartItem.cartId).catch(next)
+                return res.status(202).json({message: "Item has been removed!", removedCartItem, overallPrice})
             }
         }
     }
@@ -42,9 +47,21 @@ class CartItemController {
             if(quantity <= 0 ||isNaN(quantity)){
                 return next(new ApiErrorException("invalid quantity format", 400));
             } 
+            const oldQuantity = await CartItem.getItemQuantity(itemId).catch(next) as number;
             const updatedCartItem = await CartItem.edit(itemId, quantity).catch(next);
             if(updatedCartItem){
-                return res.status(202).json({message: "Item has been updated", updatedCartItem});
+                if(oldQuantity < quantity){
+                    const price = updatedCartItem.product.price.mul(quantity) as Decimal
+                    const oldprice = updatedCartItem.product.price.mul(oldQuantity) as Decimal;
+                    const overallPrice = await Cart.updateOverallPrice(price.sub(oldprice).abs(), updatedCartItem.cartId).catch(next)
+                    return res.status(202).json({message: "Item has been updated", updatedCartItem, overallPrice});
+                }
+                else{
+                    const tmpQuantity = oldQuantity-quantity
+                    const tmpPrice = updatedCartItem.product.price.mul(tmpQuantity) as Decimal;
+                    const overallPrice = await Cart.updateOverallPrice(tmpPrice.mul(-1), updatedCartItem.cartId).catch(next)
+                    return res.status(202).json({message: "Item has been updated", updatedCartItem, overallPrice});
+                }
             }
         }
     }
