@@ -47,9 +47,6 @@ model Cart {
   items    CartItem[]
   isActive Boolean @default(true) @db.Boolean
   overallPrice  Decimal @db.Money @default(0)
-  appliedDiscount Discount? @relation(fields: [appliedDiscountId], references: [id], onDelete: Cascade)
-  appliedDiscountId String? @db.Uuid
-  overallPriceAfterDiscount Decimal? @db.Money 
   transaction  Transaction?
 }
 
@@ -72,15 +69,24 @@ model Discount {
   code           String    @db.VarChar(20) @unique
   precent        Int       @db.Integer 
   expirationDate DateTime  @db.Date
-  cart  Cart[]
+  transaction    Transaction[]
 }
 
 model Transaction {
   id      String @id @default(uuid()) @db.Uuid
-  user    User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user    User?   @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId  String @db.Uuid
   cart    Cart   @relation(fields: [cartId], references: [id], onDelete: Cascade)
   cartId  String @db.Uuid
+  appliedDiscount Discount? @relation(fields: [appliedDiscountId], references: [id], onDelete: Cascade)
+  appliedDiscountId String? @db.Uuid
+  name              String? @db.VarChar(100)
+  surname           String? @db.VarChar(100)
+  phoneNumber       String? @db.Char(9)
+  city              String? @db.VarChar(100)
+  streetNumber      Int?     @db.Integer
+  street            String?  @db.VarChar(100)
+  email             String?   @db.VarChar(100)
 }
 
 model Product { 

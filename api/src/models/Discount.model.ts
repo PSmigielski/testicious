@@ -28,7 +28,6 @@ class Discount extends Model{
         .catch(err => {throw PrismaException.createException(err,"Discount")});
         return removedDiscount
     }
-    //fix
     public static async edit(id: string, {code, precent, expDate}: IDiscount){
         const prisma = Discount.getPrisma();
         if(expDate){
