@@ -20,6 +20,19 @@ class Discount extends Model{
             expirationDate: this.expDate
         }})
         .catch(err => {throw PrismaException.createException(err,"Discount")});
+        await Discount.isValid(discount.id);
+        return discount;
+    }
+    public static async getDiscountPrecent(id: string){
+        const prisma = Discount.getPrisma();
+        const discount = await prisma.discount.findUnique({where: {id}})
+        .catch(err => {throw PrismaException.createException(err,"Discount")});
+        return discount?.precent as number
+    }
+    public static async getDiscountByCode(code: string){
+        const prisma = Discount.getPrisma();
+        const discount = await prisma.discount.findUnique({where: {code}})
+        .catch(err => {throw PrismaException.createException(err,"Discount")});
         return discount;
     }
     public static async remove(id: string){
@@ -50,6 +63,16 @@ class Discount extends Model{
         const discounts = await prisma.discount.findMany()
         .catch(err => {throw PrismaException.createException(err,"Discount")});
         return discounts
+    }
+    public static async isValid(id: string){
+        const prisma = Discount.getPrisma();
+        const discount = await prisma.discount.findUnique({where: {id}, select: {expirationDate: true}});
+        const discountDate = discount?.expirationDate.getTime() as number
+        if(Date.now() > discountDate){
+            return false
+        }else{
+            return true;
+        }
     }
 }
 

@@ -24,7 +24,9 @@ class CartItem extends Model {
             await Cart.updateOverallPrice(price.mul(-1), removedCartItem.cartId)
         }
         const item = await prisma.cartItem.create({data:{
-            productId: this.productId, cartId: this.cartId, quantity:this.quantity
+            productId: this.productId, cartId: this.cartId, cart: {
+                create: {cartId: this.cartId}
+            }, quantity:this.quantity,
         }, include: {product:{select: {price: true}} }})
         .catch(err => { throw PrismaException.createException(err,"Item") });
         return item;

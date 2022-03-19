@@ -1,4 +1,3 @@
-import { Prisma } from "@prisma/client";
 import PrismaException from "../exceptions/PrismaException";
 import Model from "./Model";
 

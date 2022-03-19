@@ -12,7 +12,9 @@ class Cart extends Model{
         const prisma = Cart.getPrisma();
         const cart = await prisma.cart.create({
             data:{userId: this.userId}
-        }).catch(err => { throw PrismaException.createException(err,"Cart") });
+        }).catch(err => { 
+            console.log(err);
+            throw PrismaException.createException(err,"Cart") });
         return cart;
     }
     public static async isOwner(userId: string, cartId: string){
@@ -30,12 +32,25 @@ class Cart extends Model{
     }
     public static async getItems(id: string){
         const prisma = Cart.getPrisma();
-        const items = await prisma.cart.findUnique({where: {id}, include:{
+        const items = await prisma.cart.findUnique({where: {id}, select:{
             items:{
-                include:{
-                    product:{
-                        select:{
-                            price:true
+                select:{
+                    cartItem:{
+                        select: {
+                            quantity: true,
+                            product: {
+                                select:{
+                                    id: true,
+                                    name: true,
+                                    price: true,
+                                    imageUrl: true,
+                                    category: {
+                                        select: {
+                                            name: true
+                                        }
+                                    }
+                                }
+                            }
                         }
                     }
                 }
