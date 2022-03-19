@@ -38,15 +38,15 @@ const Home = () => {
             rect.right <= (window.innerWidth || document.documentElement.clientWidth)
         );
     }
-    const slide = (particle, xMultipler) => {
+    const slide = (particle, xMultipler, mainPosition) => {
         particle.current.style.setProperty('--x',`${window.innerWidth*xMultipler}px`);
         particle.current.style.setProperty('--y',`${window.innerHeight+50}px`);
         particle.current.style.paddingLeft = `${xMultipler}px`
         setInterval(() => {
             if(isInViewport(particle.current) == false){
                 if(particle.current.style.getPropertyValue("--x") == `${window.innerWidth*xMultipler}px`){
-                    particle.current.style.setProperty('--x',`-100px`);
-                    particle.current.style.setProperty('--y',`-100px`);
+                    particle.current.style.setProperty('--x',`-${mainPosition}px`);
+                    particle.current.style.setProperty('--y',`-${mainPosition}px`);
                 }else{
                     particle.current.style.setProperty('--x',`${window.innerWidth*xMultipler}px`);
                     particle.current.style.setProperty('padding',`${xMultipler*10}px`)
@@ -56,13 +56,13 @@ const Home = () => {
         }, 1000);
     }
     useEffect(()=>{
-       slide(particle1,0.91)
-       slide(particle2,0.82)
-       slide(particle3,0.73)
-       slide(particle4,0.64)
-       slide(particle5,0.55)
-       slide(particle6,0.46)
-       slide(particle7,0.37)
+       slide(particle1,0.91,300)
+       slide(particle2,0.82,getRandomIntInclusive(50,200))
+       slide(particle3,0.73,getRandomIntInclusive(50,200))
+       slide(particle4,0.64,getRandomIntInclusive(50,200))
+       slide(particle5,0.55,getRandomIntInclusive(50,200))
+       slide(particle6,0.46,getRandomIntInclusive(50,200))
+       slide(particle7,0.37,getRandomIntInclusive(50,200))
     }, [position, slide]);
 
     return (
