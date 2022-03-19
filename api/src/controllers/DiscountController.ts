@@ -1,5 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import Discount from "../models/Discount.model";
+import User from "../models/User.model";
+import MailerService from "../services/MailerService";
 import IDiscount from "../types/IDiscount";
 
 class DiscountController{
@@ -7,6 +9,10 @@ class DiscountController{
         const data: IDiscount = req.body;
         const discount = await new Discount(data).create().catch(next);
         if(discount){
+            const users = await User.getUserMails().catch(next);
+            if(Array.isArray(users)){
+                MailerService.sendDiscount(users, discount.code,discount.precent ,discount.expirationDate);
+            }
             return res.status(201).json({message: "discount has been created!", discount});
         }
     }

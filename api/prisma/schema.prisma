@@ -19,6 +19,10 @@ model User {
   email                String                 @unique @db.VarChar(100)
   role                 Role                   @default(USER)
   isVerified           Boolean                @default(false)
+  city                 String                 @db.VarChar(100)
+  buildingNumber       Int    @db.Integer
+  homeNumber           Int?    @db.Integer 
+  street               String  @db.VarChar(100)
   VerifyRequest        VerifyRequest?
   RefreshToken         RefreshToken[]
   ResetPasswordRequest ResetPasswordRequest[]
@@ -92,7 +96,8 @@ model Transaction {
   surname           String? @db.VarChar(100)
   phoneNumber       String? @db.Char(9)
   city              String? @db.VarChar(100)
-  streetNumber      Int?     @db.Integer
+  buildingNumber    Int?    @db.Integer
+  homeNumber        Int?     @db.Integer
   street            String?  @db.VarChar(100)
   email             String?   @db.VarChar(100)
 }

@@ -24,6 +24,26 @@
         "password": {
             "type": "string",
             "pattern": "^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$ %^&*-]).{8,100}$"
+        },
+        "street":{
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 200
+        },
+        "buildingNumber":{
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 10000
+        },
+        "homeNumber":{
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 1000
+        },
+        "city":{
+            "type": "string",
+            "minLength": 2,
+            "maxLength": 100
         }
     },
     "required": [
@@ -31,7 +51,10 @@
         "name",
         "surname",
         "phoneNumber",
-        "password"
+        "password",
+        "city",
+        "buildingNumber",
+        "street"
     ],
     "additionalProperties": false
 }
