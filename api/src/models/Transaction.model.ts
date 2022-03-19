@@ -17,48 +17,50 @@ class Transaction extends Model{
     }
     public async create(){
         const prisma = Transaction.getPrisma();
-        const cart = await Cart.getItems(this.cartId);
-        if(cart?.items.length == 0){
-            throw new ApiErrorException("At least one item in cart required", 400);
-        }
-        if(this.discountCode){
-            const discount = await Discount.getDiscountByCode(this.discountCode);
-            if(!Discount.isValid(discount?.id as string)){
-                throw new ApiErrorException("This discount is expired", 404);
+        if(await Cart.isOwner(this.userId, this.cartId)){
+            const cart = await Cart.getItems(this.cartId);
+            if(cart?.items.length == 0){
+                throw new ApiErrorException("At least one item in cart required", 400);
             }
-            const overallPrice = await Cart.getOverallPrice(this.cartId) as Decimal;
-            const newPrice = overallPrice.mul(1-(await Discount.getDiscountPrecent(discount?.id as string)/100)).sub(overallPrice).abs()
-            await Cart.updateOverallPrice(newPrice.mul(-1), this.cartId)
-            const transaction = await prisma.transaction.create({data:{
-                cartId: this.cartId,
-                userId: this.userId,
-                appliedDiscountId: discount?.id
-            }, select: {
-                id: true,
-                cartId: true,
-                appliedDiscount:{
-                    select:{
-                        code: true,
-                        precent: true
-                    }
-                },
-                cart:{
-                    select:{
-                        overallPrice: true,
-                        items:{
-                            select:{
-                                cartItem: {
-                                    select:{
-                                        quantity: true,
-                                        product:{
-                                            select:{
-                                                id: true,
-                                                name: true,
-                                                price: true,
-                                                imageUrl: true,
-                                                category:{
-                                                    select: {
-                                                        name: true
+            if(this.discountCode){
+                const discount = await Discount.getDiscountByCode(this.discountCode);
+                if(!Discount.isValid(discount?.id as string)){
+                    throw new ApiErrorException("This discount is expired", 404);
+                }
+                const overallPrice = await Cart.getOverallPrice(this.cartId) as Decimal;
+                const newPrice = overallPrice.mul(1-(await Discount.getDiscountPrecent(discount?.id as string)/100)).sub(overallPrice).abs()
+                await Cart.updateOverallPrice(newPrice.mul(-1), this.cartId)
+                const transaction = await prisma.transaction.create({data:{
+                    cartId: this.cartId,
+                    userId: this.userId,
+                    appliedDiscountId: discount?.id
+                }, select: {
+                    id: true,
+                    cartId: true,
+                    appliedDiscount:{
+                        select:{
+                            code: true,
+                            precent: true
+                        }
+                    },
+                    cart:{
+                        select:{
+                            overallPrice: true,
+                            items:{
+                                select:{
+                                    cartItem: {
+                                        select:{
+                                            quantity: true,
+                                            product:{
+                                                select:{
+                                                    id: true,
+                                                    name: true,
+                                                    price: true,
+                                                    imageUrl: true,
+                                                    category:{
+                                                        select: {
+                                                            name: true
+                                                        }
                                                     }
                                                 }
                                             }
@@ -68,33 +70,33 @@ class Transaction extends Model{
                             }
                         }
                     }
-                }
-            }}).catch(err => { throw PrismaException.createException(err,"Transaction") })
-            return transaction;
-        }else{
-            const transaction = await prisma.transaction.create({data:{
-                cartId: this.cartId,
-                userId: this.userId,
-            },select: {
-                id: true,
-                cartId: true,
-                cart:{
-                    select:{
-                        overallPrice: true,
-                        items:{
-                            select:{
-                                cartItem: {
-                                    select:{
-                                        quantity: true,
-                                        product:{
-                                            select:{
-                                                id: true,
-                                                name: true,
-                                                price: true,
-                                                imageUrl: true,
-                                                category:{
-                                                    select: {
-                                                        name: true
+                }}).catch(err => { throw PrismaException.createException(err,"Transaction") })
+                return transaction;
+            }else{
+                const transaction = await prisma.transaction.create({data:{
+                    cartId: this.cartId,
+                    userId: this.userId,
+                },select: {
+                    id: true,
+                    cartId: true,
+                    cart:{
+                        select:{
+                            overallPrice: true,
+                            items:{
+                                select:{
+                                    cartItem: {
+                                        select:{
+                                            quantity: true,
+                                            product:{
+                                                select:{
+                                                    id: true,
+                                                    name: true,
+                                                    price: true,
+                                                    imageUrl: true,
+                                                    category:{
+                                                        select: {
+                                                            name: true
+                                                        }
                                                     }
                                                 }
                                             }
@@ -104,11 +106,14 @@ class Transaction extends Model{
                             }
                         }
                     }
-                }
-            }}).catch(err => { throw PrismaException.createException(err,"Transaction") })
-            return transaction;
+                }}).catch(err => { throw PrismaException.createException(err,"Transaction") })
+                return transaction;
+            }
+        } else{
+            throw new ApiErrorException("You can't create transaction with not yours cart")
         }
     }
+    
     public static async show(id: string){
         const prisma = Transaction.getPrisma();
         const transaction = await prisma.transaction.findUnique({where: {id},
@@ -147,6 +152,54 @@ class Transaction extends Model{
         })
         .catch(err => { throw PrismaException.createException(err,"Transaction") });
         return transaction;
+    }
+    public static async isOwner(userId: string, id: string){
+        const prisma = Transaction.getPrisma();
+        const transaction = await prisma.transaction.findUnique({where: {id}, select: {userId: true}})
+        .catch(err => { throw PrismaException.createException(err,"Transaction") });
+        if(transaction?.userId == userId){
+            return true;
+        }else{
+            return false;
+        }
+    }
+    public static async fetchAll(userId: string){
+        const prisma = Transaction.getPrisma();
+        const transactions = await prisma.transaction.findMany({where: {userId},
+            select: {
+                id: true,
+                cartId: true,
+                appliedDiscount: true,
+                cart:{
+                    select:{
+                        overallPrice: true,
+                        items:{
+                            select:{
+                                cartItem: {
+                                    select:{
+                                        quantity: true,
+                                        product:{
+                                            select:{
+                                                id: true,
+                                                name: true,
+                                                price: true,
+                                                imageUrl: true,
+                                                category:{
+                                                    select: {
+                                                        name: true
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }).catch(err => { throw PrismaException.createException(err,"Transaction") });
+        return transactions;
     }
 }
 
