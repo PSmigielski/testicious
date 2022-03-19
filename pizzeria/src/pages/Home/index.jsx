@@ -14,6 +14,13 @@ import icon6 from "../../assets/mini_icon_6.svg"
 import icon7 from "../../assets/mini_icon_7.svg"
 
 const Home = () => {
+
+    function getRandomIntInclusive(min, max){
+        min = Math.ceil(min);
+        max = Math.floor(max);
+        return Math.floor(Math.random() * (max - min + 1)) + min;
+    }
+
     let [position,setPosition] = useState(0);
     const particle1 = useRef();
     const particle2 = useRef();
@@ -49,13 +56,13 @@ const Home = () => {
         }, 1000);
     }
     useEffect(()=>{
-       slide(particle1,0.90)
-       slide(particle2,0.80)
-       slide(particle3,0.70)
-       slide(particle4,0.60)
-       slide(particle5,0.50)
-       slide(particle6,0.40)
-       slide(particle7,0.30)
+       slide(particle1,0.91)
+       slide(particle2,0.82)
+       slide(particle3,0.73)
+       slide(particle4,0.64)
+       slide(particle5,0.55)
+       slide(particle6,0.46)
+       slide(particle7,0.37)
     }, [position, slide]);
 
     return (
