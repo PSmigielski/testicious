@@ -109,6 +109,45 @@ class Transaction extends Model{
             return transaction;
         }
     }
+    public static async show(id: string){
+        const prisma = Transaction.getPrisma();
+        const transaction = await prisma.transaction.findUnique({where: {id},
+            select: {
+                id: true,
+                cartId: true,
+                appliedDiscount: true,
+                cart:{
+                    select:{
+                        overallPrice: true,
+                        items:{
+                            select:{
+                                cartItem: {
+                                    select:{
+                                        quantity: true,
+                                        product:{
+                                            select:{
+                                                id: true,
+                                                name: true,
+                                                price: true,
+                                                imageUrl: true,
+                                                category:{
+                                                    select: {
+                                                        name: true
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        })
+        .catch(err => { throw PrismaException.createException(err,"Transaction") });
+        return transaction;
+    }
 }
 
 export default Transaction
