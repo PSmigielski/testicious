@@ -39,8 +39,8 @@ const Home = () => {
     }
     useEffect(()=>{
         const setStartPos = (particleRef) => {
-            particleRef.current.style.setProperty("top", `-${getRandomIntInclusive(200,400)}px`)
-            particleRef.current.style.setProperty("left", `${getRandomIntInclusive(200,400)}px`)
+            particleRef.current.style.setProperty("top", `-${getRandomIntInclusive(50,100)}px`)
+            particleRef.current.style.setProperty("left", `${getRandomIntInclusive(50,200)}px`)
         }
         const slide = (particle, xMultiplier, mainPosition) => {
             particle.current.style.setProperty('--x',`${window.innerWidth*xMultiplier}px`);
@@ -57,7 +57,7 @@ const Home = () => {
                         particle.current.style.setProperty('--y',`${window.innerHeight+50}px`);
                     }
                 }
-            }, 1000);
+            }, 1500);
         }
         setStartPos(particle1)
         setStartPos(particle2)
