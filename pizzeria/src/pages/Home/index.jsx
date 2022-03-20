@@ -1,4 +1,4 @@
-import React, {useEffect, useRef, useState} from "react";
+import React, { useEffect, useRef } from "react";
 
 import PizzaSlice from "../../components/atoms/PizzaSlice";
 import PepperPic from "../../components/atoms/PepperPic";
@@ -21,7 +21,6 @@ const Home = () => {
         return Math.floor(Math.random() * (max - min + 1)) + min;
     }
 
-    let [position,setPosition] = useState(0);
     const particle1 = useRef();
     const particle2 = useRef();
     const particle3 = useRef();
@@ -38,32 +37,43 @@ const Home = () => {
             rect.right <= (window.innerWidth || document.documentElement.clientWidth)
         );
     }
-    const slide = (particle, xMultipler, mainPosition) => {
-        particle.current.style.setProperty('--x',`${window.innerWidth*xMultipler}px`);
-        particle.current.style.setProperty('--y',`${window.innerHeight+50}px`);
-        particle.current.style.paddingLeft = `${xMultipler}px`
-        setInterval(() => {
-            if(isInViewport(particle.current) == false){
-                if(particle.current.style.getPropertyValue("--x") == `${window.innerWidth*xMultipler}px`){
-                    particle.current.style.setProperty('--x',`-${mainPosition}px`);
-                    particle.current.style.setProperty('--y',`-${mainPosition}px`);
-                }else{
-                    particle.current.style.setProperty('--x',`${window.innerWidth*xMultipler}px`);
-                    particle.current.style.setProperty('padding',`${xMultipler*10}px`)
-                    particle.current.style.setProperty('--y',`${window.innerHeight+50}px`);
-                }
-            }
-        }, 1000);
-    }
     useEffect(()=>{
-       slide(particle1,0.91,getRandomIntInclusive(50,200))
-       slide(particle2,0.82,getRandomIntInclusive(50,200))
-       slide(particle3,0.73,getRandomIntInclusive(50,200))
-       slide(particle4,0.64,getRandomIntInclusive(50,200))
-       slide(particle5,0.55,getRandomIntInclusive(50,200))
-       slide(particle6,0.46,getRandomIntInclusive(50,200))
-       slide(particle7,0.37,getRandomIntInclusive(50,200))
-    }, [position, slide]);
+        const setStartPos = (particleRef) => {
+            particleRef.current.style.setProperty("top", `-${getRandomIntInclusive(200,400)}px`)
+            particleRef.current.style.setProperty("left", `${getRandomIntInclusive(200,400)}px`)
+        }
+        const slide = (particle, xMultiplier, mainPosition) => {
+            particle.current.style.setProperty('--x',`${window.innerWidth*xMultiplier}px`);
+            particle.current.style.setProperty('--y',`${window.innerHeight+50}px`);
+            particle.current.style.paddingLeft = `${xMultiplier}px`
+            setInterval(() => {
+                if(isInViewport(particle.current) === false){
+                    if(particle.current.style.getPropertyValue("--x") === `${window.innerWidth*xMultiplier}px`){
+                        particle.current.style.setProperty('--x',`-${mainPosition}px`);
+                        particle.current.style.setProperty('--y',`-${mainPosition}px`);
+                    }else{
+                        particle.current.style.setProperty('--x',`${window.innerWidth*xMultiplier}px`);
+                        particle.current.style.setProperty('padding',`${xMultiplier*10}px`)
+                        particle.current.style.setProperty('--y',`${window.innerHeight+50}px`);
+                    }
+                }
+            }, 1000);
+        }
+        setStartPos(particle1)
+        setStartPos(particle2)
+        setStartPos(particle3)
+        setStartPos(particle4)
+        setStartPos(particle5)
+        setStartPos(particle6)
+        setStartPos(particle7)
+        slide(particle1,0.91,getRandomIntInclusive(50,200))
+        slide(particle2,0.82,getRandomIntInclusive(50,200))
+        slide(particle3,0.73,getRandomIntInclusive(50,200))
+        slide(particle4,0.64,getRandomIntInclusive(50,200))
+        slide(particle5,0.55,getRandomIntInclusive(50,200))
+        slide(particle6,0.46,getRandomIntInclusive(50,200))
+        slide(particle7,0.37,getRandomIntInclusive(50,200))
+    }, []);
 
     return (
         <div className="homeWrapper">
