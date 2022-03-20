@@ -77,7 +77,7 @@ class Cart extends Model{
         .catch(err => { throw PrismaException.createException(err,"Cart") });
         return cart?.isActive;
     }
-    public static async archivise(id: string){
+    public static async archive(id: string){
         const prisma = Cart.getPrisma();
         const updatedCart = await prisma.cart.update({where: {id}, data: {isActive:false}})
         .catch(err => { throw PrismaException.createException(err,"Cart") });

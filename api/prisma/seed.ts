@@ -1,4 +1,5 @@
 import { PrismaClient } from '@prisma/client'
+import Cart from "../src/models/Cart.model"
 const prisma = new PrismaClient()
 
 async function main() {
@@ -16,7 +17,8 @@ async function main() {
             buildingNumber: 123,
             city: "Radom"
         }
-    })
+    });
+    const cart = await new Cart(admin.id).create()
 }
 
 main()

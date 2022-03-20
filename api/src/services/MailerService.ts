@@ -1,6 +1,7 @@
 import { PrismaClient } from ".prisma/client";
 import nodemailer from "nodemailer";
 import IMailContent from "../types/IMailContent";
+import ITransaction from "../types/ITransaction";
 class MailerService {
     public static async sendMail(mailContent: IMailContent) {
         const prisma: PrismaClient = new PrismaClient();
@@ -40,9 +41,29 @@ class MailerService {
         MailerService.sendMail({
             from: "Pepper Pizza",
             to: emailList,
-            subject: "Kod promcyjny",
+            subject: "Kod promocyjny",
             html: `<h1>Cześć</h1>
-            <p>Własnie dodaliśmy nowy kod promocyjny: ${code} na -${precent}% na wszystkie produkty, ważny do ${day}.${month}.${year}</p>
+            <p>Właśnie dodaliśmy nowy kod promocyjny: ${code} na -${precent}% na wszystkie produkty, ważny do ${day}.${month}.${year}</p>
+            <br><p> Pozdro! </p>`
+        })
+    }
+    public static sendTransactionConfirmation(data: ITransaction, email: string){
+        const formatter = new Intl.NumberFormat('pl-PL', {
+            style: 'currency',
+            currency: 'PLN',
+          });
+        const formattedItems = data.cart.items.map(el => {
+            const price = formatter.format(el.cartItem.product.price.toNumber()) 
+            return `<li>${el.cartItem.product.category.name} ${el.cartItem.product.name} sztuk: ${el.cartItem.quantity} cena(szt): ${price} </li>`
+        });
+        MailerService.sendMail({
+            from: "Pepper Pizza",
+            to: email,
+            subject: `Zamówienie ${data.id}`,
+            html: `<h1>Cześć</h1>
+            <p>Właśnie złożyłeś zamówinie na:<p>
+            <ul>${formattedItems}</ul>
+            <h3>Cena całkowita ${formatter.format(data.cart.overallPrice.toNumber())}</h3>
             <br><p> Pozdro! </p>`
         })
     }

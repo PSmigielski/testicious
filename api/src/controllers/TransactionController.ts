@@ -2,15 +2,21 @@ import { NextFunction, Request, Response } from "express";
 import ApiErrorException from "../exceptions/ApiErrorException";
 import Cart from "../models/Cart.model";
 import Transaction from "../models/Transaction.model";
+import User from "../models/User.model";
+import MailerService from "../services/MailerService";
 
-class TransactionConroller{
+class TransactionController{
     public async create(req: Request, res: Response, next: NextFunction){
         const {cartId} = req.params;
         const userId = req.user?.id;
         const discountCode = req.query.code as string | undefined;
         const transaction = await new Transaction(cartId,userId,discountCode).create().catch(next);
         if(transaction){
-            await Cart.archivise(transaction.cartId).catch(next)
+            await Cart.archive(transaction.cartId).catch(next)
+            const user = await User.getUserById(userId).catch(next)
+            if(user){
+                MailerService.sendTransactionConfirmation(transaction, user.email);
+            }
             const cart = await new Cart(userId).create().catch(next);
             res.status(201).json({message: "Transaction has been completed!", transaction, cart})
         }
@@ -35,4 +41,4 @@ class TransactionConroller{
     }
 }
 
-export default TransactionConroller;
+export default TransactionController;
