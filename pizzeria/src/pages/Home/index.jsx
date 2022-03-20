@@ -56,7 +56,7 @@ const Home = () => {
         }, 1000);
     }
     useEffect(()=>{
-       slide(particle1,0.91,300)
+       slide(particle1,0.91,getRandomIntInclusive(50,200))
        slide(particle2,0.82,getRandomIntInclusive(50,200))
        slide(particle3,0.73,getRandomIntInclusive(50,200))
        slide(particle4,0.64,getRandomIntInclusive(50,200))
