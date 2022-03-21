@@ -4,7 +4,7 @@ import Logo from "../../atoms/Logo";
 import MenuLinks from "../../molecules/MenuLinks";
 import "./index.css";
 
-const Menu = () => {
+const Navbar = () => {
     return (
         <nav className="menuWrapper">
           <Logo />
@@ -14,4 +14,4 @@ const Menu = () => {
     )
 }
 
-export default Menu;
+export default Navbar;
