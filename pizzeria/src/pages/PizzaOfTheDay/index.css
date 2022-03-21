@@ -1,0 +1,55 @@
+.wrapper{
+    width: 100%;
+    height: 90%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+
+    font-size: 2.3rem;
+    color: #ffffff;
+    padding-left: 30px;
+    padding-top: 110px;
+}
+.red{
+    color:#DD321E;
+}
+.one{
+    border-bottom: 3px solid var(--border);
+    width: 40%;
+}
+.two{
+    border-bottom: 3px solid var(--border);
+    width: 40%;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+.three{
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+.four{
+    font-size: 1rem;
+}
+.igrt{
+    padding-top: 10px;
+    padding-bottom: 10px;
+    width: 40%;
+    font-size: 1rem;
+}
+
+.pizza{
+    width: 550px;
+    height: auto;
+    border: 3px solid var(--border);
+    border-left: none;
+    border-right: none;
+}
+/* .log{
+    position: relative;
+    top: 5%;
+    border-bottom: 3px solid var(--border);
+    width: 50%;
+    height: 140px;
+} */
