@@ -15,15 +15,7 @@ interface ITransactionWithoutUserData{
         overallPrice: number, 
         items: Array<{
             quantity: number, 
-            product: {
-                id: string,
-                name: string,
-                price: number,
-                imageUrl: string,
-                category: {
-                    name: string
-                }
-            }
+            product: string
         }>
     }
 } 

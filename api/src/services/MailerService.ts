@@ -22,7 +22,7 @@ class MailerService {
             html: `<h1>Cześć</h1>
             <p>Żeby zweryfikować swoje konto kliknij w ten  <a href="${process.env.HOSTNAME}:${process.env.PORT}/v1/api/auth/verify/${id}" >link</a></p>
             <br><p> Pozdro! </p>`,
-        });
+        })
     }
     public static sendResetRequest(email:string, id: string){
         MailerService.sendMail({

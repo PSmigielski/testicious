@@ -6,6 +6,9 @@ import Transaction from "../models/Transaction.model";
 import User from "../models/User.model";
 import MailerService from "../services/MailerService";
 import ITransactionWithoutUserData from "../types/ITransactionWithoutUser";
+import CartItem from "../models/CartItem.model";
+import ICartItem from "../types/ICartItem";
+import { Decimal } from "@prisma/client/runtime";
 
 class TransactionController{
     public async create(req: Request, res: Response, next: NextFunction){
@@ -26,12 +29,21 @@ class TransactionController{
     public async createWithoutUser(req: Request, res: Response, next: NextFunction){
         const data: ITransactionWithoutUserData = req.body
         const cart = await Cart.createWithoutUser(uuidv4()).catch(next)
-        //add mockedItems to cart
         if(cart){
+            data.cart.items.forEach(item => {
+                const itemData: ICartItem = {
+                    cartId: cart.id,
+                    productId: item.product,
+                    quantity: item.quantity
+                };
+                const cartItem = new CartItem(itemData).create().catch(next);
+            })
+            await Cart.updateOverallPrice(new Decimal(data.cart.overallPrice), cart.id);
             const transaction = await Transaction.createWithoutUser(data, cart.id).catch(next);
             if(transaction){
                 MailerService.sendTransactionConfirmation(transaction, transaction.email as string);
-                return res.status(200).json({message: "Transaction has been completed!"})
+                await Cart.archive(cart.id);
+                return res.status(200).json({message: "Transaction has been completed!", transaction})
             }
         }
 
