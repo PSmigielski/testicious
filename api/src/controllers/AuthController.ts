@@ -9,13 +9,13 @@ import EditData from "../types/EditData";
 
 class AuthController {
     public async register(req: Request, res: Response, next: NextFunction) {
-        const { email, name, surname, phoneNumber, password } = req.body;
-        const data = await new User(email, name, surname, phoneNumber, password).createUser().catch(next);
-        if (data) {
-            await new Cart(data.id).create().catch(next);
-            const request = await VerifyRequest.create(data.id).catch(next)
+        const data = req.body;
+        const user = await new User(data).createUser().catch(next);
+        if (user) {
+            await new Cart(user.id).create().catch(next);
+            const request = await VerifyRequest.create(user.id).catch(next)
             if (request) {
-                MailerService.sendVerificationMail(email, request.id);
+                MailerService.sendVerificationMail(user.email, request.id);
                 return res.json({message: "You are now registered! Check your email to verify your account"});
             }
         }

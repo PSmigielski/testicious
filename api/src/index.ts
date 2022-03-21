@@ -11,6 +11,9 @@ import cartItemRouter from "./routers/CartItem.router";
 import toppingRouter from "./routers/Topping.router";
 import categoryRouter from "./routers/Category.router";
 import uploadRouter from "./routers/Upload.router";
+import discountRouter from "./routers/Discount.router";
+import transactionRouter from "./routers/Transaction.router";
+
 
 dotenv.config();
 const app: Express = express();
@@ -25,6 +28,8 @@ app.use("/v1/api/cartItems", cartItemRouter);
 app.use("/v1/api/toppings", toppingRouter);
 app.use("/v1/api/categories", categoryRouter);
 app.use("/v1/api/upload", uploadRouter);
+app.use("/v1/api/discounts", discountRouter);
+app.use("/v1/api/transactions", transactionRouter);
 app.use(prismaErrorHandler);
 app.use(errorHandler);
 app.listen(process.env.PORT, () => console.log(`api is running at ${process.env.HOSTNAME}:${process.env.PORT}`));

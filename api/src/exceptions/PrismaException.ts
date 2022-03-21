@@ -61,6 +61,7 @@ class PrismaException extends Error{
         return errorMessage;
     }
     public static createException(err: Error, entityName:string){
+        console.log(err);
         let errCode:string | undefined = undefined;
         let errMeta: PrismaMeta| undefined = undefined;
         if(err instanceof PrismaClientKnownRequestError){
