@@ -30,6 +30,24 @@ services:
       - clam:/var/lib/clamav
     ports:
       - '3310:3310'
+  migration:
+    image: pepperpizza/api:1.0
+    command: "npm run migrate"
+    links:
+      - postgres:postgres
+    depends_on:
+      postgres:
+        condition: service_healthy
+  api:
+    env_file:
+      - ./.env
+    image: pepperpizza/api:1.0
+    command: "npm start"
+    ports:
+      - "${PORT}:${PORT}"
+    depends_on:
+      - postgres
+      - migration
 volumes:
   postgres: null
   clam:
