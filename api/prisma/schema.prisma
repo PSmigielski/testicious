@@ -46,12 +46,13 @@ model Category {
 
 model Cart {
   id       String    @id @default(uuid()) @db.Uuid
-  user     User      @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId   String    @db.Uuid
+  user     User?      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId   String?    @db.Uuid
   items    CartItemsInCart[]
   isActive Boolean @default(true) @db.Boolean
   overallPrice  Decimal @db.Money @default(0)
   transaction  Transaction?
+  guestId    String?  @db.Uuid
 }
 model CartItemsInCart{
   cartItem    CartItem @relation(fields: [cartItemId], references: [id], onDelete: Cascade)
@@ -87,7 +88,7 @@ model Discount {
 model Transaction {
   id      String @id @default(uuid()) @db.Uuid
   user    User?   @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId  String @db.Uuid
+  userId  String? @db.Uuid
   cart    Cart   @relation(fields: [cartId], references: [id], onDelete: Cascade)
   cartId  String @db.Uuid
   appliedDiscount Discount? @relation(fields: [appliedDiscountId], references: [id], onDelete: Cascade)

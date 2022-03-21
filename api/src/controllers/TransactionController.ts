@@ -1,9 +1,11 @@
 import { NextFunction, Request, Response } from "express";
 import ApiErrorException from "../exceptions/ApiErrorException";
 import Cart from "../models/Cart.model";
+import { v4 as uuidv4 } from 'uuid';
 import Transaction from "../models/Transaction.model";
 import User from "../models/User.model";
 import MailerService from "../services/MailerService";
+import ITransactionWithoutUserData from "../types/ITransactionWithoutUser";
 
 class TransactionController{
     public async create(req: Request, res: Response, next: NextFunction){
@@ -20,6 +22,19 @@ class TransactionController{
             const cart = await new Cart(userId).create().catch(next);
             res.status(201).json({message: "Transaction has been completed!", transaction, cart})
         }
+    }
+    public async createWithoutUser(req: Request, res: Response, next: NextFunction){
+        const data: ITransactionWithoutUserData = req.body
+        const cart = await Cart.createWithoutUser(uuidv4()).catch(next)
+        //add mockedItems to cart
+        if(cart){
+            const transaction = await Transaction.createWithoutUser(data, cart.id).catch(next);
+            if(transaction){
+                MailerService.sendTransactionConfirmation(transaction, transaction.email as string);
+                return res.status(200).json({message: "Transaction has been completed!"})
+            }
+        }
+
     }
     public async show(req: Request, res: Response, next: NextFunction){
         const { transactionId } = req.params;

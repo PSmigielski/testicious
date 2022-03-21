@@ -1,10 +1,10 @@
 import { Decimal } from "@prisma/client/runtime";
 import ApiErrorException from "../exceptions/ApiErrorException";
 import PrismaException from "../exceptions/PrismaException";
+import ITransactionWithoutUserData from "../types/ITransactionWithoutUser";
 import Cart from "./Cart.model";
 import Discount from "./Discount.model";
 import Model from "./Model";
-
 class Transaction extends Model{
     private cartId: string;
     private userId: string;
@@ -113,7 +113,59 @@ class Transaction extends Model{
             throw new ApiErrorException("You can't create transaction with not yours cart")
         }
     }
-    
+    public static async createWithoutUser(data: ITransactionWithoutUserData, cartId: string){
+        const prisma = Transaction.getPrisma();
+        const transaction = await prisma.transaction.create({data: {
+            city: data.clientData.city,
+            buildingNumber: data.clientData.buildingNumber,
+            homeNumber: data.clientData.homeNumber,
+            email: data.clientData.email,
+            name: data.clientData.name,
+            surname: data.clientData.surname,
+            street: data.clientData.phoneNumber,
+            phoneNumber: data.clientData.phoneNumber,
+            cartId
+        },select: {
+            id: true,
+            cartId: true,
+            appliedDiscount: true,
+            email: true,
+            street: true,
+            homeNumber: true,
+            buildingNumber: true,
+            city: true,
+            phoneNumber: true,
+            name: true,
+            surname: true,
+            cart:{
+                select:{
+                    overallPrice: true,
+                    items:{
+                        select:{
+                            cartItem: {
+                                select:{
+                                    quantity: true,
+                                    product:{
+                                        select:{
+                                            id: true,
+                                            name: true,
+                                            price: true,
+                                            imageUrl: true,
+                                            category:{
+                                                select: {
+                                                    name: true
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }}})
+        return transaction
+    }
     public static async show(id: string){
         const prisma = Transaction.getPrisma();
         const transaction = await prisma.transaction.findUnique({where: {id},

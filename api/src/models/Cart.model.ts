@@ -12,9 +12,14 @@ class Cart extends Model{
         const prisma = Cart.getPrisma();
         const cart = await prisma.cart.create({
             data:{userId: this.userId}
-        }).catch(err => { 
-            console.log(err);
-            throw PrismaException.createException(err,"Cart") });
+        }).catch(err => { throw PrismaException.createException(err,"Cart") });
+        return cart;
+    }
+    public static async createWithoutUser(guestId: string){
+        const prisma = Cart.getPrisma();
+        const cart = await prisma.cart.create({
+            data: { guestId}
+        }).catch(err => { throw PrismaException.createException(err,"Cart") });
         return cart;
     }
     public static async isOwner(userId: string, cartId: string){
