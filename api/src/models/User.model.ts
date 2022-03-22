@@ -67,6 +67,7 @@ class User extends Model {
         const refreshTokenData = jwt.decode(refreshToken.token);
         if (typeof tokenData != "string" && typeof refreshTokenData != "string") {
             return {
+                user,
                 jwt: { token, exp: tokenData?.exp },
                 refreshToken: { token: refreshToken.token, exp: refreshTokenData?.exp }
             }

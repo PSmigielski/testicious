@@ -38,7 +38,11 @@ class AuthController {
             return res
                 .cookie("BEARER", result.jwt.token, { httpOnly: true, expires: tokenExp })
                 .cookie("REFRESH_TOKEN", result.refreshToken, { httpOnly: true, expires: refreshTokenExp })
-                .status(200).json({ message: "user logged in" });
+                .status(200).json({ message: "user logged in", user: {
+                    id: result.user.id,
+                    email: result.user.email,
+                    role: result.user.role
+                }});
         }
     }
     public async logout(req: Request, res: Response, next: NextFunction) {
