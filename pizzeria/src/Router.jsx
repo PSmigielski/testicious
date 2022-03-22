@@ -4,6 +4,7 @@ import './main.css';
 import AppShell from "./pages/AppShell";
 import Home from "./pages/Home";
 import MenuNav from "./pages/Menu";
+import Contact from "./pages/Contact";
 
 const Router = () => {
 
@@ -13,6 +14,7 @@ const Router = () => {
       <Route path="/" element={<AppShell />}>
         <Route index element={<Home />}/>
         <Route path="/menu" element={<MenuNav />}/>
+        <Route path="/contact" element={<Contact />}/>
       </Route>
       <Route path="*" element={<div>404</div>}/>
     </Routes>
