@@ -5,7 +5,6 @@ import AppShell from "./pages/AppShell";
 import Home from "./pages/Home";
 import MenuNav from "./pages/Menu";
 import PizzaOfTheDay from "./pages/PizzaOfTheDay";
-
 const Router = () => {
 
   return(
