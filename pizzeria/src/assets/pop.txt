@@ -1,0 +1,79 @@
+ body{
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-family: "Maven Pro";
+        }
+
+        .popup{
+            background: linear-gradient(223.14deg, rgba(0, 0, 0, 0.2) 0%, rgba(0, 0, 0, 0.114583) 32.29%, rgba(221, 50, 30, 0.2) 97.46%, rgba(0, 0, 0, 0) 100%), #19222B;
+            border-radius: 15px;
+            width: 635px;
+            height: 655px;
+        }
+        p{
+            color: #fff;
+        }
+        .top{
+            font-size: 2rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            height: 80px;
+        }
+        .steps{
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            width: 100%;
+            height: 60px;
+            border-top:3px solid grey;
+            border-bottom:3px solid grey;
+        }
+        .step{
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100%;
+            width: 100%;
+            font-size: 1rem;
+        }
+        .step:nth-child(2){
+            border-left: 3px solid grey;
+            border-right: 3px solid grey;
+        }
+        input{
+            background-color: transparent;
+            border:none;
+            border-bottom: 3px solid grey;
+            width: 300px;
+        }
+        .data{
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            justify-content: space-around;
+            height: 70%;
+            padding-left: 30px;
+        }
+    </style>
+</head>
+<body>
+   <div class="popup">
+       <div class="top"><p>Złóż zamówienie</p></div>
+       <div class="steps">
+           <div class="step"><p>Dane</p></div>
+           <div class="step"><p>Adres</p></div>
+           <div class="step"><p>Płatność</p></div>
+       </div>
+       <div class="data">
+            <input type="text" placeholder="Imię" required>
+            <input type="text" placeholder="Nazwisko" required>
+            <input type="text" placeholder="Numer telefonu" required>
+       </div>
+   </div>
