@@ -16,13 +16,21 @@ class User extends Model {
     private phoneNumber: string;
     private plainPassword: string;
     private email: string;
-    constructor(email: string, name: string,surname:string,phoneNumber: string, plainPassword: string) {
+    private city: string;
+    private homeNumber: number | undefined;
+    private buildingNumber: number;
+    private street: string;
+    constructor({ email, name, surname, phoneNumber, password, street, homeNumber,  buildingNumber, city}: IUser ) {
         super();
         this.email = email;
         this.name = name;
         this.surname = surname;
         this.phoneNumber = phoneNumber;
-        this.plainPassword = plainPassword;
+        this.plainPassword = password;
+        this.city = city,
+        this.street = street,
+        this.homeNumber = homeNumber ? homeNumber : undefined,
+        this.buildingNumber = buildingNumber
     }
     public async createUser() {
         const prisma = User.getPrisma();
@@ -33,7 +41,11 @@ class User extends Model {
                 name: this.name,
                 surname: this.surname,
                 phoneNumber: this.phoneNumber,
-                password: `${salt}:${scryptSync(this.plainPassword, salt, 64).toString("hex")}`
+                password: `${salt}:${scryptSync(this.plainPassword, salt, 64).toString("hex")}`,
+                street: this.street,
+                buildingNumber: this.buildingNumber,
+                city: this.city,
+                homeNumber: this.homeNumber
             }
         }).catch(err => { throw PrismaException.createException(err,"User") });     
         return user;
@@ -55,6 +67,7 @@ class User extends Model {
         const refreshTokenData = jwt.decode(refreshToken.token);
         if (typeof tokenData != "string" && typeof refreshTokenData != "string") {
             return {
+                user,
                 jwt: { token, exp: tokenData?.exp },
                 refreshToken: { token: refreshToken.token, exp: refreshTokenData?.exp }
             }
@@ -158,7 +171,18 @@ class User extends Model {
         const prisma = User.getPrisma();
         return await prisma.user.update({
             data,
-            where: { id: userId }
+            where: { id: userId },
+            select: {
+                id: true,
+                name: true,
+                surname: true,
+                phoneNumber: true,
+                email: true,
+                city: true,
+                street: true,
+                buildingNumber: true,
+                homeNumber: true
+            }
         }).catch(err => { throw PrismaException.createException(err,"User") });
     }
     public static async changeRole(role: Roles, userId: string){
@@ -167,6 +191,13 @@ class User extends Model {
             data: { role },
             where: { id: userId }
         }).catch(err => { throw PrismaException.createException(err,"User") });
+    }
+    public static async getUserMails(){
+        const prisma = User.getPrisma();
+        const users = await prisma.user.findMany({select: {email: true}, where: {role: "USER", isVerified: true}})
+        .catch(err => { throw PrismaException.createException(err,"User") });
+        const emails = users.map(el => el.email)
+        return emails;
     }
 }
 

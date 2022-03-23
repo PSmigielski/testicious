@@ -1,5 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import ApiErrorException from "../exceptions/ApiErrorException";
+import Cart from "../models/Cart.model";
 import ResetPasswordRequest from "../models/ResetPasswordRequest.model";
 import User from "../models/User.model";
 import VerifyRequest from "../models/VerifyRequest.model";
@@ -8,12 +9,13 @@ import EditData from "../types/EditData";
 
 class AuthController {
     public async register(req: Request, res: Response, next: NextFunction) {
-        const { email, name, surname, phoneNumber, password } = req.body;
-        const data = await new User(email, name, surname, phoneNumber, password).createUser().catch(next);
-        if (data) {
-            const request = await VerifyRequest.create(data.id).catch(next)
+        const data = req.body;
+        const user = await new User(data).createUser().catch(next);
+        if (user) {
+            await new Cart(user.id).create().catch(next);
+            const request = await VerifyRequest.create(user.id).catch(next)
             if (request) {
-                MailerService.sendVerificationMail(email, request.id);
+                MailerService.sendVerificationMail(user.email, request.id);
                 return res.json({message: "You are now registered! Check your email to verify your account"});
             }
         }
@@ -36,7 +38,11 @@ class AuthController {
             return res
                 .cookie("BEARER", result.jwt.token, { httpOnly: true, expires: tokenExp })
                 .cookie("REFRESH_TOKEN", result.refreshToken, { httpOnly: true, expires: refreshTokenExp })
-                .status(200).json({ message: "user logged in" });
+                .status(200).json({ message: "user logged in", user: {
+                    id: result.user.id,
+                    email: result.user.email,
+                    role: result.user.role
+                }});
         }
     }
     public async logout(req: Request, res: Response, next: NextFunction) {
@@ -57,7 +63,7 @@ class AuthController {
                     .status(200).json({ message: "token has been refreshed" });
             }
         } else {
-            next(new ApiErrorException("REFRESH_TOKEN cookie not found", 401))
+            return next(new ApiErrorException("REFRESH_TOKEN cookie not found", 401));
         }
     }
     public async sendResetRequest(req: Request, res: Response, next: NextFunction) {
@@ -98,7 +104,7 @@ class AuthController {
     public async changeRole(req: Request, res: Response, next: NextFunction){
         const { role } =  req.body;
         if(req.params.id == req.user?.id){
-            next(new ApiErrorException("You can't change your own role", 403));
+            return next(new ApiErrorException("You can't change your own role", 403));
         } else {
             const result = await User.changeRole(role, req.params.id).catch(next);
             if(result){

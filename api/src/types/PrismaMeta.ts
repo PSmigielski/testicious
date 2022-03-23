@@ -1,5 +1,6 @@
 interface PrismaMeta {
-    target: string[]
+    target: string[],
+    field_name?: string
 }
 
 export default PrismaMeta;

@@ -10,16 +10,11 @@
             "type": "number",
             "minimum": 0,
             "maximum": 500
-        },
-        "toppings": {
-            "type":"array",
-            "minItems": 1
         }
     },
     "required": [
         "name",
-        "price",
-        "toppings"
+        "price"
     ],
     "additionalProperties": false
 }
