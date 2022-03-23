@@ -1,6 +1,5 @@
 import React from "react";
 import PepperPic from "../../components/atoms/PepperPic";
-import Hamburger from "../../components/atoms/Hamburger";
 import "./index.css";
 import pizza from "../../assets/pizza_slice_4.svg"
 
@@ -19,7 +18,6 @@ const PizzaOfTheDay = () => {
             </div>
             <p className="four red">*cena dotyczy wyłącznie pizzy 25cm</p>
             <PepperPic />
-            <Hamburger />
         </div>
     );  
 }

@@ -2,7 +2,6 @@ import React, { useEffect, useRef } from "react";
 
 import PizzaSlice from "../../components/atoms/PizzaSlice";
 import PepperPic from "../../components/atoms/PepperPic";
-import Hamburger from "../../components/atoms/Hamburger";
 import Particle from "../../components/atoms/Particle";
 import "./index.css";
 import icon1 from "../../assets/mini_icon_1.svg"
@@ -93,7 +92,6 @@ const Home = () => {
                 <Particle image={icon7} ref={particle7}/>
             </div>
             <PepperPic />
-            <Hamburger />
         </div>
     );  
 }

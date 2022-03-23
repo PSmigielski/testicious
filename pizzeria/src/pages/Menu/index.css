@@ -1,6 +1,35 @@
-.particle{
-    --x: 0px;
-    --y: 0px;
-    transform: translate(var(--x),var(--y));
-    transition: all 3s linear;
+header>h1{
+    font-size: 2rem;
+    padding: 15px;
+    color: white;
+}
+header{
+    text-align: center;
+}
+.menuItemsWrapper{
+    height: 90%;
+    width: 100%;
+    overflow-y: scroll;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.categoryHeader{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    margin-bottom: 10px;
+}
+.items{
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    justify-items: center;
+}
+.headerDivider{
+    width: 80%;
+    color: #464E55;
+    height: 3px;
 }
