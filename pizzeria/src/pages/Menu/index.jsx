@@ -7,20 +7,20 @@ import saladPic from '../../assets/salad_logo.svg';
 const MenuNav = () => {
 
     const pizzas = [
-        {id: "1", name: 'Pizza Margherita', toppings: ['Sos pomidorowy', 'Ser Gouda'], price: '20,29 zł'},
-        {id: "2", name: 'Pizza Kurczak', toppings: ['Sos pomidorowy', 'Ser Gouda', 'Pieczarki', 'Kurczak'], price: '29,99 zł'},
-        {id: "3", name: 'Pizza Wiejska', toppings: ['Sos pomidorowy', 'Ser Gouda', 'Pieczarki', 'Kiełbasa', 'Cebula'], price: '31,29 zł'},
-        {id: "4", name: 'Pizza Kebab', toppings: ['Sos pomidorowy', 'Ser Gouda', 'Pieczarki', 'Kebab Wołowy', 'Sos Czosnkowy'], price: '30,29 zł'},
-        {id: "5", name: 'Pizza Serowa', toppings: ['Sos pomidorowy', 'Ser Gouda', 'Ser Pleśniowy', 'Ser Mozzarella'], price: '30,29 zł'},
-        {id: "6", name: 'Pizza Grecka', toppings: ['Sos pomidorowy', 'Ser Feta', 'Oliwki', 'Bazylia'], price: '30,29 zł'},
-        {id: "7", name: 'Pizza Kurczak', toppings: ['Sos pomidorowy', 'Ser Gouda', 'Pieczarki', 'Kurczak'], price: '30,29 zł'},
-        {id: "8", name: 'Pizza Kurczak', toppings: ['Sos pomidorowy', 'Ser Gouda', 'Pieczarki', 'Kurczak'], price: '30,29 zł'},
+        {id: "1", name: 'Pizza Margherita', toppings: ['Sos pomidorowy', 'Ser Gouda'], price: 20.29},
+        {id: "2", name: 'Pizza Kurczak', toppings: ['Sos pomidorowy', 'Ser Gouda', 'Pieczarki', 'Kurczak'], price: 29.9},
+        {id: "3", name: 'Pizza Wiejska', toppings: ['Sos pomidorowy', 'Ser Gouda', 'Pieczarki', 'Kiełbasa', 'Cebula'], price: 31.29},
+        {id: "4", name: 'Pizza Kebab', toppings: ['Sos pomidorowy', 'Ser Gouda', 'Pieczarki', 'Kebab Wołowy', 'Sos Czosnkowy'], price: 34.29},
+        {id: "5", name: 'Pizza Serowa', toppings: ['Sos pomidorowy', 'Ser Gouda', 'Ser Pleśniowy', 'Ser Mozzarella'], price: 30.1},
+        {id: "6", name: 'Pizza Grecka', toppings: ['Sos pomidorowy', 'Ser Feta', 'Oliwki', 'Bazylia'], price: 30.9},
+        {id: "7", name: 'Pizza Kurczak', toppings: ['Sos pomidorowy', 'Ser Gouda', 'Pieczarki', 'Kurczak'], price: 30.29},
+        {id: "8", name: 'Pizza Kurczak', toppings: ['Sos pomidorowy', 'Ser Gouda', 'Pieczarki', 'Kurczak'], price: 30.29},
     ]
     const salads = [
-        {id: "9", name: "Coleslaw", price: "13.99 zł"},
-        {id: "10", name: "Grecka", price: "13.99 zł"},
-        {id: "11", name: "Meksykańska", price: "13.99 zł"},
-        {id: "12", name: "Polska", price: "13.99 zł"}
+        {id: "9", name: "Coleslaw", price: 13.99},
+        {id: "10", name: "Grecka", price: 13.99},
+        {id: "11", name: "Meksykańska", price: 13.99},
+        {id: "12", name: "Polska", price: 13.99}
     ]
     return (
         <div className="menuItemsWrapper">

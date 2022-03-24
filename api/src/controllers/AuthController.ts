@@ -84,7 +84,7 @@ class AuthController {
         const { requestId } = req.params
         const result = await User.resetPassword(newPassword, requestId).catch(next);
         if(result){
-            return res.json({message: "Password reseted successfully"});
+            return res.json({message: "Password reset successfully"});
         }
     }
     public async editAccountData(req: Request, res: Response, next: NextFunction){

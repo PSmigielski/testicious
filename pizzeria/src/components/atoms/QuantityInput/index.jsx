@@ -8,7 +8,7 @@ const QuantityInput = ({quantity, setQuantity}) => {
         }
     }
     const decrease = () => {
-        if(quantity !== 0 ){
+        if(quantity !== 1 ){
             setQuantity(quantity-1)
         }
     }
@@ -22,8 +22,8 @@ const QuantityInput = ({quantity, setQuantity}) => {
         if(quantity>999){
             setQuantity(999)
         }
-        if(quantity<0){
-            setQuantity(0)
+        if(quantity<1){
+            setQuantity(1)
         }
     }
     return (
