@@ -1,0 +1,11 @@
+.cartItemWrapper{
+    width: 80%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-direction: row;
+}
+.cartItemImg{
+    width: 100px;
+    height: auto;
+}

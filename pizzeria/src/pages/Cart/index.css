@@ -1,0 +1,25 @@
+.cartWrapper{
+    width: 100%;
+    height: 90%;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    flex-direction: column;
+    color: white;
+}
+.cartItems{
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    width: 90%;
+}
+.cartItemPrice{
+    width: 100px;
+    text-align: center;
+}
+.cartItemQuantity{
+    width: 200px;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+}

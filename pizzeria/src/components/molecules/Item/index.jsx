@@ -1,19 +1,22 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import QuantityInput from "../../atoms/QuantityInput";
 import Notification from "../Notification";
+import { CartContext } from "../../../contexts/CartContext";
 import "./index.css";
 
 const Item = ({id ,price, pizzaPic, name, toppings}) => {
     const [open, setIsOpen] = useState(false);
     const [message, setMessage] = useState("");
+    const [quantity, setQuantity] = useState(1);
+    const cartContext = useContext(CartContext);
     const buy = (quantity) => {
         setMessage(`Kupiłeś: ${name} za ${new Intl.NumberFormat('pl-PL', { style: 'currency', currency: 'PLN' }).format(price*quantity)} w ilości ${quantity} sztuk`)
         setQuantity(1)
+        cartContext.handleAddProp({id, price, pizzaPic, name, toppings, quantity});
         setIsOpen(true);
     }
-    const [quantity, setQuantity] = useState(1);
     return (
-    <div className="option">
+    <div className="option" key={id}>
         <img src={pizzaPic} className="itemImg" alt="pizzaPic"/>
         <h3>{name}</h3>
         {

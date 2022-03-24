@@ -10,18 +10,18 @@ import Cart from "./pages/Cart";
 const Router = () => {
 
   return(
-    <BrowserRouter>
-    <Routes>
-      <Route path="/" element={<AppShell />}>
-        <Route index element={<Home />}/>
-        <Route path="/menu" element={<MenuNav />}/>
-        <Route path="/contact" element={<Contact />}/>
-        <Route path="/pizza-of-the-day" element={<PizzaOfTheDay />}/>
-        <Route path="/cart" element={<Cart />}/>
-      </Route>
-      <Route path="*" element={<div>404</div>}/>
-    </Routes>
-  </BrowserRouter>
+      <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<AppShell />}>
+          <Route index element={<Home />}/>
+          <Route path="/menu" element={<MenuNav />}/>
+          <Route path="/contact" element={<Contact />}/>
+          <Route path="/pizza-of-the-day" element={<PizzaOfTheDay />}/>
+          <Route path="/cart" element={<Cart />}/>
+        </Route>
+        <Route path="*" element={<div>404</div>}/>
+      </Routes>
+    </BrowserRouter>
   )
 
 }
