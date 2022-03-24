@@ -12,13 +12,16 @@ const QuantityInput = ({quantity, setQuantity}) => {
             setQuantity(quantity-1)
         }
     }
-    const setValue = (e) =>{
+    const handleChange = (e) =>{
         if(!isNaN(e.target.value)){
             setQuantity(e.target.value)
         }
     }
     function validate(e){
-        quantity = parseInt(quantity)
+        if(quantity===""){
+            setQuantity(1);
+        }
+        quantity = parseInt(e.target.value)
         if(quantity>999){
             setQuantity(999)
         }
@@ -30,11 +33,11 @@ const QuantityInput = ({quantity, setQuantity}) => {
         <div className="quantityInputWrapper">
             <button className="quantityButton" onClick={()=>increase()}>+</button>
             <input 
-                type="number" 
-                onChange={(e)=>setValue(e)} 
-                onBlur={(e)=>{validate(e)}} 
-                min={0} 
-                max={999} 
+                type="textf" 
+                onChange={(e)=>handleChange(e)} 
+                onBlur={(e)=>validate(e)} 
+                maxLength={3}
+                minLength={1}
                 value={quantity} 
                 className="quantityButton" 
             />
