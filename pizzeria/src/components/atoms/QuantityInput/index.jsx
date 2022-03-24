@@ -33,7 +33,7 @@ const QuantityInput = ({quantity, setQuantity}) => {
         <div className="quantityInputWrapper">
             <button className="quantityButton" onClick={()=>increase()}>+</button>
             <input 
-                type="textf" 
+                type="text" 
                 onChange={(e)=>handleChange(e)} 
                 onBlur={(e)=>validate(e)} 
                 maxLength={3}

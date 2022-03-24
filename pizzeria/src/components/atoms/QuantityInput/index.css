@@ -8,6 +8,8 @@
 .quantityButton{
     width: 30%;
     height: 100%;
+    font-weight: bold;
+    color: var(--border);
 }
 .quantityDisplay{
     width: 40%;
@@ -23,4 +25,15 @@
 /* Firefox */
 input[type=number] {
   -moz-appearance: textfield;
+ 
 }
+
+input{
+  text-align: center;
+  font-weight: bold;
+  color: var(--border);
+  font-size: 1rem;
+  border-radius: 7px;
+  border-style: none;
+}
+ 
