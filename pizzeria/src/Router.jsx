@@ -6,6 +6,7 @@ import Home from "./pages/Home";
 import MenuNav from "./pages/Menu";
 import Contact from "./pages/Contact";
 import PizzaOfTheDay from "./pages/PizzaOfTheDay";
+import Cart from "./pages/Cart";
 const Router = () => {
 
   return(
@@ -16,6 +17,7 @@ const Router = () => {
         <Route path="/menu" element={<MenuNav />}/>
         <Route path="/contact" element={<Contact />}/>
         <Route path="/pizza-of-the-day" element={<PizzaOfTheDay />}/>
+        <Route path="/cart" element={<Cart />}/>
       </Route>
       <Route path="*" element={<div>404</div>}/>
     </Routes>

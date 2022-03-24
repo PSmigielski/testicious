@@ -1,5 +1,5 @@
 import React from "react";
-import Item from "../../components/atoms/Item";
+import Item from "../../components/molecules/Item";
 import "./index.css";
 import pizzaPic from '../../assets/pizza_slice_4.svg';
 import saladPic from '../../assets/salad_logo.svg';

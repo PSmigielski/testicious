@@ -17,6 +17,9 @@ class CartItemController {
             if(quantity <= 0 ||isNaN(quantity)){
                 return next(new ApiErrorException("invalid quantity format", 400));
             } 
+            if(quantity >= 1000){
+                return next(new ApiErrorException("You can't buy so many things", 403))
+            }
             const cartItem = await new CartItem({cartId, productId, quantity}).create().catch(next);
             if(cartItem){
                 const price = cartItem.product.price.mul(cartItem.quantity) as Decimal

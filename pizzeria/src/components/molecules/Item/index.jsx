@@ -1,10 +1,13 @@
-import React from "react";
+import React, { useState } from "react";
+import QuantityInput from "../../atoms/QuantityInput";
 import "./index.css";
 
 const Item = ({id ,price, pizzaPic, name, toppings}) => {
-    const buy = (id) => {
-        console.log(id)
+    const buy = (id, quantity) => {
+        console.log(id,quantity)
+        setQuantity(0)
     }
+    const [quantity, setQuantity] = useState(0);
     return (
     <div className="option">
         <img src={pizzaPic} className="itemImg" alt="pizzaPic"/>
@@ -16,7 +19,10 @@ const Item = ({id ,price, pizzaPic, name, toppings}) => {
             : ""
         }
         <p className="price">{price}</p>
-        <button className="itemButton" onClick={() => buy(id)}>Dodaj</button>
+        <div className="buttons">
+            <button className="itemButton" onClick={() => buy(id, quantity)}>Dodaj</button>
+            <QuantityInput quantity={quantity} setQuantity={setQuantity}/>
+        </div>
     </div>)
 }
 

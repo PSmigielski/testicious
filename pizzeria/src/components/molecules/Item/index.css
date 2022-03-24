@@ -23,11 +23,10 @@
     border-bottom: 1px solid #464E55;
 }
 .itemButton{
-    width: 50%;
+    width: 45%;
     height: 40px;
     font-size: 24px;
     color: var(--border);
-    margin-top: 12px;
 }
 .mainWrap{
     width:66%;
@@ -38,4 +37,10 @@
     width: 100%;
     text-align: center;
 }
-
+.buttons{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 12px;
+}
