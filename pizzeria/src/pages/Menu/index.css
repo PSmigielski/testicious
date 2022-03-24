@@ -29,7 +29,8 @@ header{
     justify-items: center;
 }
 .headerDivider{
-    width: 80%;
+    width: 90%;
     color: #464E55;
-    height: 3px;
+    border: none;
+    border-top: 3px solid var(--border);
 }

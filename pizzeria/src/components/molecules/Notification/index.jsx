@@ -11,7 +11,7 @@ const Notification = ({open,setIsOpen, message}) => {
                 <p>{message}</p>
                 <div className="notificationButtons">
                     <NavLink to="/cart" className="notificationLink"><button className="notificationButton">Do kasy</button></NavLink>
-                    <button className="notificationButton" onClick={() =>{ setIsOpen(false) }}>kontynuuj zakupy</button>
+                    <button className="notificationButton" onClick={() =>{ setIsOpen(false) }}>Kontynuuj zakupy</button>
                 </div>
             </div>
         </div>
