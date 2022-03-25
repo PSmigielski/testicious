@@ -25,8 +25,6 @@ function reducer(prevState, action) {
             if(itemIdx !== -1){
                 arr2.splice(itemIdx,1);
             }
-            console.log(arr2)
-            console.log("dupa")
             return arr2;
         case "update":
             let arr3 = [...prevState]
