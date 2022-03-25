@@ -10,7 +10,7 @@ const Item = ({id ,price, pizzaPic, name, toppings}) => {
     const [quantity, setQuantity] = useState(1);
     const cartContext = useContext(CartContext);
     const buy = (quantity) => {
-        setMessage(`Kupiłeś: ${name} za ${new Intl.NumberFormat('pl-PL', { style: 'currency', currency: 'PLN' }).format(price*quantity)} w ilości ${quantity} sztuk`)
+        setMessage(`Wybrałeś: ${name} za ${new Intl.NumberFormat('pl-PL', { style: 'currency', currency: 'PLN' }).format(price*quantity)} w ilości ${quantity} sztuk`)
         setQuantity(1)
         cartContext.handleAddProp({id, price, pizzaPic, name, toppings, quantity});
         setIsOpen(true);

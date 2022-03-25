@@ -9,3 +9,10 @@
     width: 100px;
     height: auto;
 }
+.cartItemButton{
+    padding: 10px;
+    background-color: var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
