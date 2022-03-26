@@ -1,64 +1,69 @@
-import React, { useEffect, useReducer } from "react";
-
-
-export const CartContext = React.createContext();
-
-function reducer(prevState, action) {
-    switch (action.type) {
-        case "add":
-            let arr1 = [...prevState]
-            if(arr1.length > 0){
-                const itemIdx = arr1.findIndex((item) => item.id === action.payload.id )
-                if(itemIdx !== -1){
-                    const quantity = action.payload.quantity + arr1[itemIdx].quantity;
-                    action.payload.quantity = quantity;
-                    arr1.splice(itemIdx,1);
-                }
-                arr1.push(action.payload);
-            }else{
-                arr1.push(action.payload);
-            }
-            return arr1;
-        case "remove":
-            let arr2 = [...prevState]
-            const itemIdx = arr2.findIndex((item) => item.id === action.payload.id);
-            if(itemIdx !== -1){
-                arr2.splice(itemIdx,1);
-            }
-            return arr2;
-        case "update":
-            let arr3 = [...prevState]
-            const item = arr3.find((item) => item.id === action.payload.id)
-            if(item){
-                const itemIdx = arr3.findIndex((item) => item.id === action.payload.id)
-                item.quantity = action.payload.quantity
-                arr3[itemIdx] = item
-            }
-            return arr3;
-        case "reset":
-            init([]);
-            break;
-        default:
-    }
-}
+import React from "react";
+import useLocallyPersistedReducer from "../hooks/useLocallyPresistedReducer";
 function init(initialState) {
     return initialState;
 }
+function reducer(prevState, action) {
+    let data = {items: [...prevState.items], overallPrice: prevState.overallPrice}
+    switch (action.type) {
+        case "add":
+            if(data.items.length > 0){
+                const itemIdx = data.items.findIndex((item) => item.id === action.payload.id )
+                if(itemIdx !== -1){
+                    const quantity = action.payload.quantity + data.items[itemIdx].quantity;
+                    action.payload.quantity = quantity;
+                    data.items.splice(itemIdx,1);
+                }
+                data.items.push(action.payload);
+                data.overallPrice += action.payload.quantity * action.payload.price
+            }else{
+                data.items.push(action.payload);
+                data.overallPrice += action.payload.quantity * action.payload.price
+            }
+            return data;
+        case "remove":
+            const itemIdx = data.items.findIndex((item) => item.id === action.payload.id);
+            if(itemIdx !== -1){
+                const item = data.items[itemIdx];
+                data.items.splice(itemIdx,1);
+                if(data.items.length === 0){
+                    data.overallPrice = 0;
+                }else{
+                    data.overallPrice -= item.quantity * item.price;
+                }
+            }
+            return data;
+        case "update":
+            const item = data.items.find((item) => item.id === action.payload.id)
+            if(item){
+                const itemIdx = data.items.findIndex((item) => item.id === action.payload.id)
+                const oldQuantity = item.quantity
+                item.quantity = action.payload.quantity
+                data.items[itemIdx] = item
+                if(oldQuantity > action.payload.quantity){
+                    return {...data, overallPrice: data.overallPrice -= item.price}
+                }
+                else{
+                    return {...data, overallPrice: data.overallPrice += item.price}
+                }
+            }
+            return data;
+        case "reset":
+            return init({
+                items:[],
+                overallPrice: 0
+            });
+        default:
+    }
+}
+export const CartContext = React.createContext();
 export const CartProvider = ({ children }) => {
 
-    function useLocallyPersistedReducer(reducer, defaultState, init = null) {
-        const hookVars = useReducer(reducer, defaultState, (defaultState) => {
-            const persisted = JSON.parse(sessionStorage.getItem("items"))
-            return persisted !== null
-            ? persisted
-            : init !== null ? init(defaultState) : defaultState
-        })
-        useEffect(() => {
-            sessionStorage.setItem("items", JSON.stringify(hookVars[0]))
-        }, [hookVars])
-        return hookVars
-    }
-    const [items, dispatch] = useLocallyPersistedReducer(reducer, [])
+
+    const [cartData, dispatch] = useLocallyPersistedReducer(reducer, {
+        items:[],
+        overallPrice: 0
+    })
     const handleAdd = (data) => {
         dispatch({type: "add", payload: data});
     }
@@ -71,7 +76,7 @@ export const CartProvider = ({ children }) => {
     return (
         <CartContext.Provider
             value={{
-                items,
+                cartData,
                 dispatch,
                 handleAddProp: (data) => handleAdd(data),
                 handleDelete,

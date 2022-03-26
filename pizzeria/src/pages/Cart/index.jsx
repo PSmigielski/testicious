@@ -4,20 +4,29 @@ import { CartContext } from "../../contexts/CartContext";
 import "./index.css"
 
 const Cart = () => {
-    const {items} = useContext(CartContext);
+    const {cartData} = useContext(CartContext);
     const [hasItems, setHasItems] = useState(false);
     useEffect(()=>{
-        if(items.length === 0){
+        if(cartData.items.length === 0){
             setHasItems(false);
         }else{
             setHasItems(true);
         }
-    },[items])
+    },[cartData])
     return (
     <div className="cartWrapper" style={!hasItems ? {justifyContent : "center"} : {justifyContent : "flex-start"}}> 
         {hasItems ? 
-        (<div className="cartItems">
-            {items.map(el => (<CartItem key={el.id} data={el}/>))} 
+        (<div className="checkoutWrapper">
+            <div className="cartItems">
+                {cartData.items.map(el => (<CartItem key={el.id} data={el}/>))} 
+            </div>
+            <div className="checkout">
+                <div className="checkoutButtons">
+                    <button className="checkoutButton">Wyczyść</button>
+                    <button className="checkoutButton">Do kasy</button>                    
+                </div>
+                <p className="checkoutOverallPrice">{new Intl.NumberFormat('pl-PL', { style: 'currency', currency: 'PLN' }).format(cartData.overallPrice)}</p>
+            </div>
         </div>) : 
         (<div className="emptyCart"><p>Koszyk jest pusty</p></div>)}
     </div>)

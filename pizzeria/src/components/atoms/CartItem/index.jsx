@@ -7,17 +7,22 @@ import { useEffect } from "react";
 
 const CartItem = ({data}) => {
     const [quantity, setQuantity] = useState(data.quantity);
+    const [isMounted, setIsMounted] = useState(false);
     useEffect(()=>{
-        cartContext.handleUpdate(data.id, quantity);
+        if(isMounted){
+            cartContext.handleUpdate(data.id, quantity);
+        }else{
+            setIsMounted(true)
+        }
     },[quantity]);
     const cartContext = useContext(CartContext);
     return (
         <div className="cartItemWrapper" key={data.id}>
             <img src={data.pizzaPic} className="cartItemImg" alt="cart item" />
-            <p>{data.name}</p>
-            <p>Cena(szt){new Intl.NumberFormat('pl-PL', { style: 'currency', currency: 'PLN' }).format(data.price)}</p>
+            <p className="cartItemName">{data.name}</p>
+            <p className="cartItemPrice">Cena(szt){new Intl.NumberFormat('pl-PL', { style: 'currency', currency: 'PLN' }).format(data.price)}</p>
             <div className="cartItemQuantity"><QuantityInput quantity={quantity} setQuantity={setQuantity} /></div>
-            <p className="cartItemPrice">Suma: {new Intl.NumberFormat('pl-PL', { style: 'currency', currency: 'PLN' }).format(data.price*quantity)}</p>
+            <p className="cartItemOverallPrice">Suma: {new Intl.NumberFormat('pl-PL', { style: 'currency', currency: 'PLN' }).format(data.price*quantity)}</p>
             <button className="cartItemButton" onClick={() => cartContext.handleDelete(data.id)}><img src={bin} alt="remove btn"/></button>
         </div>
     )

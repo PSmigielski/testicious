@@ -16,3 +16,20 @@
     align-items: center;
     justify-content: center;
 }
+.cartItemName{
+    width: 100px;
+    text-align: left;
+}
+.cartItemPrice{
+    width: 100px;
+    text-align: left;
+}
+.cartItemQuantity{
+    width: 200px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.cartItemOverallPrice{
+    width: 150px;
+}
