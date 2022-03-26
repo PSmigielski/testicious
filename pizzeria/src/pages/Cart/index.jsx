@@ -7,7 +7,8 @@ const Cart = () => {
     const {items} = useContext(CartContext);
     const [hasItems, setHasItems] = useState(false);
     useEffect(()=>{
-        if(items){
+        console.log(items)
+        if(items !== []){
             setHasItems(true);
         }else{
             setHasItems(false);
