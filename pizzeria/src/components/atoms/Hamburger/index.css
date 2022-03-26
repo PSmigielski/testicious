@@ -9,6 +9,7 @@
     width: 80px;
     height: 80px;
     cursor: pointer;
+    z-index: 5;
 }
 
 .hamburger_line{
