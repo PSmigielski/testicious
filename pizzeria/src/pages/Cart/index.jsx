@@ -4,7 +4,7 @@ import { CartContext } from "../../contexts/CartContext";
 import "./index.css"
 
 const Cart = () => {
-    const {cartData} = useContext(CartContext);
+    const {cartData, handleReset} = useContext(CartContext);
     const [hasItems, setHasItems] = useState(false);
     useEffect(()=>{
         if(cartData.items.length === 0){
@@ -22,8 +22,8 @@ const Cart = () => {
             </div>
             <div className="checkout">
                 <div className="checkoutButtons">
-                    <button className="checkoutButton">Wyczyść</button>
                     <button className="checkoutButton">Do kasy</button>                    
+                    <button className="checkoutButton" onClick={() => handleReset()}>Wyczyść</button>
                 </div>
                 <p className="checkoutOverallPrice">{new Intl.NumberFormat('pl-PL', { style: 'currency', currency: 'PLN' }).format(cartData.overallPrice)}</p>
             </div>

@@ -73,6 +73,9 @@ export const CartProvider = ({ children }) => {
     const handleUpdate = (id, quantity) => {
         dispatch({type: "update", payload: { id, quantity }})
     }
+    const handleReset = () => {
+        dispatch({type: "reset"});
+    } 
     return (
         <CartContext.Provider
             value={{
@@ -80,7 +83,8 @@ export const CartProvider = ({ children }) => {
                 dispatch,
                 handleAddProp: (data) => handleAdd(data),
                 handleDelete,
-                handleUpdate
+                handleUpdate,
+                handleReset
             }}
         >
             {children}
