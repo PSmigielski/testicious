@@ -7,19 +7,19 @@ const Cart = () => {
     const {items} = useContext(CartContext);
     const [hasItems, setHasItems] = useState(false);
     useEffect(()=>{
-        console.log(items)
-        if(items !== []){
-            setHasItems(true);
-        }else{
+        if(items.length === 0){
             setHasItems(false);
+        }else{
+            setHasItems(true);
         }
     },[items])
     return (
     <div className="cartWrapper" style={!hasItems ? {justifyContent : "center"} : {justifyContent : "flex-start"}}> 
-        <div className="cartItems">
-            {hasItems ? items.map(el => (<CartItem data={el}/>)) 
-            : (<div className="emptyCart"><p>Koszyk jest pusty</p></div>)}
-        </div>
+        {hasItems ? 
+        (<div className="cartItems">
+            {items.map(el => (<CartItem key={el.id} data={el}/>))} 
+        </div>) : 
+        (<div className="emptyCart"><p>Koszyk jest pusty</p></div>)}
     </div>)
 }
 
