@@ -31,3 +31,9 @@
     cursor: pointer;
     padding-bottom: 10px;
 }
+.accountMenuButtons{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
