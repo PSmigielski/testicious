@@ -1,6 +1,6 @@
 import React, { useContext, useState } from "react";
 import { CartContext } from "../../../contexts/CartContext";
-import QuantityInput from "../QuantityInput";
+import QuantityInput from "../../atoms/QuantityInput";
 import "./index.css";
 import bin from "../../../assets/bin.svg";
 import { useEffect } from "react";
