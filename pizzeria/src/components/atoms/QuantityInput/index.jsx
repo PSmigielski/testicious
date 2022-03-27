@@ -31,7 +31,7 @@ const QuantityInput = ({quantity, setQuantity}) => {
     }
     return (
         <div className="quantityInputWrapper">
-            <button className="quantityButton" onClick={()=>increase()}>+</button>
+            <button className="quantityButton" onClick={()=>decrease()}>-</button>
             <input 
                 type="text" 
                 onChange={(e)=>handleChange(e)} 
@@ -41,7 +41,7 @@ const QuantityInput = ({quantity, setQuantity}) => {
                 value={quantity} 
                 className="quantityButton" 
             />
-            <button className="quantityButton" onClick={()=>decrease()}>-</button>
+            <button className="quantityButton" onClick={()=>increase()}>+</button>
         </div>
     )
 }
