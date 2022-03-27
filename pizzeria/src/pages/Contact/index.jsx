@@ -22,7 +22,7 @@ const Contact = () => {
                 <FormInput type="text" placeholder="Nazwisko"/>
                 <FormInput type="text" placeholder="Restauracja"/>
                 <FormInput type="text" placeholder="Temat wiadomości"/>
-                <label className="textAreaLabel topSpace">Twoja wiadomość:</label>
+                <label className="textAreaLabel ">Twoja wiadomość:</label>
                 <FormTextarea cols="50" rows="50"/>
                 <p className="title topSpace">Jak możemy się z Tobą skontaktować?</p>
                 <FormRadio type="radio" value="Telefonicznie" name="option"/>

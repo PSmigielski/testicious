@@ -2,19 +2,17 @@
 .contactWrapper{
     width: 100%;
     height: 100%;
-    
 }
 
 form{
+    width: 100%;
+    height: 100%;
     display: flex;
     flex-direction: column;
+    justify-content: center;
     align-items: flex-start;
-    justify-content: flex-start;
-    padding-top: 8%;
     padding-left: 30px;
-    width: 90%;
-    height: 100%;
-    overflow: scroll;
+    
 }
 
 .textAreaLabel{
@@ -30,18 +28,18 @@ form{
     color: #fff;
 }
 .topSpace{
-    padding-top: 50px;
+    padding-top: 15px;
 }
 
 .submit{
-    background-color: #474E55;
+    width: 100px;
+    height: 30px;
+    background-color: var(--border);
     color: #fff;
     font-family: "Maven Pro";
-    border: solid transparent 3px;
-    border-radius: 3px;
-    padding: 3px 30px 3px 30px;
-    margin-bottom: 50px;
-    position: relative;
-    top: 20px;
-    left: 220px;
+    margin-top: 10px;
+}
+input{
+    font-weight: 500;
+    accent-color: #DD321E;
 }
