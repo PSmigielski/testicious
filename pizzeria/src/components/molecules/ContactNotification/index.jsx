@@ -9,7 +9,7 @@ const ContactNotification = ({open,setIsOpen, message}) => {
             <div className="notificationBody">
                 <p>{message}</p>
                 <div className="notificationButtons">
-                    <button className="notificationButton" onClick={() =>{ setIsOpen(false) }}>Kontynuuj zakupy</button>
+                    <button className="notificationButton" onClick={() =>{ setIsOpen(false) }}>Kontynuuj</button>
                 </div>
             </div>
         </div>

@@ -3,7 +3,6 @@ import "./index.css";
 import FormInput from "../../components/atoms/FormInput";
 import FormTextarea from "../../components/atoms/FormTextarea";
 import FormRadio from "../../components/atoms/FormInputRadio";
-import Notifaction from "../../components/molecules/Notification"
 import ContactNotification from "../../components/molecules/ContactNotification";
 
 const Contact = () => {
