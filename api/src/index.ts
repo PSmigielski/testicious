@@ -19,7 +19,7 @@ dotenv.config();
 const app: Express = express();
 app.use(cookieParser());
 app.use(express.json());
-app.use(cors());
+app.use(cors({credentials: true, origin: process.env.FRONTEND_URL}));
 app.use('/uploads', express.static('uploads'));
 app.use("/v1/api/auth", authRouter);
 app.use("/v1/api/products", productRouter);

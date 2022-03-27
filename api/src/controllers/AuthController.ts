@@ -35,6 +35,7 @@ class AuthController {
             tokenExp.setTime(result.jwt.exp as number * 1000);
             const refreshTokenExp = new Date()
             refreshTokenExp.setTime(result.refreshToken.exp as number * 1000);
+            console.log(process.env.FRONTEND_URL)
             return res
                 .cookie("BEARER", result.jwt.token, { httpOnly: true, expires: tokenExp })
                 .cookie("REFRESH_TOKEN", result.refreshToken, { httpOnly: true, expires: refreshTokenExp })

@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import ReactDOM from "react-dom";
 import useInput from "../../../hooks/useInput";
 import FormInput from "../../atoms/FormInput";
+import axios from "axios";
 import "./index.css";
 
 const AccountMenu = ({isOpen}) =>{
@@ -33,6 +34,13 @@ const AccountMenu = ({isOpen}) =>{
         resetStreet();
         resetHomeNumber();
         setIsRegisterOpen(false);
+    }
+    const handleLogin = async () => {
+        const data = await axios.post("/auth/login", {email, password}, {withCredentials: true}).catch(err => {
+            setEmailError(err.response.data.error);
+            setPasswordError(err.response.data.error)
+        });
+        //dodać potem authcontext
     }
     if(!isOpen) return null;
     return ReactDOM.createPortal(
@@ -73,7 +81,7 @@ const AccountMenu = ({isOpen}) =>{
                     </div>
                     <div className="accountMenuLoginButtons">
                         <button className="accountMenuLoginButton" onClick={() => handleLoginClose()}>Wróć</button>
-                        <button className="accountMenuLoginButton">Zaloguj</button>
+                        <button className="accountMenuLoginButton" onClick={async () => handleLogin()}>Zaloguj</button>
                     </div>
                 </div>}
                 {isRegisterOpen &&        
