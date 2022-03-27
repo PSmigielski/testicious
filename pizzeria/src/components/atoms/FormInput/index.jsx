@@ -7,7 +7,6 @@ const FromInput = ({type, value, setValue, placeholder,min,max,errorMsg,required
         setValue(e.target.value);
     } 
     const validate = (regExp, min, max) => {
-        console.log("asdasd");
         if(regExp){
             const res = regExp.test(value)
             if(!res){
@@ -17,14 +16,14 @@ const FromInput = ({type, value, setValue, placeholder,min,max,errorMsg,required
             }
         }
         if(min){
-            if(min<value.length){
+            if(min>value.length){
                 setError(errorMsg);
             }else{
                 setError("");
             }
         }
         if(max){
-            if(min>value.length){
+            if(max<value.length){
                 setError(errorMsg);
             }else{
                 setError("");
@@ -37,7 +36,6 @@ const FromInput = ({type, value, setValue, placeholder,min,max,errorMsg,required
             className="formInput" 
             value={value}
             placeholder={placeholder}
-
             onChange={(e)=>handleChange(e)}
             onBlur={regExp || min || max? ()=>validate(regExp, min, max) : () => null}
             required={required}
