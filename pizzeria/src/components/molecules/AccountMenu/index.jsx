@@ -1,36 +1,37 @@
 import React, { useState } from "react";
 import ReactDOM from "react-dom";
+import useInput from "../../../hooks/useInput";
 import FormInput from "../../atoms/FormInput";
 import "./index.css";
 
 const AccountMenu = ({isOpen}) =>{
     const [isLoginOpen, setIsLoginOpen] = useState(false);
     const [isRegisterOpen, setIsRegisterOpen] = useState(false);
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
-    const [repeatPassword, setRepeatPassword] = useState("");
-    const [name, setName] = useState("");
-    const [surname, setSurname] = useState("");
-    const [phoneNumber, setPhoneNumber] = useState("");
-    const [city, setCity] = useState("");
-    const [street, setStreet] = useState("");
-    const [homeNumber, setHomeNumber] = useState("");
+    const [email, setEmail, emailError, setEmailError, resetEmail] = useInput("", "");
+    const [password, setPassword, passwordError, setPasswordError, resetPassword] = useInput("", "");
+    const [repeatPassword, setRepeatPassword, repeatPasswordError, setRepeatPasswordError, resetRepeatPassword] = useInput("", "");
+    const [name, setName, nameError, setNameError, resetName] = useInput("", "");
+    const [surname, setSurname, surnameError, setSurnameError, resetSurname] = useInput("", "");
+    const [phoneNumber, setPhoneNumber, phoneNumberError, setPhoneNumberError, resetPhoneNumber] = useInput("", "");
+    const [city, setCity, cityError, setCityError, resetCity] = useInput("", "");
+    const [street, setStreet, streetError, setStreetError, resetStreet] = useInput("", "");
+    const [homeNumber, setHomeNumber, homeNumberError, setHomeNumberError, resetHomeNumber] = useInput("", "");
     const [step, setStep] = useState(1)
     const handleLoginClose = () => {
-        setEmail("");
-        setPassword("");
+        resetEmail();
+        resetPassword();
         setIsLoginOpen(false);
     }
     const handleRegisterClose = () => {
-        setEmail("");
-        setPassword("");
-        setRepeatPassword("")
-        setName("");
-        setSurname("");
-        setPhoneNumber("")
-        setCity("")
-        setStreet("")
-        setHomeNumber("")
+        resetEmail();
+        resetPassword();
+        resetRepeatPassword();
+        resetName();
+        resetSurname();
+        resetPhoneNumber();
+        resetCity();
+        resetStreet();
+        resetHomeNumber();
         setIsRegisterOpen(false);
     }
     if(!isOpen) return null;
@@ -55,6 +56,7 @@ const AccountMenu = ({isOpen}) =>{
                             placeholder={"Email"} 
                             setValue={setEmail} 
                             value={email} 
+                            externalError={emailError}
                             errorMsg={"Email jest nieprawidłowy"} 
                             required={true}
                         />
@@ -63,7 +65,8 @@ const AccountMenu = ({isOpen}) =>{
                             max={200} 
                             placeholder={"Hasło"} 
                             setValue={setPassword} 
-                            value={password} 
+                            value={password}
+                            externalError={passwordError}
                             errorMsg={"Hasło jest nieprawidłowe"} 
                             required={true}
                         />
@@ -94,6 +97,7 @@ const AccountMenu = ({isOpen}) =>{
                                     value={name} 
                                     setValue={setName} 
                                     errorMsg={"Imię jest niepoprawne"}
+                                    externalError={nameError}
                                     regExp={/^[A-ZŚĄĘĆŻŹÓŁŃ]{1}[a-ząęółśżźćń]{1,100}$/} 
                                     required={true}/>
                                 <FormInput 
@@ -101,7 +105,8 @@ const AccountMenu = ({isOpen}) =>{
                                     placeholder={"Nazwisko"} 
                                     value={surname} 
                                     setValue={setSurname} 
-                                    errorMsg={"Imię jest niepoprawne"}
+                                    externalError={surnameError}
+                                    errorMsg={"Nazwisko jest niepoprawne"}
                                     regExp={/^[A-ZŚĄĘĆŻŹÓŁŃ]{1}[a-ząęółśżźćń]{1,100}$/} 
                                     required={true}/>
                                 <FormInput 
@@ -109,7 +114,8 @@ const AccountMenu = ({isOpen}) =>{
                                     placeholder={"Numer telefonu"}
                                     value={phoneNumber} 
                                     setValue={setPhoneNumber} 
-                                    errorMsg={"Numer telefon jest niepoprawny"}
+                                    externalError={phoneNumberError}
+                                    errorMsg={"Numer telefonu jest niepoprawny"}
                                     regExp={/^[0-9]{9}$/} 
                                     required={true}
                                 />                  
@@ -123,6 +129,7 @@ const AccountMenu = ({isOpen}) =>{
                                     value={city} 
                                     setValue={setCity} 
                                     max={100}
+                                    externalError={cityError}
                                     errorMsg={"Miasto jest niepoprawne"}
                                     required={true}/>
                                 <FormInput 
@@ -131,6 +138,7 @@ const AccountMenu = ({isOpen}) =>{
                                     value={street} 
                                     setValue={setStreet} 
                                     max={100}
+                                    externalError={streetError}
                                     errorMsg={"Ulica jest niepoprawna"}
                                     required={true}/>
                                 <FormInput 
@@ -138,6 +146,7 @@ const AccountMenu = ({isOpen}) =>{
                                     placeholder={"Numer domu"}
                                     value={homeNumber} 
                                     setValue={setHomeNumber} 
+                                    externalError={homeNumberError}
                                     errorMsg={"Numer domu jest niepoprawny"}
                                     regExp={/^[0-9]{1,10}$/} 
                                     required={true}
@@ -152,13 +161,15 @@ const AccountMenu = ({isOpen}) =>{
                                     value={email} 
                                     setValue={setEmail} 
                                     max={100}
+                                    externalError={emailError}
                                     errorMsg={"Email jest niepoprawny"}
                                     required={true}/>
                                 <FormInput 
                                     type={"password"} 
-                                    placeholder={"Hasło"} 
+                                    placeholder={"Hasło"}
                                     value={password} 
-                                    setValue={setPassword} 
+                                    setValue={setPassword}
+                                    externalError={passwordError}
                                     regExp={/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$ %^&*-]).{8,100}$/}
                                     errorMsg={"Hasło powinno mieć minimum 8 znaków i zawierać 1 cyfrę, jedną dużą i małą literę i 1 znak specjalny"}
                                     required={true}/>
@@ -168,6 +179,7 @@ const AccountMenu = ({isOpen}) =>{
                                     value={repeatPassword} 
                                     setValue={setRepeatPassword} 
                                     isSimilarTo={password}
+                                    externalError={repeatPasswordError}
                                     errorMsg={"Hasła są różne"}
                                     required={true}
                                 />                   
