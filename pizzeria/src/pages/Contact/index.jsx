@@ -22,13 +22,13 @@ const Contact = () => {
                 <FormInput type="text" placeholder="Nazwisko"/>
                 <FormInput type="text" placeholder="Restauracja"/>
                 <FormInput type="text" placeholder="Temat wiadomości"/>
-                <label className="textAreaLabel">Twoja wiadomość:</label>
+                <label className="textAreaLabel topSpace">Twoja wiadomość:</label>
                 <FormTextarea cols="50" rows="50"/>
-                <p className="radioLabel">Jak możemy się z Tobą skontaktować?</p>
+                <p className="title topSpace">Jak możemy się z Tobą skontaktować?</p>
                 <FormRadio type="radio" value="Telefonicznie" name="option"/>
                 <FormRadio type="radio" value="Poprzez wiadomość email" name="option"/>
                 <FormRadio type="radio" value="Nie oczekuje kontaktu" name="option"/>
-                <button onClick={(e) => click(e)} value="wyślij" type="submit" className="submit">Wyślij</button>
+                <button onClick={(e) => click(e)} value="" type="submit" className="submit">Wyślij</button>
                 <ContactNotification open={open} setIsOpen={setIsOpen} message={"Dziękujemy za opinię!"}/>
             </form>
         </div>

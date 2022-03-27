@@ -1,31 +1,37 @@
-*{
-    /* font-family: "Maven Pro"; */
-}
+
 .contactWrapper{
+    width: 100%;
+    height: 100%;
+    overflow: scroll;
+}
+
+form{
     display: flex;
     flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    padding-top: 10%;
+    padding-left: 30px;
+    width: 90%;
+    height: 90%;
 }
+
 .textAreaLabel{
     font-size: 20px;
     color: #fff;
 }
+
 .title{
-    /* font-family: "Maven Pro"; */
-    width: 500px;
+    width: 40%;
     border-bottom: 3px solid #474E55;
-    margin-bottom: 70px;
+    margin-bottom: 50px;
     font-size: 28px;
     color: #fff;
 }
-.radioLabel{
-    font-family: "Maven Pro";
-    width: 300px;
-    border-bottom: 3px solid #474E55;
-    margin-top: 20px;
-    margin-bottom: 20px;
-    font-size: 28px;
-    color: #fff;
+.topSpace{
+    padding-top: 50px;
 }
+
 .submit{
     background-color: #474E55;
     color: #fff;
