@@ -39,7 +39,7 @@ const Particles = () => {
         const slide = (particle, xMultiplier, mainPosition) => {
             if(particle.current !== null){
                 particle.current.style.setProperty('--x',`${window.innerWidth*xMultiplier}px`);
-                particle.current.style.setProperty('--y',`${window.innerHeight+50}px`);
+                particle.current.style.setProperty('--y',`${window.innerHeight+200}px`);
                 particle.current.style.paddingLeft = `${xMultiplier}px`
                 setInterval(() => {
                     if(particle.current !== null){
