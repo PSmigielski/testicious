@@ -1,30 +1,32 @@
+*{
+    /* font-family: "Maven Pro"; */
+}
 .contactWrapper{
     display: flex;
     flex-direction: column;
 }
-.dupa{
+.textAreaLabel{
     font-size: 20px;
     color: #fff;
-    font-family: "Maven Pro";
 }
-.dupa2{
-    font-family: "Maven Pro";
+.title{
+    /* font-family: "Maven Pro"; */
     width: 500px;
     border-bottom: 3px solid #474E55;
     margin-bottom: 70px;
     font-size: 28px;
     color: #fff;
 }
-.dupa4{
+.radioLabel{
     font-family: "Maven Pro";
-    width: 500px;
+    width: 300px;
     border-bottom: 3px solid #474E55;
     margin-top: 20px;
     margin-bottom: 20px;
     font-size: 28px;
     color: #fff;
 }
-.dupaEndgame{
+.submit{
     background-color: #474E55;
     color: #fff;
     font-family: "Maven Pro";
@@ -35,4 +37,3 @@
     top: 20px;
     left: 220px;
 }
-
