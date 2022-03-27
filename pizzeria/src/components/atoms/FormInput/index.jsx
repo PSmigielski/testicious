@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import "./index.css";
 
-const FromInput = ({type, value, setValue, placeholder,min,max,errorMsg,required=false, regExp, isSimilarTo,externalError}) => {
+const FormInput = ({type, value, setValue, placeholder,min,max,errorMsg,required=false, regExp, isSimilarTo,externalError}) => {
     const [error, setError] = useState("");
     const handleChange = (e) => {
         setValue(e.target.value);
@@ -48,4 +48,4 @@ const FromInput = ({type, value, setValue, placeholder,min,max,errorMsg,required
     </div>)
 }
 
-export default FromInput;
+export default FormInput;
