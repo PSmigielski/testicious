@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import ReactDOM from "react-dom";
 import closeBtn from "../../../assets/closeBnt.svg";
-import FromInput from "../../atoms/FormInput";
+import FormInput from "../../atoms/FormInput";
 import "./index.css";
 
 const OrderForm = ({isOpen, setIsOpen}) => {
@@ -37,7 +37,7 @@ const OrderForm = ({isOpen, setIsOpen}) => {
             </div>
             <div className="orderForm"> 
                 {step === 1 && <div className="bottomCol1">
-                    <FromInput 
+                    <FormInput 
                         type={"text"} 
                         placeholder={"Imię"} 
                         value={name} 
@@ -45,7 +45,7 @@ const OrderForm = ({isOpen, setIsOpen}) => {
                         errorMsg={"Imię jest niepoprawne"}
                         regExp={/^[A-ZŚĄĘĆŻŹÓŁŃ]{1}[a-ząęółśżźćń]{1,100}$/} 
                         required={true}/>
-                    <FromInput 
+                    <FormInput 
                         type={"text"} 
                         placeholder={"Nazwisko"} 
                         value={surname} 
@@ -53,7 +53,7 @@ const OrderForm = ({isOpen, setIsOpen}) => {
                         errorMsg={"Imię jest niepoprawne"}
                         regExp={/^[A-ZŚĄĘĆŻŹÓŁŃ]{1}[a-ząęółśżźćń]{1,100}$/} 
                         required={true}/>
-                    <FromInput 
+                    <FormInput 
                         type={"text"} 
                         placeholder={"Numer telefonu"}
                         value={phoneNumber} 
@@ -64,7 +64,7 @@ const OrderForm = ({isOpen, setIsOpen}) => {
                     />                  
                 </div>}
                 {step === 2 && <div className="bottomCol1">
-                    <FromInput 
+                    <FormInput 
                         type={"text"} 
                         placeholder={"Miasto"} 
                         value={city} 
@@ -73,7 +73,7 @@ const OrderForm = ({isOpen, setIsOpen}) => {
                         max={100}
                         errorMsg={"Miasto jest niepoprawne"}
                         required={true}/>
-                    <FromInput 
+                    <FormInput 
                         type={"text"} 
                         placeholder={"Ulica"} 
                         value={street} 
@@ -82,7 +82,7 @@ const OrderForm = ({isOpen, setIsOpen}) => {
                         max={100}
                         errorMsg={"Ulica jest niepoprawna"}
                         required={true}/>
-                    <FromInput 
+                    <FormInput 
                         type={"text"} 
                         placeholder={"Numer domu"}
                         value={homeNumber} 

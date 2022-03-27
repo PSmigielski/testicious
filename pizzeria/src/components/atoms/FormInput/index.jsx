@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import "./index.css";
 
-const FromInput = ({type, value, setValue, placeholder,min,max,errorMsg,required=false, regExp, externalError}) => {
+const FromInput = ({type, value, setValue, placeholder,min,max,errorMsg,required=false, regExp, isSimilarTo,externalError}) => {
     const [error, setError] = useState("");
     const handleChange = (e) => {
         setValue(e.target.value);
@@ -14,16 +14,20 @@ const FromInput = ({type, value, setValue, placeholder,min,max,errorMsg,required
             }else{
                 setError("")
             }
-        }
-        if(min){
+        } else if(min){
             if(min>value.length){
                 setError(errorMsg);
             }else{
                 setError("");
             }
-        }
-        if(max){
+        } else if(max){
             if(max<value.length){
+                setError(errorMsg);
+            }else{
+                setError("");
+            }
+        } else if(isSimilarTo){
+            if(isSimilarTo !== value){
                 setError(errorMsg);
             }else{
                 setError("");
@@ -37,7 +41,7 @@ const FromInput = ({type, value, setValue, placeholder,min,max,errorMsg,required
             value={value}
             placeholder={placeholder}
             onChange={(e)=>handleChange(e)}
-            onBlur={regExp || min || max? ()=>validate(regExp, min, max) : () => null}
+            onBlur={regExp || min || max|| isSimilarTo ? ()=>validate(regExp, min, max, isSimilarTo) : () => null}
             required={required}
         />
         <p className="formInputError">{externalError ? externalError : error}</p>

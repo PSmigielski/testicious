@@ -8,10 +8,30 @@ const AccountMenu = ({isOpen}) =>{
     const [isRegisterOpen, setIsRegisterOpen] = useState(false);
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [repeatPassword, setRepeatPassword] = useState("");
+    const [name, setName] = useState("");
+    const [surname, setSurname] = useState("");
+    const [phoneNumber, setPhoneNumber] = useState("");
+    const [city, setCity] = useState("");
+    const [street, setStreet] = useState("");
+    const [homeNumber, setHomeNumber] = useState("");
+    const [step, setStep] = useState(1)
     const handleLoginClose = () => {
         setEmail("");
         setPassword("");
         setIsLoginOpen(false);
+    }
+    const handleRegisterClose = () => {
+        setEmail("");
+        setPassword("");
+        setRepeatPassword("")
+        setName("");
+        setSurname("");
+        setPhoneNumber("")
+        setCity("")
+        setStreet("")
+        setHomeNumber("")
+        setIsRegisterOpen(false);
     }
     if(!isOpen) return null;
     return ReactDOM.createPortal(
@@ -20,12 +40,12 @@ const AccountMenu = ({isOpen}) =>{
                 { !isLoginOpen && !isRegisterOpen && 
                 <div className="accountMenuButtons">
                     <button className="accountMenuButton" onClick={()=>setIsLoginOpen(true)}>ZALOGUJ</button>
-                    <button className="accountMenuButton">ZAREJESTRUJ</button>
+                    <button className="accountMenuButton" onClick={()=>setIsRegisterOpen(true)}>ZAREJESTRUJ</button>
                 </div> 
                 }
                 {isLoginOpen && 
-                <div class="accountMenuLogin">
-                    <div class="top">
+                <div className="accountMenuLogin">
+                    <div className="top">
                         <p className="accountMenuLoginHeader">Zaloguj się</p>
                     </div>
                     <div className="bottom">
@@ -53,8 +73,120 @@ const AccountMenu = ({isOpen}) =>{
                         <button className="accountMenuLoginButton">Zaloguj</button>
                     </div>
                 </div>}
-                {isRegisterOpen && <div>register</div>}
-            </div>
+                {isRegisterOpen &&        
+                    <div className="orderFormBody">
+                        <div className="orderFormHeader">
+                            <div className="twoCol">
+                                Zarejestruj się 
+                            </div>
+                        </div>
+                        <div className="orderFormSteps">
+                            <div className="orderFormStep" style={step>=1? {color: "red"}:{color: "white"}}>Dane</div>
+                            <div className="orderFormStep" style={step>=2? {color: "red"}:{color: "white"}}>Adres</div>
+                            <div className="orderFormStep" style={step>=3? {color: "red"}:{color: "white"}}>Email i hasło</div>
+                        </div>
+                        <div className="orderForm">
+                        {step === 1 && 
+                            <div className="bottomCol1">
+                                <FormInput 
+                                    type={"text"} 
+                                    placeholder={"Imię"} 
+                                    value={name} 
+                                    setValue={setName} 
+                                    errorMsg={"Imię jest niepoprawne"}
+                                    regExp={/^[A-ZŚĄĘĆŻŹÓŁŃ]{1}[a-ząęółśżźćń]{1,100}$/} 
+                                    required={true}/>
+                                <FormInput 
+                                    type={"text"} 
+                                    placeholder={"Nazwisko"} 
+                                    value={surname} 
+                                    setValue={setSurname} 
+                                    errorMsg={"Imię jest niepoprawne"}
+                                    regExp={/^[A-ZŚĄĘĆŻŹÓŁŃ]{1}[a-ząęółśżźćń]{1,100}$/} 
+                                    required={true}/>
+                                <FormInput 
+                                    type={"text"} 
+                                    placeholder={"Numer telefonu"}
+                                    value={phoneNumber} 
+                                    setValue={setPhoneNumber} 
+                                    errorMsg={"Numer telefon jest niepoprawny"}
+                                    regExp={/^[0-9]{9}$/} 
+                                    required={true}
+                                />                  
+                            </div>
+                        }
+                        {step === 2 && 
+                            <div className="bottomCol1">
+                                <FormInput 
+                                    type={"text"} 
+                                    placeholder={"Miasto"} 
+                                    value={city} 
+                                    setValue={setCity} 
+                                    max={100}
+                                    errorMsg={"Miasto jest niepoprawne"}
+                                    required={true}/>
+                                <FormInput 
+                                    type={"text"} 
+                                    placeholder={"Ulica"} 
+                                    value={street} 
+                                    setValue={setStreet} 
+                                    max={100}
+                                    errorMsg={"Ulica jest niepoprawna"}
+                                    required={true}/>
+                                <FormInput 
+                                    type={"text"} 
+                                    placeholder={"Numer domu"}
+                                    value={homeNumber} 
+                                    setValue={setHomeNumber} 
+                                    errorMsg={"Numer domu jest niepoprawny"}
+                                    regExp={/^[0-9]{1,10}$/} 
+                                    required={true}
+                                />                   
+                            </div>
+                        }
+                        {step === 3 && 
+                            <div className="bottomCol1">
+                                <FormInput 
+                                    type={"Email"} 
+                                    placeholder={"Email"} 
+                                    value={email} 
+                                    setValue={setEmail} 
+                                    max={100}
+                                    errorMsg={"Email jest niepoprawny"}
+                                    required={true}/>
+                                <FormInput 
+                                    type={"password"} 
+                                    placeholder={"Hasło"} 
+                                    value={password} 
+                                    setValue={setPassword} 
+                                    regExp={/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$ %^&*-]).{8,100}$/}
+                                    errorMsg={"Hasło powinno mieć minimum 8 znaków i zawierać 1 cyfrę, jedną dużą i małą literę i 1 znak specjalny"}
+                                    required={true}/>
+                                <FormInput 
+                                    type={"password"} 
+                                    placeholder={"Powtórz hasło"}
+                                    value={repeatPassword} 
+                                    setValue={setRepeatPassword} 
+                                    isSimilarTo={password}
+                                    errorMsg={"Hasła są różne"}
+                                    required={true}
+                                />                   
+                            </div>
+                        }
+                            {step <= 4 && <div className="bottomCol2">
+                                <button 
+                                    className="orderFormButton" 
+                                    onClick={step === 1 ? ()=> handleRegisterClose() : () => setStep(step-1)} 
+                                >Wróć</button>
+                                <button 
+                                    className="orderFormButton" 
+                                    onClick={() => setStep(step+1)} 
+                                >{step ===3 ? "Zarejestruj" : "Dalej"}</button>
+                            </div>}
+                        </div>
+                    </div> 
+                }
+        </div>
 
         </div>
     , document.body)
