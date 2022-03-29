@@ -1,11 +1,13 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import ReactDOM from "react-dom";
 import useInput from "../../../hooks/useInput";
 import FormInput from "../../atoms/FormInput";
 import axios from "axios";
 import "./index.css";
+import { AuthContext } from "../../../contexts/AuthContext";
 
-const AccountMenu = ({isOpen}) =>{
+
+const AccountMenu = ({isOpen, setIsOpen}) =>{
     const [isLoginOpen, setIsLoginOpen] = useState(false);
     const [isRegisterOpen, setIsRegisterOpen] = useState(false);
     const [email, setEmail, emailError, setEmailError, resetEmail] = useInput("", "");
@@ -35,23 +37,40 @@ const AccountMenu = ({isOpen}) =>{
         resetHomeNumber();
         setIsRegisterOpen(false);
     }
+    const authContext = useContext(AuthContext);
     const handleLogin = async () => {
-        const data = await axios.post("/auth/login", {email, password}, {withCredentials: true}).catch(err => {
+        const { data } = await axios.post("/auth/login", {email, password}, {withCredentials: true}).catch(err => {
             setEmailError(err.response.data.error);
             setPasswordError(err.response.data.error)
         });
-        //dodać potem authcontext
+        if(data){
+            authContext.dispatch({type: "LOGIN", payload: data.user});
+            setIsOpen(false);
+            setIsLoginOpen(false);
+            resetEmail();
+            resetPassword();
+        }
+    }
+    const handleLogout = async () => {
+        const data = axios.post("/auth/logout", {withCredentials: true})
+        if(data){
+            authContext.dispatch({type: "RESET"});
+        }
     }
     if(!isOpen) return null;
     return ReactDOM.createPortal(
         <div className="accountMenuWrapper">  
             <div className="accountMenu">
-                { !isLoginOpen && !isRegisterOpen && 
-                <div className="accountMenuButtons">
+                { !isLoginOpen && !isRegisterOpen && authContext.user.id === null &&
+                (<div className="accountMenuButtons">
                     <button className="accountMenuButton" onClick={()=>setIsLoginOpen(true)}>ZALOGUJ</button>
                     <button className="accountMenuButton" onClick={()=>setIsRegisterOpen(true)}>ZAREJESTRUJ</button>
-                </div> 
-                }
+                </div>) }
+                { !isLoginOpen && !isRegisterOpen && authContext.user.id && (
+                    <div className="accountMenuButtons">
+                        <p className="accountMenuLoginHeader">{authContext.user.email} rola: {authContext.user.role}</p>
+                        <button className="accountMenuButton" onClick={()=>handleLogout()}>Wyloguj</button>
+                    </div> )}
                 {isLoginOpen && 
                 <div className="accountMenuLogin">
                     <div className="top">
