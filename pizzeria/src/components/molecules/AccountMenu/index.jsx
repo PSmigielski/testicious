@@ -5,6 +5,7 @@ import FormInput from "../../atoms/FormInput";
 import axios from "axios";
 import "./index.css";
 import { AuthContext } from "../../../contexts/AuthContext";
+import { useNavigate } from "react-router-dom";
 
 
 const AccountMenu = ({isOpen, setIsOpen}) =>{
@@ -20,6 +21,7 @@ const AccountMenu = ({isOpen, setIsOpen}) =>{
     const [street, setStreet, streetError, setStreetError, resetStreet] = useInput("", "");
     const [homeNumber, setHomeNumber, homeNumberError, setHomeNumberError, resetHomeNumber] = useInput("", "");
     const [step, setStep] = useState(1)
+    const navigate = useNavigate();
     const handleLoginClose = () => {
         resetEmail();
         resetPassword();
@@ -49,10 +51,14 @@ const AccountMenu = ({isOpen, setIsOpen}) =>{
             setIsLoginOpen(false);
             resetEmail();
             resetPassword();
+            navigate("/admin", {replace: true})
         }
     }
     const handleLogout = async () => {
-        const data = axios.post("/auth/logout", {withCredentials: true})
+        const data = await axios.post("/auth/logout", {withCredentials: true}).catch(err => {
+            console.log(err);
+        });
+        console.log(data);
         if(data){
             authContext.dispatch({type: "RESET"});
         }

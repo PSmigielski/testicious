@@ -7,6 +7,7 @@ import MenuNav from "./pages/Menu";
 import Contact from "./pages/Contact";
 import PizzaOfTheDay from "./pages/PizzaOfTheDay";
 import Cart from "./pages/Cart";
+import RequireAuth from "./components/organisms/RequireAuth";
 const Router = () => {
 
   return(
@@ -19,6 +20,7 @@ const Router = () => {
           <Route path="/pizza-of-the-day" element={<PizzaOfTheDay />}/>
           <Route path="/cart" element={<Cart />}/>
         </Route>
+        <Route path="/admin" element={<RequireAuth><div>admin</div></RequireAuth>} />
         <Route path="*" element={<div>404</div>}/>
       </Routes>
     </BrowserRouter>
