@@ -15,6 +15,7 @@
     border-radius: 15px;
     width: 635px;
     height: 655px;
+    transition: all 3.5s linear;
 }
 .orderFormHeader{
     font-size: 2rem;
@@ -99,4 +100,13 @@
     font-weight: bold;
     transform: translate(220px);
 
+}
+
+.bottomCol1 > p{
+    align-items: center;
+    color: rgba(39, 153, 29, 1);
+    font-size: 25px;
+    font-weight: bold;
+    transform: translate(190px);
+    
 }
