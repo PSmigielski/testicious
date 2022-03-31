@@ -3,21 +3,53 @@ import ReactDOM from "react-dom";
 import closeBtn from "../../../assets/closeBnt.svg";
 import FormInput from "../../atoms/FormInput";
 import useInput from "../../../hooks/useInput";
+import axios from "axios";
 import "./index.css";
 
 const OrderForm = ({isOpen, setIsOpen}) => {
     const [name, setName, nameError, setNameError, resetName] = useInput("", "");
-    const [surname, setSurname, surnameError, setSurameError, resetSurname] = useInput("", "");
+    const [surname, setSurname, surnameError, setSurnameError, resetSurname] = useInput("", "");
     const [phoneNumber, setPhoneNumber, phoneNumberError, setPhoneNumberError, resetPhoneNumber] = useInput("", "");
     const [city, setCity, cityError, setCityError, resetCity] = useInput("", "");
     const [street, setStreet, streetError, setStreetError, resetStreet] = useInput("", "");
     const [homeNumber, setHomeNumber, homeNumberError, setHomeNumberError, resetHomeNumber] = useInput("", "");
+    const [buildingNumber, setBuildingNumber, buildingNumberError, setBuildingNumberError, resetBuildingNumber] = useInput("", "");
+    const [email, setEmail, emailError, setEmailError, resetEmail] = useInput("", "");
+
     const [step, setStep] = useState(1);
     const handleClose = () => {
         setPhoneNumber("");
         setSurname("");
         setName("");
         setIsOpen(false)
+    }
+    const handleTransaction = async () => {
+        let userData = {name,surname,email,street,city,phoneNumber,buildingNumber: parseInt(buildingNumber)}
+        if(homeNumber){
+            userData["homeNumber"] =parseInt(homeNumber)
+        }
+        const {data} = await axios.post("/auth/register", userData).catch(err => {
+            if(err.response.data.error.indexOf("name") != -1){
+                setNameError(err.response.data.error)
+            }else if(err.response.data.err.indexOf("surname") != -1){
+                setSurnameError(err.response.data.error)
+            }else if(err.response.data.err.indexOf("email") != -1){
+                setEmailError(err.response.data.error)
+            }else if(err.response.data.err.indexOf("city") != -1){
+                setCityError(err.response.data.error)
+            }else if(err.response.data.err.indexOf("street") != -1){
+                setStreetError(err.response.data.error)
+            }else if(err.response.data.err.indexOf("homeNumber")!= -1){
+                setHomeNumberError(err.response.data.error)
+            }else if(err.response.data.err.indexOf("buildingNumber")!= -1){
+                setBuildingNumberError(err.response.data.error)
+            }else if(err.response.data.err.indexOf("phoneNumber")!= -1){
+                setPhoneNumberError(err.response.data.error)
+            }
+        });
+        if(data){
+            alert("Wykonałeś transakcję");
+        }
     }
     if (!isOpen) return null;
     return ReactDOM.createPortal(
@@ -44,6 +76,7 @@ const OrderForm = ({isOpen, setIsOpen}) => {
                         value={name} 
                         setValue={setName} 
                         errorMsg={"Imię jest niepoprawne"}
+                        externalError={nameError}
                         regExp={/^[A-ZŚĄĘĆŻŹÓŁŃ]{1}[a-ząęółśżźćń]{1,100}$/} 
                         required={true}/>
                     <FormInput 
@@ -51,6 +84,7 @@ const OrderForm = ({isOpen, setIsOpen}) => {
                         placeholder={"Nazwisko"} 
                         value={surname} 
                         setValue={setSurname} 
+                        externalError={surnameError}
                         errorMsg={"Imię jest niepoprawne"}
                         regExp={/^[A-ZŚĄĘĆŻŹÓŁŃ]{1}[a-ząęółśżźćń]{1,100}$/} 
                         required={true}/>
@@ -59,10 +93,21 @@ const OrderForm = ({isOpen, setIsOpen}) => {
                         placeholder={"Numer telefonu"}
                         value={phoneNumber} 
                         setValue={setPhoneNumber} 
+                        externalError={phoneNumberError}
                         errorMsg={"Numer telefon jest niepoprawny"}
                         regExp={/^[0-9]{9}$/} 
                         required={true}
-                    />                  
+                    />         
+                    <FormInput 
+                        type={"text"} 
+                        max={200} 
+                        placeholder={"Email"} 
+                        setValue={setEmail} 
+                        value={email} 
+                        externalError={emailError}
+                        errorMsg={"Email jest nieprawidłowy"} 
+                        required={true}
+                    />         
                 </div>}
                 {step === 2 && <div className="bottomCol1">
                     <FormInput 
@@ -72,6 +117,7 @@ const OrderForm = ({isOpen, setIsOpen}) => {
                         setValue={setCity} 
                         min={1}
                         max={100}
+                        externalError={cityError}
                         errorMsg={"Miasto jest niepoprawne"}
                         required={true}/>
                     <FormInput 
@@ -79,19 +125,31 @@ const OrderForm = ({isOpen, setIsOpen}) => {
                         placeholder={"Ulica"} 
                         value={street} 
                         setValue={setStreet} 
+                        externalError={streetError}
                         min={1}
                         max={100}
                         errorMsg={"Ulica jest niepoprawna"}
                         required={true}/>
                     <FormInput 
                         type={"text"} 
-                        placeholder={"Numer domu"}
-                        value={homeNumber} 
-                        setValue={setHomeNumber} 
-                        errorMsg={"Numer domu jest niepoprawny"}
+                        placeholder={"Numer budynku"}
+                        value={buildingNumber} 
+                        setValue={setBuildingNumber} 
+                        externalError={buildingNumberError}
+                        errorMsg={"Numer budynku jest niepoprawny"}
                         regExp={/^[0-9]{1,10}$/} 
                         required={true}
-                    />                   
+                    />      
+                    <FormInput 
+                        type={"text"} 
+                        placeholder={"Numer mieszkania (Opcjonalne)"}
+                        value={homeNumber} 
+                        setValue={setHomeNumber} 
+                        externalError={homeNumberError}
+                        errorMsg={"Numer mieszkania jest niepoprawny"}
+                        regExp={/^[0-9]{1,10}$/} 
+                        required={false}
+                    />                 
                 </div>}
                 {step === 3 && <div className="bottomCol1">
                     <button>Opłać</button>
