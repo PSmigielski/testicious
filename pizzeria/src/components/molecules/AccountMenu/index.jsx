@@ -51,7 +51,7 @@ const AccountMenu = ({isOpen, setIsOpen}) =>{
             setIsLoginOpen(false);
             resetEmail();
             resetPassword();
-            navigate("/admin", {replace: true})
+            navigate("/admin/products", {replace: true})
         }
     }
     const handleLogout = async () => {
@@ -61,6 +61,7 @@ const AccountMenu = ({isOpen, setIsOpen}) =>{
         console.log(data);
         if(data){
             authContext.dispatch({type: "RESET"});
+            navigate("/", {replace: true})
         }
     }
     if(!isOpen) return null;
