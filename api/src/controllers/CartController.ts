@@ -19,8 +19,9 @@ class CartController {
             return next(new ApiErrorException("This cart does not belong to you!", 403));
         } else {
             const items = await Cart.getItems(cartId).catch(next);
+            const overallPrice = await Cart.getOverallPrice(cartId).catch(next);
             if(items){
-                return res.status(200).json({items: items.items});
+                return res.status(200).json({items: items.items, overallPrice});
             }
         }
     }

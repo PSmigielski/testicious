@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Maven+Pro&display=swap');
+        body{
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-family: "Maven Pro";
+        }
+
+        .popup{
+            background: linear-gradient(223.14deg, rgba(0, 0, 0, 0.2) 0%, rgba(0, 0, 0, 0.114583) 32.29%, rgba(221, 50, 30, 0.2) 97.46%, rgba(0, 0, 0, 0) 100%), #19222B;
+            border-radius: 15px;
+            width: 635px;
+            height: 655px;
+        }
+        p{
+            color: #fff;
+        }
+        .top{
+            font-size: 2rem;
+            display: grid;
+            grid-template-columns: 1fr 2fr 1fr;
+            width: 100%;
+            height: 80px;
+        }
+        .steps{
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            width: 100%;
+            height: 60px;
+            border-top:3px solid #474E55;
+            border-bottom:3px solid #474E55;
+        }
+        .step{
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100%;
+            width: 100%;
+            font-size: 1rem;
+        }
+        .step:nth-child(2){
+            border-left: 3px solid #474E55;
+            border-right: 3px solid #474E55;
+        }
+        input{
+            font-family: "Maven Pro";
+            background-color: transparent;
+            border:none;
+            border-bottom: 3px solid #474E55;
+            width: 300px;
+            font-size: 20px;
+            color: #fff;
+        }
+        input::placeholder{
+            color: #fff;
+        }
+
+        .img1{
+            width: 50px;
+            height: auto;
+        }
+        .img2{
+            width: 120px;
+            height: auto;
+        }
+
+        .twoCol{
+            color: #fff;
+            width: 100%;
+            height: 100%;
+            grid-column-start: 2;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        .thrCol{
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            margin: 10px;
+        }
+        .bottom{
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            width: 100%;
+            height: 70%;
+        }
+        .bottomCol1{
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            justify-content: space-around;
+            padding-left: 30px;
+            padding-top: 30px;
+        }
+        .bottomCol2{
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            justify-content: flex-end;
+            padding-right: 20px;
+            margin-bottom: -30px;
+
+        }
+    </style>
+</head>
+<body>
+   <div class="popup">
+        <div class="top">
+            <div class="oneCol"></div>
+            <div class="twoCol">
+                Złóż zamówienie
+            </div>
+            <div class="thrCol">
+                <img src="Vector.svg" alt="" class="img1">
+            </div>
+        </div>
+        <div class="steps">
+            <div class="step"><p>Dane</p></div>
+            <div class="step"><p>Adres</p></div>
+            <div class="step"><p>Płatność</p></div>
+        </div>
+        <div class="bottom">
+            <div class="bottomCol1">
+                <input type="text" placeholder="Imię" required>
+                <input type="text" placeholder="Nazwisko" required>
+                <input type="text" placeholder="Numer telefonu" required>
+            </div>
+            <div class="bottomCol2">
+                <img src="Vector2.svg" alt="" class="img2">
+            </div>
+        </div>
+   </div>
+
+</body>
+</html>

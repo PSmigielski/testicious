@@ -1,12 +1,11 @@
 import React from "react";
 import PizzaSlice from "../../components/atoms/PizzaSlice";
 import PepperPic from "../../components/atoms/PepperPic";
-import Hamburger from "../../components/atoms/Hamburger";
 import "./index.css";
-import { useState } from "react";
+import Particles from "../../components/molecules/Particles";
+
 
 const Home = () => {
-
     return (
         <div className="homeWrapper">
             <div className="pizzaSlices">
@@ -14,8 +13,8 @@ const Home = () => {
                 <PizzaSlice imageType={2} />
                 <PizzaSlice imageType={3} />
             </div>
-                <PepperPic />
-                <Hamburger />
+            <Particles />
+            <PepperPic />
         </div>
     );  
 }

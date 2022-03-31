@@ -13,5 +13,26 @@ services:
       - postgres:/var/lib/postgresql/data
     ports:
       - '2137:5432'
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "pg_isready --username=${POSTGRES_USER} --dbname=pizzaPolaka"
+        ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+  av:
+    image: clamav/clamav
+    container_name: clamav
+    restart: unless-stopped
+    volumes:
+      - clam:/var/lib/clamav
+    ports:
+      - '3310:3310'
 volumes:
   postgres: null
+  clam:
+networks:
+  outpost_network:
+    external: true
