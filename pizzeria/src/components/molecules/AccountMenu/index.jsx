@@ -69,29 +69,33 @@ const AccountMenu = ({isOpen, setIsOpen}) =>{
         }
     }
     const handleRegister = async () => {
-        const {data} = await axios.post("/auth/register", {name,surname,email,password,street,city,phoneNumber,buildingNumber: parseInt(buildingNumber), homeNumber: parseInt(homeNumber)}).catch(err => {
-            if(err.response.data.error.indexOf("name")){
+        let userData = {name,surname,email,password,street,city,phoneNumber,buildingNumber: parseInt(buildingNumber)}
+        if(homeNumber){
+            userData["homeNumber"] =parseInt(homeNumber)
+        }
+        const {data} = await axios.post("/auth/register", userData).catch(err => {
+            if(err.response.data.error.indexOf("name") != -1){
                 setNameError(err.response.data.error)
-            }else if(err.response.data.err.indexOf("surname")){
+            }else if(err.response.data.err.indexOf("surname") != -1){
                 setSurnameError(err.response.data.error)
-            }else if(err.response.data.err.indexOf("password")){
+            }else if(err.response.data.err.indexOf("password") != -1){
                 setPassword(err.response.data.error)
-            }else if(err.response.data.err.indexOf("email")){
+            }else if(err.response.data.err.indexOf("email") != -1){
                 setEmailError(err.response.data.error)
-            }else if(err.response.data.err.indexOf("city")){
+            }else if(err.response.data.err.indexOf("city") != -1){
                 setCityError(err.response.data.error)
-            }else if(err.response.data.err.indexOf("street")){
+            }else if(err.response.data.err.indexOf("street") != -1){
                 setStreetError(err.response.data.error)
-            }else if(err.response.data.err.indexOf("homeNumber")){
+            }else if(err.response.data.err.indexOf("homeNumber")!= -1){
                 setHomeNumberError(err.response.data.error)
-            }else if(err.response.data.err.indexOf("buildingNumber")){
+            }else if(err.response.data.err.indexOf("buildingNumber")!= -1){
                 setBuildingNumber(err.response.data.error)
-            }else if(err.response.data.err.indexOf("phoneNumber")){
+            }else if(err.response.data.err.indexOf("phoneNumber")!= -1){
                 setPhoneNumberError(err.response.data.error)
             }
         });
         if(data){
-            console.log("data");
+            alert("Zostałeś zarejestrowany. Sprawdź swój email");
         }
     }
     if(!isOpen) return null;
