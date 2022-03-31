@@ -25,13 +25,13 @@ const OrderForm = ({isOpen, setIsOpen}) => {
         setPayment(true);
         setStep(step+1);
     }
-    const backgroundColor1 = "linear-gradient(223.14deg, rgba(0, 0, 0, 0.2) 0%, rgba(0, 0, 0, 0.114583) 32.29%, rgba(221, 50, 30, 0.2) 97.46%, rgba(0, 0, 0, 0) 100%), #19222B;";
-    const backgroundColor1 = "linear-gradient(223.14deg, rgba(0, 0, 0, 0.2) 0%, rgba(0, 0, 0, 0.114583) 32.29%, rgba(39, 153, 29, 0.2) 97.46%, rgba(0, 0, 0, 0) 100%), #19222B;";
+    const backgroundColor1 = "linear-gradient(223.14deg, rgba(0, 0, 0, 0.2) 0%, rgba(0, 0, 0, 0.114583) 32.29%, rgba(221, 50, 30, 0.2) 97.46%, rgba(0, 0, 0, 0) 100%), #19222B";
+    const backgroundColor2 = "linear-gradient(223.14deg, rgba(0, 0, 0, 0.2) 0%, rgba(0, 0, 0, 0.114583) 32.29%, rgba(39, 153, 29, 0.2) 97.46%, rgba(0, 0, 0, 0) 100%), #19222B";
     
     if (!isOpen) return null;
     return ReactDOM.createPortal(
     <div className="orderFormWrapper">
-        <div className="orderFormBody" style={step !== 4 ? {backgroundColor: "linear-gradient(223.14deg, rgba(0, 0, 0, 0.2) 0%, rgba(0, 0, 0, 0.114583) 32.29%, rgba(221, 50, 30, 0.2) 97.46%, rgba(0, 0, 0, 0) 100%), #19222B;"}}>
+        <div className="orderFormBody" style={step !== 4 ? {background: backgroundColor1}: {background: backgroundColor2}}>
             <div className="orderFormHeader">
                 <div className="twoCol">
                     Złóż zamówienie

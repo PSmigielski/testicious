@@ -11,7 +11,7 @@
     background-color: rgba(25, 34, 43, 0.35);
 }
 .orderFormBody{
-    background: linear-gradient(223.14deg, rgba(0, 0, 0, 0.2) 0%, rgba(0, 0, 0, 0.114583) 32.29%, rgba(221, 50, 30, 0.2) 97.46%, rgba(0, 0, 0, 0) 100%), #19222B;
+    /* background: linear-gradient(223.14deg, rgba(0, 0, 0, 0.2) 0%, rgba(0, 0, 0, 0.114583) 32.29%, rgba(221, 50, 30, 0.2) 97.46%, rgba(0, 0, 0, 0) 100%), #19222B; */
     border-radius: 15px;
     width: 635px;
     height: 655px;
