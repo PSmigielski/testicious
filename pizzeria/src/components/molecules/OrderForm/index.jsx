@@ -94,7 +94,7 @@ const OrderForm = ({isOpen, setIsOpen}) => {
                     />                   
                 </div>}
                 {step === 3 && <div className="bottomCol1">
-                    <button>Opłać</button>
+                    <button className="paymentButton">Opłać</button>
                 </div>}
                 <div className="bottomCol2">
                     <button 

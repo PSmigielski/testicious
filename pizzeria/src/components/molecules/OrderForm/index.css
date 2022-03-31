@@ -91,3 +91,11 @@
     font-size: 24px;
     cursor: pointer;
 }
+
+.paymentButton{
+    width: 20%;
+    height: 50px;
+    font-weight: bold;
+    transform: translate(220px);
+
+}
