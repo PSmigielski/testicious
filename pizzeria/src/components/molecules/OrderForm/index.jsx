@@ -2,15 +2,16 @@ import React, { useState } from "react";
 import ReactDOM from "react-dom";
 import closeBtn from "../../../assets/closeBnt.svg";
 import FormInput from "../../atoms/FormInput";
+import useInput from "../../../hooks/useInput";
 import "./index.css";
 
 const OrderForm = ({isOpen, setIsOpen}) => {
-    const [name, setName] = useState("");
-    const [surname, setSurname] = useState("");
-    const [phoneNumber, setPhoneNumber] = useState("");
-    const [city, setCity] = useState("");
-    const [street, setStreet] = useState("");
-    const [homeNumber, setHomeNumber] = useState("");
+    const [name, setName, nameError, setNameError, resetName] = useInput("", "");
+    const [surname, setSurname, surnameError, setSurameError, resetSurname] = useInput("", "");
+    const [phoneNumber, setPhoneNumber, phoneNumberError, setPhoneNumberError, resetPhoneNumber] = useInput("", "");
+    const [city, setCity, cityError, setCityError, resetCity] = useInput("", "");
+    const [street, setStreet, streetError, setStreetError, resetStreet] = useInput("", "");
+    const [homeNumber, setHomeNumber, homeNumberError, setHomeNumberError, resetHomeNumber] = useInput("", "");
     const [step, setStep] = useState(1);
     const handleClose = () => {
         setPhoneNumber("");
