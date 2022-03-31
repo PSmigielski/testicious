@@ -20,6 +20,7 @@ const AccountMenu = ({isOpen, setIsOpen}) =>{
     const [city, setCity, cityError, setCityError, resetCity] = useInput("", "");
     const [street, setStreet, streetError, setStreetError, resetStreet] = useInput("", "");
     const [homeNumber, setHomeNumber, homeNumberError, setHomeNumberError, resetHomeNumber] = useInput("", "");
+    const [buildingNumber, setBuildingNumber, buildingNumberError, setBuildingNumberError, resetBuildingNumber] = useInput("", "");
     const [step, setStep] = useState(1)
     const navigate = useNavigate();
     const handleLoginClose = () => {
@@ -37,6 +38,7 @@ const AccountMenu = ({isOpen, setIsOpen}) =>{
         resetCity();
         resetStreet();
         resetHomeNumber();
+        resetBuildingNumber();
         setIsRegisterOpen(false);
     }
     const authContext = useContext(AuthContext);
@@ -67,9 +69,30 @@ const AccountMenu = ({isOpen, setIsOpen}) =>{
         }
     }
     const handleRegister = async () => {
-        const {data} = await axios.post("/auth/register", {name,surname,email,password,street,city,phoneNumber,buildingNumber: homeNumber}).catch(err => {
-
+        const {data} = await axios.post("/auth/register", {name,surname,email,password,street,city,phoneNumber,buildingNumber: parseInt(buildingNumber), homeNumber: parseInt(homeNumber)}).catch(err => {
+            if(err.response.data.error.indexOf("name")){
+                setNameError(err.response.data.error)
+            }else if(err.response.data.err.indexOf("surname")){
+                setSurnameError(err.response.data.error)
+            }else if(err.response.data.err.indexOf("password")){
+                setPassword(err.response.data.error)
+            }else if(err.response.data.err.indexOf("email")){
+                setEmailError(err.response.data.error)
+            }else if(err.response.data.err.indexOf("city")){
+                setCityError(err.response.data.error)
+            }else if(err.response.data.err.indexOf("street")){
+                setStreetError(err.response.data.error)
+            }else if(err.response.data.err.indexOf("homeNumber")){
+                setHomeNumberError(err.response.data.error)
+            }else if(err.response.data.err.indexOf("buildingNumber")){
+                setBuildingNumber(err.response.data.error)
+            }else if(err.response.data.err.indexOf("phoneNumber")){
+                setPhoneNumberError(err.response.data.error)
+            }
         });
+        if(data){
+            console.log("data");
+        }
     }
     if(!isOpen) return null;
     return ReactDOM.createPortal(
@@ -184,14 +207,24 @@ const AccountMenu = ({isOpen, setIsOpen}) =>{
                                     required={true}/>
                                 <FormInput 
                                     type={"text"} 
-                                    placeholder={"Numer domu"}
+                                    placeholder={"Numer budynku"}
+                                    value={buildingNumber} 
+                                    setValue={setBuildingNumber} 
+                                    externalError={buildingNumberError}
+                                    errorMsg={"Numer budynkujest niepoprawny"}
+                                    regExp={/^[0-9]{1,10}$/} 
+                                    required={true}
+                                />      
+                                <FormInput 
+                                    type={"text"} 
+                                    placeholder={"Numer mieszkania (Opcjonalne)"}
                                     value={homeNumber} 
                                     setValue={setHomeNumber} 
                                     externalError={homeNumberError}
-                                    errorMsg={"Numer domu jest niepoprawny"}
+                                    errorMsg={"Numer mieszkania jest niepoprawny"}
                                     regExp={/^[0-9]{1,10}$/} 
-                                    required={true}
-                                />                   
+                                    required={false}
+                                />               
                             </div>
                         }
                         {step === 3 && 
@@ -233,7 +266,7 @@ const AccountMenu = ({isOpen, setIsOpen}) =>{
                                 >Wróć</button>
                                 <button 
                                     className="orderFormButton" 
-                                    onClick={() => setStep(step+1)} 
+                                    onClick={step === 3 ? () => handleRegister() : () => setStep(step+1)} 
                                 >{step ===3 ? "Zarejestruj" : "Dalej"}</button>
                             </div>}
                         </div>
