@@ -66,6 +66,11 @@ const AccountMenu = ({isOpen, setIsOpen}) =>{
             navigate("/", {replace: true})
         }
     }
+    const handleRegister = async () => {
+        const {data} = await axios.post("/auth/register", {name,surname,email,password,street,city,phoneNumber,buildingNumber: homeNumber}).catch(err => {
+
+        });
+    }
     if(!isOpen) return null;
     return ReactDOM.createPortal(
         <div className="accountMenuWrapper">  
