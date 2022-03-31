@@ -51,7 +51,9 @@ const AccountMenu = ({isOpen, setIsOpen}) =>{
             setIsLoginOpen(false);
             resetEmail();
             resetPassword();
-            navigate("/admin/products", {replace: true})
+            if(data.user.role === "ADMIN"){
+                navigate("/admin/products", {replace: true})
+            }
         }
     }
     const handleLogout = async () => {
