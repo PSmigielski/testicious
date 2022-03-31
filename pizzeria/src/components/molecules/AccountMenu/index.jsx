@@ -89,7 +89,7 @@ const AccountMenu = ({isOpen, setIsOpen}) =>{
             }else if(err.response.data.err.indexOf("homeNumber")!= -1){
                 setHomeNumberError(err.response.data.error)
             }else if(err.response.data.err.indexOf("buildingNumber")!= -1){
-                setBuildingNumber(err.response.data.error)
+                setBuildingNumberError(err.response.data.error)
             }else if(err.response.data.err.indexOf("phoneNumber")!= -1){
                 setPhoneNumberError(err.response.data.error)
             }
@@ -215,7 +215,7 @@ const AccountMenu = ({isOpen, setIsOpen}) =>{
                                     value={buildingNumber} 
                                     setValue={setBuildingNumber} 
                                     externalError={buildingNumberError}
-                                    errorMsg={"Numer budynkujest niepoprawny"}
+                                    errorMsg={"Numer budynku jest niepoprawny"}
                                     regExp={/^[0-9]{1,10}$/} 
                                     required={true}
                                 />      
