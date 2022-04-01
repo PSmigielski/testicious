@@ -13,10 +13,6 @@ const Navbar = () => {
           to: "/menu"
       },
       {
-          name: "Restauracje",
-          to: "/restaurants"
-      },
-      {
           name: "Pizza dnia",
           to: '/pizza-of-the-day'
       },

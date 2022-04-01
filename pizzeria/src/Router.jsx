@@ -8,6 +8,7 @@ import Contact from "./pages/Contact";
 import PizzaOfTheDay from "./pages/PizzaOfTheDay";
 import Cart from "./pages/Cart";
 import RequireAuth from "./components/organisms/RequireAuth";
+
 const Router = () => {
 
   return(
@@ -26,7 +27,7 @@ const Router = () => {
           <Route path="/admin/toppings" element={<RequireAuth><div>dodatki</div></RequireAuth>}/>
           <Route path="/admin/categories" element={<RequireAuth><div>kategorie</div></RequireAuth>}/>
         </Route>
-        <Route path="*" element={<div>404</div>}/>
+        <Route path="*" element={<div className="error">404</div>}/>
       </Routes>
     </BrowserRouter>
   )
