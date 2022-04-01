@@ -5,6 +5,7 @@ import Router from './Router';
 import axios from "axios";
 import { AuthProvider } from './contexts/AuthContext';
 axios.defaults.baseURL = process.env.REACT_APP_API_URL;
+axios.defaults.withCredentials = true
 ReactDOM.render(
   <React.StrictMode>
     <AuthProvider>

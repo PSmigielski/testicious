@@ -5,6 +5,7 @@ import FormInput from "../../atoms/FormInput";
 import axios from "axios";
 import "./index.css";
 import { AuthContext } from "../../../contexts/AuthContext";
+import { useNavigate } from "react-router-dom";
 
 
 const AccountMenu = ({isOpen, setIsOpen}) =>{
@@ -19,7 +20,9 @@ const AccountMenu = ({isOpen, setIsOpen}) =>{
     const [city, setCity, cityError, setCityError, resetCity] = useInput("", "");
     const [street, setStreet, streetError, setStreetError, resetStreet] = useInput("", "");
     const [homeNumber, setHomeNumber, homeNumberError, setHomeNumberError, resetHomeNumber] = useInput("", "");
+    const [buildingNumber, setBuildingNumber, buildingNumberError, setBuildingNumberError, resetBuildingNumber] = useInput("", "");
     const [step, setStep] = useState(1)
+    const navigate = useNavigate();
     const handleLoginClose = () => {
         resetEmail();
         resetPassword();
@@ -35,6 +38,7 @@ const AccountMenu = ({isOpen, setIsOpen}) =>{
         resetCity();
         resetStreet();
         resetHomeNumber();
+        resetBuildingNumber();
         setIsRegisterOpen(false);
     }
     const authContext = useContext(AuthContext);
@@ -49,12 +53,49 @@ const AccountMenu = ({isOpen, setIsOpen}) =>{
             setIsLoginOpen(false);
             resetEmail();
             resetPassword();
+            if(data.user.role === "ADMIN"){
+                navigate("/admin/products", {replace: true})
+            }
         }
     }
     const handleLogout = async () => {
-        const data = axios.post("/auth/logout", {withCredentials: true})
+        const data = await axios.post("/auth/logout", {withCredentials: true}).catch(err => {
+            console.log(err);
+        });
+        console.log(data);
         if(data){
             authContext.dispatch({type: "RESET"});
+            navigate("/", {replace: true})
+        }
+    }
+    const handleRegister = async () => {
+        let userData = {name,surname,email,password,street,city,phoneNumber,buildingNumber: parseInt(buildingNumber)}
+        if(homeNumber){
+            userData["homeNumber"] =parseInt(homeNumber)
+        }
+        const {data} = await axios.post("/auth/register", userData).catch(err => {
+            if(err.response.data.error.indexOf("name") != -1){
+                setNameError(err.response.data.error)
+            }else if(err.response.data.err.indexOf("surname") != -1){
+                setSurnameError(err.response.data.error)
+            }else if(err.response.data.err.indexOf("password") != -1){
+                setPassword(err.response.data.error)
+            }else if(err.response.data.err.indexOf("email") != -1){
+                setEmailError(err.response.data.error)
+            }else if(err.response.data.err.indexOf("city") != -1){
+                setCityError(err.response.data.error)
+            }else if(err.response.data.err.indexOf("street") != -1){
+                setStreetError(err.response.data.error)
+            }else if(err.response.data.err.indexOf("homeNumber")!= -1){
+                setHomeNumberError(err.response.data.error)
+            }else if(err.response.data.err.indexOf("buildingNumber")!= -1){
+                setBuildingNumberError(err.response.data.error)
+            }else if(err.response.data.err.indexOf("phoneNumber")!= -1){
+                setPhoneNumberError(err.response.data.error)
+            }
+        });
+        if(data){
+            alert("Zostałeś zarejestrowany. Sprawdź swój email");
         }
     }
     if(!isOpen) return null;
@@ -170,14 +211,24 @@ const AccountMenu = ({isOpen, setIsOpen}) =>{
                                     required={true}/>
                                 <FormInput 
                                     type={"text"} 
-                                    placeholder={"Numer domu"}
+                                    placeholder={"Numer budynku"}
+                                    value={buildingNumber} 
+                                    setValue={setBuildingNumber} 
+                                    externalError={buildingNumberError}
+                                    errorMsg={"Numer budynku jest niepoprawny"}
+                                    regExp={/^[0-9]{1,10}$/} 
+                                    required={true}
+                                />      
+                                <FormInput 
+                                    type={"text"} 
+                                    placeholder={"Numer mieszkania (Opcjonalne)"}
                                     value={homeNumber} 
                                     setValue={setHomeNumber} 
                                     externalError={homeNumberError}
-                                    errorMsg={"Numer domu jest niepoprawny"}
+                                    errorMsg={"Numer mieszkania jest niepoprawny"}
                                     regExp={/^[0-9]{1,10}$/} 
-                                    required={true}
-                                />                   
+                                    required={false}
+                                />               
                             </div>
                         }
                         {step === 3 && 
@@ -219,7 +270,7 @@ const AccountMenu = ({isOpen, setIsOpen}) =>{
                                 >Wróć</button>
                                 <button 
                                     className="orderFormButton" 
-                                    onClick={() => setStep(step+1)} 
+                                    onClick={step === 3 ? () => handleRegister() : () => setStep(step+1)} 
                                 >{step ===3 ? "Zarejestruj" : "Dalej"}</button>
                             </div>}
                         </div>

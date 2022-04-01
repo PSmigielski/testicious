@@ -1,4 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Maven+Pro&display=swap');
+
 .orderFormWrapper{
     position: absolute;
     top: 0px;
@@ -10,10 +11,11 @@
     background-color: rgba(25, 34, 43, 0.35);
 }
 .orderFormBody{
-    background: linear-gradient(223.14deg, rgba(0, 0, 0, 0.2) 0%, rgba(0, 0, 0, 0.114583) 32.29%, rgba(221, 50, 30, 0.2) 97.46%, rgba(0, 0, 0, 0) 100%), #19222B;
+    /* background: linear-gradient(223.14deg, rgba(0, 0, 0, 0.2) 0%, rgba(0, 0, 0, 0.114583) 32.29%, rgba(221, 50, 30, 0.2) 97.46%, rgba(0, 0, 0, 0) 100%), #19222B; */
     border-radius: 15px;
     width: 635px;
     height: 655px;
+    transition: all 3.5s linear;
 }
 .orderFormHeader{
     font-size: 2rem;
@@ -90,4 +92,21 @@
     height: 64px;
     font-size: 24px;
     cursor: pointer;
+}
+
+.paymentButton{
+    width: 20%;
+    height: 50px;
+    font-weight: bold;
+    transform: translate(220px);
+
+}
+
+.bottomCol1 > p{
+    align-items: center;
+    color: rgba(39, 153, 29, 1);
+    font-size: 25px;
+    font-weight: bold;
+    transform: translate(190px);
+    
 }

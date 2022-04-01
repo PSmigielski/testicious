@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import useLocallyPersistedReducer from "../hooks/useLocallyPresistedReducer";
 
 export const AuthContext = React.createContext();
@@ -15,7 +15,9 @@ const reducer = (prevState, action) => {
 }
 
 export const AuthProvider = ({children}) => {
-    const [state, dispatch] = useLocallyPersistedReducer(reducer, {id: null, email: null, role: null})
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const [isAdmin, setItAdmin] = useState(false);
+    const [state, dispatch] = useLocallyPersistedReducer(reducer, {id: null, email: null, role: null}, "user")
     return ( <AuthContext.Provider
         value={{
             user: state,
