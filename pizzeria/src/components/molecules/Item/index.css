@@ -1,0 +1,46 @@
+.option{
+    width: 200px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 10px;
+}
+.itemImg{
+    width: 200px;
+    height: auto;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #464E55;
+}
+.optionDivider{
+    width: 100%;
+    color: #464E55;
+}
+.compsList{
+    height: 4.5rem;
+    text-align: center;
+    padding: 10px 0px 10px 0px;
+    border-top: 1px solid #464E55;
+    border-bottom: 1px solid #464E55;
+}
+.itemButton{
+    width: 45%;
+    height: 40px;
+    font-size: 20px;
+    color: var(--border);
+}
+.mainWrap{
+    width:66%;
+    padding-left: 20px;
+}
+.price{
+    border-bottom: 1px solid #464E55;
+    width: 100%;
+    text-align: center;
+}
+.buttons{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 12px;
+}

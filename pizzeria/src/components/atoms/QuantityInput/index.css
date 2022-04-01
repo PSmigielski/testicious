@@ -1,0 +1,39 @@
+.quantityInputWrapper{
+    width: 45%;
+    display: flex;
+    align-items: center;
+    height: 40px;
+    justify-content: space-around;
+}
+.quantityButton{
+    width: 30%;
+    height: 100%;
+    font-weight: bold;
+    color: var(--border);
+    cursor: pointer;
+}
+.quantityDisplay{
+    width: 40%;
+    height: 100%;
+    text-align: center;
+}
+.quantityDisplay::-webkit-outer-spin-button,
+.quantityDisplay::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
+}
+
+input{
+  text-align: center;
+  font-weight: bold;
+  color: var(--border);
+  font-size: 1rem;
+  border-radius: 7px;
+  border-style: none;
+}
+ 

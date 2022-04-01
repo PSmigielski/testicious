@@ -19,3 +19,13 @@ body{
 :root{
     --border: #474E55;
 }
+
+.error{
+    display: grid;
+    place-content: center;
+    width: 100%;
+    height: 100%;
+    font-size: 10rem;
+    font-family: "Maven Pro";
+    color: #fff;
+}

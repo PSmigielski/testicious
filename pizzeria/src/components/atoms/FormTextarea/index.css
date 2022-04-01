@@ -1,0 +1,19 @@
+textarea{
+    resize: none;
+}
+.formTextarea{
+    font-family: "Maven Pro";
+    border:3px solid transparent;
+    border-radius: 10px;
+    max-width: 300px;
+    max-height: 200px;
+    font-size: 20px;
+    text-align: left;
+    padding-left: 10px;
+}
+.formTextareaWrapper{
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    flex-direction: column;
+}

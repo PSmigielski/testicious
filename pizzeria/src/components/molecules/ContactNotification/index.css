@@ -1,0 +1,47 @@
+.notificationWrapper{
+    position: absolute;
+    background-color: rgba(25, 34, 43, 0.35);
+    top: 0px;
+    width: 100%;
+    height: 100%; 
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.notificationBody{
+    background: linear-gradient(223.14deg, rgba(0, 0, 0, 0.2) 0%, rgba(0, 0, 0, 0.114583) 32.29%, rgba(221, 50, 30, 0.2) 97.46%, rgba(0, 0, 0, 0) 100%), #19222B;
+    border-radius: 15px;
+    width: 635px;
+    height: 200px;
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    flex-direction: column;
+    font-size: 24px;
+    color: white;
+    box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.75);
+}
+.notificationButtons{
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    width: 80%;
+}
+.notificationLink{
+    width: 30%;
+    height: 48px;
+}
+.notificationLink>.notificationButton{
+    width: 100%;
+    height: 100%;
+}
+.notificationButton{
+    width: 30%;
+    height: 48px;
+    font-size: 16px;
+}
+button{
+    color: var(--border);
+    border-radius: 7px;
+    border-style: none;
+}

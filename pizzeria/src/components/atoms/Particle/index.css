@@ -1,0 +1,10 @@
+.particle{
+    position: absolute;
+    width: 50px;
+    height: auto;
+    box-sizing: content-box;
+    --x: 0px;
+    --y: 0px;
+    transform: translate(var(--x),var(--y));
+    transition: all 3s linear;
+}
