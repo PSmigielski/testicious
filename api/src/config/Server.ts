@@ -30,7 +30,6 @@ class Server {
     }
     private setupControllers() {
         this.controllers.forEach((controller) => {
-            console.log(`${this.pathPrefix}${controller.path}`);
             this.app.use(`${this.pathPrefix}${controller.path}`, controller.setRoutes());
         });
     }
@@ -46,6 +45,9 @@ class Server {
         this.errorHandlers.forEach((errorHandler) => {
             this.app.use(errorHandler);
         });
+    }
+    public getApp() {
+        return this.app;
     }
     public startServer() {
         this.app.listen(process.env.PORT, () =>

@@ -57,13 +57,13 @@ class User extends Model {
     public static async login({ email, password }: { email: string; password: string }) {
         const user = await User.getUserByEmail(email);
         if (!user) {
-            throw new ApiErrorException("Wrong credentials", 403);
+            throw new ApiErrorException("Wrong credentials", 401);
         }
         if (!user.isVerified) {
             throw new ApiErrorException("user is not verified", 401);
         }
         if (!User.checkPassword(password, user)) {
-            throw new ApiErrorException("Wrong credentials", 403);
+            throw new ApiErrorException("Wrong credentials", 401);
         }
         const refreshToken = await new RefreshToken(user.id).createToken();
         const token = jwt.sign(
@@ -246,6 +246,13 @@ class User extends Model {
             });
         const emails = users.map((el) => el.email);
         return emails;
+    }
+    public static async remove(id: string) {
+        const prisma = User.getPrisma();
+        const removedUser = await prisma.user.delete({ where: { id } }).catch((err) => {
+            throw PrismaException.createException(err, "User");
+        });
+        return removedUser;
     }
 }
 

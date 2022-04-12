@@ -40,7 +40,7 @@ class AuthController extends Controller {
         },
         {
             path: "/verify/:requestId",
-            method: Methods.POST,
+            method: Methods.GET,
             handler: this.verify,
             localMiddleware: [checkUuid("requestId")],
         },
@@ -58,25 +58,25 @@ class AuthController extends Controller {
         },
         {
             path: "/reset/:requestId",
-            method: Methods.POST,
+            method: Methods.PUT,
             handler: this.reset,
             localMiddleware: [checkUuid("requestId"), schemaValidator("/../../schemas/reset.schema.json")],
         },
         {
             path: "/edit",
-            method: Methods.POST,
+            method: Methods.PUT,
             handler: this.editAccountData,
             localMiddleware: [checkJwt, schemaValidator("/../../schemas/editAccount.schema.json")],
         },
         {
             path: "/edit/password",
-            method: Methods.POST,
+            method: Methods.PUT,
             handler: this.editPassword,
             localMiddleware: [checkJwt, schemaValidator("/../../schemas/editPassword.schema.json")],
         },
         {
             path: "/edit/role/:id",
-            method: Methods.POST,
+            method: Methods.PUT,
             handler: this.changeRole,
             localMiddleware: [
                 checkJwt,
