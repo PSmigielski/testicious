@@ -7,8 +7,6 @@
             "maxLength": 100
         }
     },
-    "required": [
-        "name"
-    ],
+    "required": ["name"],
     "additionalProperties": false
 }

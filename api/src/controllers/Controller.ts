@@ -1,28 +1,28 @@
 import { Router } from "express";
 import IRoute from "../types/IRoute";
 
-abstract class Controller{
+abstract class Controller {
     private router: Router = Router();
     public abstract path: string;
     protected readonly routes: Array<IRoute> = [];
-    public setRoutes(){
+    public setRoutes() {
         for (const route of this.routes) {
             switch (route.method) {
-                case 'GET':
+                case "GET":
                     this.router.get(route.path, route.localMiddleware, route.handler);
                     break;
-                case 'POST':
+                case "POST":
                     this.router.post(route.path, route.localMiddleware, route.handler);
                     break;
-                case 'PUT':
+                case "PUT":
                     this.router.put(route.path, route.localMiddleware, route.handler);
                     break;
-                case 'DELETE':
+                case "DELETE":
                     this.router.delete(route.path, route.localMiddleware, route.handler);
                     break;
                 default:
-                    console.log("Route setup failed")
-            };
+                    console.log("Route setup failed");
+            }
         }
         return this.router;
     }

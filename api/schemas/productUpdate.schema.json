@@ -12,14 +12,14 @@
             "maximum": 500
         },
         "toppings": {
-            "type":"array",
+            "type": "array",
             "minItems": 0
         },
-        "imageUrl":{
+        "imageUrl": {
             "type": "string",
             "maxLength": 200
         }
     },
-    "minProperties":1,
+    "minProperties": 1,
     "additionalProperties": false
 }

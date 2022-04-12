@@ -12,9 +12,6 @@
             "maxLength": 150
         }
     },
-    "required": [
-        "email",
-        "password"
-    ],
+    "required": ["email", "password"],
     "additionalProperties": false
 }

@@ -5,11 +5,11 @@ const prismaErrorHandler = (err: Error, req: Request, res: Response, next: NextF
     if (res.headersSent) {
         return next(err);
     }
-    if(err instanceof PrismaException){
+    if (err instanceof PrismaException) {
         return res.status(err.getStatusCode()).json({ error: err.getErrorMessage() });
-    }else{
+    } else {
         next(err);
     }
-}
+};
 
 export default prismaErrorHandler;

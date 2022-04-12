@@ -12,9 +12,6 @@
             "maximum": 500
         }
     },
-    "required": [
-        "name",
-        "price"
-    ],
+    "required": ["name", "price"],
     "additionalProperties": false
 }

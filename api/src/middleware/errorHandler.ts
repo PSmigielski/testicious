@@ -8,6 +8,6 @@ const errorHandler = (err: Error, req: Request, res: Response, next: NextFunctio
         return next(err);
     }
     return res.status(err instanceof ApiErrorException ? err.getCode() : 500).json({ error: err.message });
-}
+};
 
 export default errorHandler;
