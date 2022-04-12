@@ -10,7 +10,7 @@ const productRouter = express.Router();
 
 const productController = new ProductController();
 
-productRouter.post("/:categoryId", checkJwt, checkRole(Roles.ADMIN), checkUuid("categoryId"),schemaValidator("/../../schemas/product.schema.json"), productController.create.bind(productController));
+productRouter.post("/:categoryId", [checkJwt, checkRole(Roles.ADMIN), checkUuid("categoryId"),schemaValidator("/../../schemas/product.schema.json")], productController.create.bind(productController));
 productRouter.put("/:categoryId/:id", checkJwt, checkRole(Roles.ADMIN), checkUuid(["categoryId", "id"]), schemaValidator("/../../schemas/productUpdate.schema.json"), productController.update.bind(productController));
 productRouter.get("", productController.fetch.bind(productController));
 productRouter.delete("/:id", checkJwt, checkRole(Roles.ADMIN), checkUuid("id"),productController.remove.bind(productController));

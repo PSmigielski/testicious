@@ -1,13 +1,87 @@
 import { NextFunction, Request, Response } from "express";
 import ApiErrorException from "../exceptions/ApiErrorException";
+import checkJwt from "../middleware/checkJwt";
+import checkRole from "../middleware/checkRole";
+import checkUuid from "../middleware/checkUuid";
+import schemaValidator from "../middleware/schemaValidator";
 import Cart from "../models/Cart.model";
 import ResetPasswordRequest from "../models/ResetPasswordRequest.model";
 import User from "../models/User.model";
 import VerifyRequest from "../models/VerifyRequest.model";
 import MailerService from "../services/MailerService";
 import EditData from "../types/EditData";
+import { Methods } from "../types/Methods";
+import Roles from "../types/Roles";
+import Controller from "./Controller";
 
-class AuthController {
+class AuthController extends Controller{
+    constructor(){
+        super();
+    }
+    path = "/auth";
+    routes = [
+        {
+            path: '/login',
+            method: Methods.POST,
+            handler: this.login,
+            localMiddleware: [schemaValidator("/../../schemas/login.schema.json")]
+        },
+        {
+            path: '/register',
+            method: Methods.POST,
+            handler: this.register,
+            localMiddleware: [schemaValidator("/../../schemas/register.schema.json")]
+        },
+        {
+            path: '/logout',
+            method: Methods.POST,
+            handler: this.logout,
+            localMiddleware: [checkJwt]
+        },
+        {
+            path: '/verify/:requestId',
+            method: Methods.POST,
+            handler: this.verify,
+            localMiddleware: [checkUuid("requestId")]
+        },
+        {
+            path: '/refresh',
+            method: Methods.POST,
+            handler: this.refreshBearerToken,
+            localMiddleware: []
+        },
+        {
+            path: '/forget',
+            method: Methods.POST,
+            handler: this.sendResetRequest,
+            localMiddleware: [schemaValidator("/../../schemas/forget.schema.json")]
+        },
+        {
+            path: '/reset/:requestId',
+            method: Methods.POST,
+            handler: this.reset,
+            localMiddleware: [checkUuid("requestId"), schemaValidator("/../../schemas/reset.schema.json")]
+        },
+        {
+            path: '/edit',
+            method: Methods.POST,
+            handler: this.editAccountData,
+            localMiddleware: [checkJwt, schemaValidator("/../../schemas/editAccount.schema.json")]
+        },
+        {
+            path: '/edit/password',
+            method: Methods.POST,
+            handler: this.editPassword,
+            localMiddleware: [checkJwt, schemaValidator("/../../schemas/editPassword.schema.json")]
+        },
+        {
+            path: '/edit/role/:id',
+            method: Methods.POST,
+            handler: this.changeRole,
+            localMiddleware: [checkJwt, checkRole(Roles.ADMIN), checkUuid("id"),schemaValidator("/../../schemas/changeRole.schema.json")]
+        },
+
+    ];
     public async register(req: Request, res: Response, next: NextFunction) {
         const data = req.body;
         const user = await new User(data).createUser().catch(next);
