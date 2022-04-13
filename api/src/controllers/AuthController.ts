@@ -79,9 +79,9 @@ class AuthController extends Controller {
             method: Methods.PUT,
             handler: this.changeRole,
             localMiddleware: [
+                checkUuid("id"),
                 checkJwt,
                 checkRole(Roles.ADMIN),
-                checkUuid("id"),
                 schemaValidator("/../../schemas/changeRole.schema.json"),
             ],
         },

@@ -109,7 +109,7 @@ class User extends Model {
             const refTokens = await RefreshToken.getTokens(decoded.id);
             const refToken = refTokens.find((el) => el.token == token);
             if (refTokens.length === 0 || typeof refToken == "undefined") {
-                throw new ApiErrorException("no refresh token found", 403);
+                throw new ApiErrorException("no refresh token found", 401);
             } else {
                 const newToken: string = jwt.sign(
                     {
@@ -176,8 +176,6 @@ class User extends Model {
                     throw PrismaException.createException(err, "User");
                 });
             return true;
-        } else {
-            return false;
         }
     }
     private static checkPassword(password: string, user: IUser) {
