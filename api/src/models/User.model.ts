@@ -14,7 +14,7 @@ class User extends Model {
     private name: string;
     private surname: string;
     private phoneNumber: string;
-    private plainPassword: string;
+    private password: string;
     private email: string;
     private city: string;
     private homeNumber: number | undefined;
@@ -26,15 +26,14 @@ class User extends Model {
         this.name = name;
         this.surname = surname;
         this.phoneNumber = phoneNumber;
-        this.plainPassword = password;
+        this.password = password;
         (this.city = city),
             (this.street = street),
             (this.homeNumber = homeNumber ? homeNumber : undefined),
             (this.buildingNumber = buildingNumber);
     }
-    public async createUser() {
+    public async create() {
         const prisma = User.getPrisma();
-        const salt = randomBytes(32).toString("hex"); //2chars at one byte
         const user = await prisma.user
             .create({
                 data: {
@@ -42,7 +41,7 @@ class User extends Model {
                     name: this.name,
                     surname: this.surname,
                     phoneNumber: this.phoneNumber,
-                    password: `${salt}:${scryptSync(this.plainPassword, salt, 64).toString("hex")}`,
+                    password: this.password,
                     street: this.street,
                     buildingNumber: this.buildingNumber,
                     city: this.city,
@@ -54,79 +53,17 @@ class User extends Model {
             });
         return user;
     }
-    public static async login({ email, password }: { email: string; password: string }) {
-        const user = await User.getUserByEmail(email);
-        if (!user) {
-            throw new ApiErrorException("Wrong credentials", 401);
-        }
-        if (!user.isVerified) {
-            throw new ApiErrorException("user is not verified", 401);
-        }
-        if (!User.checkPassword(password, user)) {
-            throw new ApiErrorException("Wrong credentials", 401);
-        }
-        const refreshToken = await new RefreshToken(user.id).createToken();
-        const token = jwt.sign(
-            { id: user.id, email, role: user.role, refTokenId: refreshToken.id },
-            process.env.JWT_SECRET as string,
-            { expiresIn: 60 * 15 },
-        );
-        const tokenData = jwt.decode(token);
-        const refreshTokenData = jwt.decode(refreshToken.token);
-        if (typeof tokenData != "string" && typeof refreshTokenData != "string") {
-            return {
-                user,
-                jwt: { token, exp: tokenData?.exp },
-                refreshToken: { token: refreshToken.token, exp: refreshTokenData?.exp },
-            };
-        }
-    }
-    public static async logout(refTokenId: string) {
-        const refToken = await RefreshToken.deleteToken(refTokenId);
-        return true;
-    }
     public static async verify(id: string) {
         const prisma = User.getPrisma();
-        const request = await VerifyRequest.getUniqueVerifyRequest(id);
-        if (request) {
-            const updatedUser = await prisma.user
-                .update({
-                    where: { id: request.user?.id },
-                    data: { isVerified: true },
-                })
-                .catch((err) => {
-                    throw PrismaException.createException(err, "User");
-                });
-            const deletedVerifyRequest = await VerifyRequest.delete(request.id);
-            return true;
-        } else {
-            throw new ApiErrorException("request with this id does not exist", 404);
-        }
-    }
-    public static async refreshBearerToken(token: string) {
-        const decoded = jwt.verify(token, process.env.JWT_SECRET as string);
-        if (typeof decoded != "string") {
-            const refTokens = await RefreshToken.getTokens(decoded.id);
-            const refToken = refTokens.find((el) => el.token == token);
-            if (refTokens.length === 0 || typeof refToken == "undefined") {
-                throw new ApiErrorException("no refresh token found", 401);
-            } else {
-                const newToken: string = jwt.sign(
-                    {
-                        id: decoded.id,
-                        email: refToken.user?.email,
-                        role: refToken.user?.role,
-                        refTokenId: refToken?.id,
-                    },
-                    process.env.JWT_SECRET as string,
-                    { expiresIn: 60 * 15 },
-                );
-                const tokenData = jwt.decode(newToken);
-                if (typeof tokenData != "string") {
-                    return { token: newToken, exp: tokenData?.exp };
-                }
-            }
-        }
+        await prisma.user
+            .update({
+                where: { id },
+                data: { isVerified: true },
+            })
+            .catch((err) => {
+                throw PrismaException.createException(err, "User");
+            });
+        return true;
     }
     public static async getUserById(userId: string) {
         const prisma = User.getPrisma();
@@ -160,42 +97,12 @@ class User extends Model {
             });
         return user;
     }
-    public static async resetPassword(newPassword: string, requestId: string) {
+    public static async editPassword(password: string, id: string) {
         const prisma = User.getPrisma();
-        const request = await ResetPasswordRequest.getRequest(requestId);
-        if (request) {
-            const salt = randomBytes(32).toString("hex");
-            const hashedPassword = `${salt}:${scryptSync(newPassword, salt, 64).toString("hex")}`;
-            const result = await ResetPasswordRequest.removeRequest(requestId);
-            const updatedUser = await prisma.user
-                .update({
-                    data: { password: hashedPassword },
-                    where: { id: request?.userId },
-                })
-                .catch((err) => {
-                    throw PrismaException.createException(err, "User");
-                });
-            return true;
-        }
-    }
-    private static checkPassword(password: string, user: IUser) {
-        const [salt, key] = user.password.split(":");
-        const hashedBuffer = scryptSync(password, salt, 64);
-        const keyBuffer = Buffer.from(key, "hex");
-        return timingSafeEqual(hashedBuffer, keyBuffer);
-    }
-    public static async editPassword(password: string, newPassword: string, userId: string) {
-        const prisma = User.getPrisma();
-        const user = await User.getUserById(userId);
-        if (!User.checkPassword(password, user)) {
-            throw new ApiErrorException("Wrong old password", 403);
-        }
-        const salt = randomBytes(32).toString("hex");
-        const hashedPassword = `${salt}:${scryptSync(newPassword, salt, 64).toString("hex")}`;
-        await prisma.user
+        const updatedUser = await prisma.user
             .update({
-                data: { password: hashedPassword },
-                where: { id: userId },
+                data: { password },
+                where: { id },
             })
             .catch((err) => {
                 throw PrismaException.createException(err, "User");

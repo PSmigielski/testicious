@@ -8,6 +8,7 @@ import Cart from "../models/Cart.model";
 import ResetPasswordRequest from "../models/ResetPasswordRequest.model";
 import User from "../models/User.model";
 import VerifyRequest from "../models/VerifyRequest.model";
+import AuthService from "../services/AuthService";
 import MailerService from "../services/MailerService";
 import EditData from "../types/EditData";
 import { Methods } from "../types/Methods";
@@ -15,8 +16,10 @@ import Roles from "../types/Roles";
 import Controller from "./Controller";
 
 class AuthController extends Controller {
+    private authService: AuthService;
     constructor() {
         super();
+        this.authService = new AuthService();
     }
     path = "/auth";
     routes = [
@@ -85,29 +88,30 @@ class AuthController extends Controller {
                 schemaValidator("/../../schemas/changeRole.schema.json"),
             ],
         },
+        {
+            path: "/remove",
+            method: Methods.DELETE,
+            handler: this.removeAccount,
+            localMiddleware: [checkJwt],
+        },
     ];
     public async register(req: Request, res: Response, next: NextFunction) {
         const data = req.body;
-        const user = await new User(data).createUser().catch(next);
+        const user = await new AuthService().createAccount(data).catch(next);
         if (user) {
-            await new Cart(user.id).create().catch(next);
-            const request = await VerifyRequest.create(user.id).catch(next);
-            if (request) {
-                MailerService.sendVerificationMail(user.email, request.id);
-                return res.json({ message: "You are now registered! Check your email to verify your account" });
-            }
+            return res.json({ message: "You are now registered! Check your email to verify your account" });
         }
     }
     public async verify(req: Request, res: Response, next: NextFunction) {
         const { requestId } = req.params;
-        const result = await User.verify(requestId).catch(next);
+        const result = await new AuthService().verify(requestId).catch(next);
         if (result) {
             return res.status(202).json({ message: "Email has been verified successfully" });
         }
     }
     public async login(req: Request, res: Response, next: NextFunction) {
         const { email, password } = req.body;
-        const result = await User.login({ email, password }).catch(next);
+        const result = await new AuthService().login({ email, password }).catch(next);
         if (result) {
             const tokenExp: Date = new Date();
             tokenExp.setTime((result.jwt.exp as number) * 1000);
@@ -128,7 +132,7 @@ class AuthController extends Controller {
         }
     }
     public async logout(req: Request, res: Response, next: NextFunction) {
-        const result = await User.logout(req.user?.refTokenId).catch(next);
+        const result = await new AuthService().logout(req.user?.refTokenId).catch(next);
         if (result) {
             req.user = undefined;
             return res
@@ -140,7 +144,7 @@ class AuthController extends Controller {
     }
     public async refreshBearerToken(req: Request, res: Response, next: NextFunction) {
         if (req.cookies.REFRESH_TOKEN != undefined) {
-            const newToken = await User.refreshBearerToken(req.cookies.REFRESH_TOKEN.token).catch(next);
+            const newToken = await new AuthService().refreshBearerToken(req.cookies.REFRESH_TOKEN.token).catch(next);
             if (newToken !== undefined) {
                 const tokenExp: Date = new Date();
                 tokenExp.setTime((newToken?.exp as number) * 1000);
@@ -155,21 +159,15 @@ class AuthController extends Controller {
     }
     public async sendResetRequest(req: Request, res: Response, next: NextFunction) {
         const { email } = req.body;
-        const user = await User.getUserByEmail(email).catch(next);
-        if (user) {
-            const request = await ResetPasswordRequest.create(user.id).catch(next);
-            if (request) {
-                MailerService.sendResetRequest(email, request.id);
-                return res.json({ message: "reset request has been sent" });
-            }
-        } else {
-            next(new ApiErrorException("User with this email does not exist!", 404));
+        const result = await new AuthService().sendResetRequest(email).catch(next);
+        if (result) {
+            return res.json({ message: "reset request has been sent" });
         }
     }
     public async reset(req: Request, res: Response, next: NextFunction) {
         const { newPassword } = req.body;
         const { requestId } = req.params;
-        const result = await User.resetPassword(newPassword, requestId).catch(next);
+        const result = await new AuthService().resetPassword(newPassword, requestId).catch(next);
         if (result) {
             return res.json({ message: "Password reset successfully" });
         }
@@ -183,7 +181,7 @@ class AuthController extends Controller {
     }
     public async editPassword(req: Request, res: Response, next: NextFunction) {
         const { password, newPassword } = req.body;
-        const result = await User.editPassword(password, newPassword, req.user?.id).catch(next);
+        const result = await new AuthService().editPassword(password, newPassword, req.user?.id).catch(next);
         if (result) {
             return res.status(202).json({ message: "password updated successfully" });
         }
@@ -197,6 +195,12 @@ class AuthController extends Controller {
             if (result) {
                 return res.status(202).json({ message: `User role has been changed to ${role}` });
             }
+        }
+    }
+    public async removeAccount(req: Request, res: Response, next: NextFunction) {
+        const removedUser = await User.remove(req.user?.id).catch(next);
+        if (removedUser) {
+            return res.status(202).json({ message: "User has been removed" });
         }
     }
 }

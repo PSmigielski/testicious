@@ -8,6 +8,7 @@ import prismaErrorHandler from "../middleware/prismaErrorHandler";
 import errorHandler from "../middleware/errorHandler";
 import User from "../models/User.model";
 import { PrismaClient } from "@prisma/client";
+import AuthService from "../services/AuthService";
 
 const controllers = [new AuthController()];
 const globalMiddleware = [cookieParser(), json(), cors({ credentials: true, origin: process.env.FRONTEND_URL })];
@@ -46,7 +47,7 @@ describe("user", () => {
             });
         });
         it("should fail if user is not verified", async () => {
-            const user = await new User(userRegisterInput).createUser();
+            const user = await new User(userRegisterInput).create();
             const { statusCode, body } = await supertest(app)
                 .post("/v1/api/auth/login")
                 .send({ email: userRegisterInput.email, password: userRegisterInput.password });
@@ -136,7 +137,7 @@ describe("user", () => {
                 where: { email: userRegisterInput.email },
                 select: { VerifyRequest: { select: { id: true } } },
             });
-            const { statusCode } = await supertest(app).get(`/v1/api/auth/verify/${user?.VerifyRequest?.id}`);
+            const { statusCode, body } = await supertest(app).get(`/v1/api/auth/verify/${user?.VerifyRequest?.id}`);
             expect(statusCode).toBe(202);
             await prisma.user.delete({ where: { email: userRegisterInput.email } });
         });
@@ -295,6 +296,27 @@ describe("user", () => {
                     .set("Cookie", headers["set-cookie"]);
                 expect(statusCode).toBe(202);
             });
+        });
+    });
+    describe("remove", () => {
+        it("should fail if user is not logged in", async () => {
+            const { statusCode } = await supertest(app).delete("/v1/api/auth/remove").send(userRegisterInput);
+            expect(statusCode).toBe(401);
+        });
+        it("should remove account successfully if all conditions are met", async () => {
+            const res = await new AuthService().createAccount(userRegisterInput);
+            const user = await prisma.user.findUnique({
+                where: { email: userRegisterInput.email },
+                select: { VerifyRequest: { select: { id: true } } },
+            });
+            const data = await supertest(app).get(`/v1/api/auth/verify/${user?.VerifyRequest?.id}`);
+            const { headers } = await supertest(app)
+                .post("/v1/api/auth/login")
+                .send({ email: userRegisterInput.email, password: userRegisterInput.password });
+            const { statusCode } = await supertest(app)
+                .delete("/v1/api/auth/remove")
+                .set("Cookie", headers["set-cookie"]);
+            expect(statusCode).toBe(202);
         });
     });
 });
