@@ -4,22 +4,16 @@ import checkJwt from "../middleware/checkJwt";
 import checkRole from "../middleware/checkRole";
 import checkUuid from "../middleware/checkUuid";
 import schemaValidator from "../middleware/schemaValidator";
-import Cart from "../models/Cart.model";
-import ResetPasswordRequest from "../models/ResetPasswordRequest.model";
 import User from "../models/User.model";
-import VerifyRequest from "../models/VerifyRequest.model";
 import AuthService from "../services/AuthService";
-import MailerService from "../services/MailerService";
 import EditData from "../types/EditData";
 import { Methods } from "../types/Methods";
 import Roles from "../types/Roles";
 import Controller from "./Controller";
 
 class AuthController extends Controller {
-    private authService: AuthService;
     constructor() {
         super();
-        this.authService = new AuthService();
     }
     path = "/auth";
     routes = [
