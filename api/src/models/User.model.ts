@@ -62,7 +62,7 @@ class User extends Model {
     }
     public static async getUserById(userId: string) {
         const prisma = User.getPrisma();
-        if (userId == undefined) {
+        if (!userId) {
             throw new ApiErrorException("undefined user id", 404);
         }
         const user = await prisma.user
@@ -72,7 +72,7 @@ class User extends Model {
             .catch((err) => {
                 throw PrismaException.createException(err, "User");
             });
-        if (user == undefined) {
+        if (!user) {
             throw new ApiErrorException("User with this id does not exist!", 404);
         } else {
             return user;
@@ -80,7 +80,7 @@ class User extends Model {
     }
     public static async getUserByEmail(email: string) {
         const prisma = User.getPrisma();
-        if (email == undefined) {
+        if (!email) {
             throw new ApiErrorException("undefined email", 404);
         }
         const user = await prisma.user

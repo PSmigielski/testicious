@@ -1,8 +1,30 @@
 import { NextFunction, Request, Response } from "express";
 import ApiErrorException from "../exceptions/ApiErrorException";
+import checkJwt from "../middleware/checkJwt";
+import checkUuid from "../middleware/checkUuid";
 import Cart from "../models/Cart.model";
+import { Methods } from "../types/Methods";
+import Controller from "./Controller";
 
-class CartController {
+class CartController extends Controller {
+    constructor() {
+        super();
+    }
+    path = "/carts";
+    routes = [
+        {
+            path: "",
+            method: Methods.POST,
+            handler: this.create,
+            localMiddleware: [checkJwt],
+        },
+        {
+            path: "/:cartId",
+            method: Methods.GET,
+            handler: this.getItems,
+            localMiddleware: [checkJwt, checkUuid("cartId")],
+        },
+    ];
     public async create(req: Request, res: Response, next: NextFunction) {
         const userId = req.user?.id;
         const cart = await new Cart(userId).create().catch(next);

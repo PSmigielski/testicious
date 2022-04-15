@@ -50,7 +50,7 @@ class PrismaException extends Error {
                         break;
                     default:
                         errorMessage = "Something went wrong! try again later";
-                        console.log(`[ERROR]${this.prismaMessage}`);
+                        //console.log(`[ERROR]${this.prismaMessage}`);
                         break;
                 }
                 break;
@@ -59,13 +59,13 @@ class PrismaException extends Error {
             case "PrismaClientRustPanicError":
             case "PrismaClientInitializationError":
                 errorMessage = "Something went wrong! try again later";
-                console.log(`[ERROR]${this.prismaMessage}`);
+                //console.log(`[ERROR]${this.prismaMessage}`);
                 break;
         }
         return errorMessage;
     }
     public static createException(err: Error, entityName: string) {
-        console.log(err);
+        //console.log(err);
         let errCode: string | undefined = undefined;
         let errMeta: PrismaMeta | undefined = undefined;
         if (err instanceof PrismaClientKnownRequestError) {
