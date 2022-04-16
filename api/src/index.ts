@@ -6,8 +6,9 @@ import cors from "cors";
 import prismaErrorHandler from "./middleware/prismaErrorHandler";
 import errorHandler from "./middleware/errorHandler";
 import CartController from "./controllers/CartController";
+import CartItemController from "./controllers/CartItemController";
 
-const controllers = [new AuthController(), new CartController()];
+const controllers = [new AuthController(), new CartController(), new CartItemController()];
 const globalMiddleware = [cookieParser(), json(), cors({ credentials: true, origin: process.env.FRONTEND_URL })];
 const errorHandlers = [prismaErrorHandler, errorHandler];
 new Server(controllers, globalMiddleware, errorHandlers).startServer();
