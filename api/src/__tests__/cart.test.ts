@@ -7,15 +7,17 @@ import errorHandler from "../middleware/errorHandler";
 import prismaErrorHandler from "../middleware/prismaErrorHandler";
 import cors from "cors";
 import Server from "../config/Server";
+import { PrismaClient } from "@prisma/client";
 
 const controllers = [new AuthController(), new CartController()];
 const globalMiddleware = [cookieParser(), json(), cors({ credentials: true, origin: process.env.FRONTEND_URL })];
 const errorHandlers = [prismaErrorHandler, errorHandler];
 const app = new Server(controllers, globalMiddleware, errorHandlers).getApp();
 const userLoginInput = {
-    email: "admin@pizzaPolaka.com",
+    email: "user@pizzaPolaka.com",
     password: "0O9i8u7y!",
 };
+const prisma = new PrismaClient();
 describe("cart", () => {
     describe("create", () => {
         it("should fail if user is not logged in", async () => {
@@ -26,6 +28,11 @@ describe("cart", () => {
             const { headers } = await supertest(app).post("/v1/api/auth/login").send(userLoginInput);
             const { statusCode } = await supertest(app).post("/v1/api/carts").set("Cookie", headers["set-cookie"]);
             expect(statusCode).toBe(201);
+        });
+        it("should fail if user has an active cart", async () => {
+            const { headers } = await supertest(app).post("/v1/api/auth/login").send(userLoginInput);
+            const { statusCode } = await supertest(app).post("/v1/api/carts").set("Cookie", headers["set-cookie"]);
+            expect(statusCode).toBe(409);
         });
     });
     describe("get items", () => {

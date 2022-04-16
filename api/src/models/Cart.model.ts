@@ -19,6 +19,11 @@ class Cart extends Model {
             });
         return cart;
     }
+    public static async hasActiveCart(userId: string) {
+        const prisma = Cart.getPrisma();
+        const cart = await prisma.cart.findFirst({ where: { isActive: true, userId } });
+        return cart ? true : false;
+    }
     public static async createWithoutUser(guestId: string) {
         const prisma = Cart.getPrisma();
         const cart = await prisma.cart
