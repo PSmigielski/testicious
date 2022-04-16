@@ -6,6 +6,9 @@ import { Methods } from "../types/Methods";
 import Controller from "./Controller";
 
 class CartItemController extends Controller {
+    constructor() {
+        super();
+    }
     path = "/items";
     routes = [
         {

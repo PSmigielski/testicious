@@ -1,18 +1,55 @@
 import { NextFunction, Request, Response } from "express";
+import checkJwt from "../middleware/checkJwt";
+import checkRole from "../middleware/checkRole";
+import checkUuid from "../middleware/checkUuid";
+import schemaValidator from "../middleware/schemaValidator";
 import Discount from "../models/Discount.model";
-import User from "../models/User.model";
-import MailerService from "../services/MailerService";
+import DiscountService from "../services/DiscountService";
 import IDiscount from "../types/IDiscount";
+import { Methods } from "../types/Methods";
+import Roles from "../types/Roles";
+import Controller from "./Controller";
 
-class DiscountController {
+class DiscountController extends Controller {
+    constructor() {
+        super();
+    }
+    path = "/discounts";
+    routes = [
+        {
+            path: "",
+            method: Methods.POST,
+            handler: this.create,
+            localMiddleware: [checkJwt, checkRole(Roles.ADMIN), schemaValidator("/../../schemas/discount.schema.json")],
+        },
+        {
+            path: "",
+            method: Methods.GET,
+            handler: this.fetchAll,
+            localMiddleware: [checkJwt, checkRole(Roles.ADMIN)],
+        },
+        {
+            path: "/:discountId",
+            method: Methods.PUT,
+            handler: this.edit,
+            localMiddleware: [
+                checkJwt,
+                checkRole(Roles.ADMIN),
+                checkUuid("discountId"),
+                schemaValidator("/../../schemas/discountUpdate.schema.json"),
+            ],
+        },
+        {
+            path: "/:discountId",
+            method: Methods.DELETE,
+            handler: this.remove,
+            localMiddleware: [checkJwt, checkRole(Roles.ADMIN), checkUuid("discountId")],
+        },
+    ];
     public async create(req: Request, res: Response, next: NextFunction) {
         const data: IDiscount = req.body;
-        const discount = await new Discount(data).create().catch(next);
+        const discount = await new DiscountService().create(data).catch(next);
         if (discount) {
-            const users = await User.getUserMails().catch(next);
-            if (Array.isArray(users)) {
-                MailerService.sendDiscount(users, discount.code, discount.precent, discount.expirationDate);
-            }
             return res.status(201).json({ message: "discount has been created!", discount });
         }
     }
