@@ -1,9 +1,9 @@
 import React from "react";
-import ReactDOM from "react-dom";
+import createRoot from "react-dom";
 import "./styles/index.scss";
 import Router from "./Router";
 
-ReactDOM.render(
+createRoot.render(
     <React.StrictMode>
         <Router />
     </React.StrictMode>,
