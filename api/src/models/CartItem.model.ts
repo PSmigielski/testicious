@@ -15,7 +15,6 @@ class CartItem extends Model {
         this.quantity = quantity;
     }
     public async create() {
-        const prisma = CartItem.getPrisma();
         const hasItem = await CartItem.getItemByproductId(this.productId, this.cartId);
         if (hasItem.length != 0) {
             this.quantity += hasItem[0].quantity;
@@ -23,7 +22,7 @@ class CartItem extends Model {
             const price = removedCartItem.product.price.mul(removedCartItem.quantity) as Decimal;
             await Cart.updateOverallPrice(price.mul(-1), removedCartItem.cartId);
         }
-        const item = await prisma.cartItem
+        const item = await this.prisma.cartItem
             .create({
                 data: {
                     productId: this.productId,
@@ -41,8 +40,7 @@ class CartItem extends Model {
         return item;
     }
     public static async getItemByproductId(productId: string, cartId: string) {
-        const prisma = CartItem.getPrisma();
-        const item = await prisma.cartItem
+        const item = await this.prisma.cartItem
             .findMany({
                 where: { productId, cartId },
             })
@@ -52,8 +50,7 @@ class CartItem extends Model {
         return item;
     }
     public static async getItemQuantity(id: string) {
-        const prisma = CartItem.getPrisma();
-        const cartItem = await prisma.cartItem
+        const cartItem = await this.prisma.cartItem
             .findUnique({ where: { id }, select: { quantity: true } })
             .catch((err) => {
                 throw PrismaException.createException(err, "Item");
@@ -61,8 +58,7 @@ class CartItem extends Model {
         return cartItem?.quantity;
     }
     public static async removeItem(id: string) {
-        const prisma = CartItem.getPrisma();
-        const removedItem = await prisma.cartItem
+        const removedItem = await this.prisma.cartItem
             .delete({ where: { id }, include: { product: { select: { price: true } } } })
             .catch((err) => {
                 throw PrismaException.createException(err, "Item");
@@ -70,8 +66,7 @@ class CartItem extends Model {
         return removedItem;
     }
     public static async edit(id: string, quantity: number) {
-        const prisma = CartItem.getPrisma();
-        const updatedItem = await prisma.cartItem
+        const updatedItem = await this.prisma.cartItem
             .update({ where: { id }, data: { quantity }, include: { product: { select: { price: true } } } })
             .catch((err) => {
                 throw PrismaException.createException(err, "Item");

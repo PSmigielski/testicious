@@ -9,6 +9,7 @@ import CartController from "./controllers/CartController";
 import CartItemController from "./controllers/CartItemController";
 import CategoryController from "./controllers/CategoryController";
 import DiscountController from "./controllers/DiscountController";
+import ProductController from "./controllers/ProductController";
 
 const controllers = [
     new AuthController(),
@@ -16,16 +17,12 @@ const controllers = [
     new CartItemController(),
     new CategoryController(),
     new DiscountController(),
+    new ProductController(),
 ];
 const globalMiddleware = [cookieParser(), json(), cors({ credentials: true, origin: process.env.FRONTEND_URL })];
 const errorHandlers = [prismaErrorHandler, errorHandler];
 new Server(controllers, globalMiddleware, errorHandlers).startServer();
 
-// app.use("/v1/api/products", productRouter);
-// app.use("/v1/api/carts", cartRouter);
-// app.use("/v1/api/cartItems", cartItemRouter);
 // app.use("/v1/api/toppings", toppingRouter);
-// app.use("/v1/api/categories", categoryRouter);
 // app.use("/v1/api/upload", uploadRouter);
-// app.use("/v1/api/discounts", discountRouter);
 // app.use("/v1/api/transactions", transactionRouter);

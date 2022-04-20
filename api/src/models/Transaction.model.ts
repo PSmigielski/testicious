@@ -16,7 +16,6 @@ class Transaction extends Model {
         this.discountCode = discountCode;
     }
     public async create() {
-        const prisma = Transaction.getPrisma();
         if (await Cart.isOwner(this.userId, this.cartId)) {
             const cart = await Cart.getItems(this.cartId);
             if (cart?.items.length == 0) {
@@ -33,7 +32,7 @@ class Transaction extends Model {
                     .sub(overallPrice)
                     .abs();
                 await Cart.updateOverallPrice(newPrice.mul(-1), this.cartId);
-                const transaction = await prisma.transaction
+                const transaction = await this.prisma.transaction
                     .create({
                         data: {
                             cartId: this.cartId,
@@ -83,7 +82,7 @@ class Transaction extends Model {
                     });
                 return transaction;
             } else {
-                const transaction = await prisma.transaction
+                const transaction = await this.prisma.transaction
                     .create({
                         data: {
                             cartId: this.cartId,
@@ -131,8 +130,7 @@ class Transaction extends Model {
         }
     }
     public static async createWithoutUser(data: ITransactionWithoutUserData, cartId: string) {
-        const prisma = Transaction.getPrisma();
-        const transaction = await prisma.transaction.create({
+        const transaction = await this.prisma.transaction.create({
             data: {
                 city: data.clientData.city,
                 buildingNumber: data.clientData.buildingNumber,
@@ -188,8 +186,7 @@ class Transaction extends Model {
         return transaction;
     }
     public static async show(id: string) {
-        const prisma = Transaction.getPrisma();
-        const transaction = await prisma.transaction
+        const transaction = await this.prisma.transaction
             .findUnique({
                 where: { id },
                 select: {
@@ -231,8 +228,7 @@ class Transaction extends Model {
         return transaction;
     }
     public static async isOwner(userId: string, id: string) {
-        const prisma = Transaction.getPrisma();
-        const transaction = await prisma.transaction
+        const transaction = await this.prisma.transaction
             .findUnique({ where: { id }, select: { userId: true } })
             .catch((err) => {
                 throw PrismaException.createException(err, "Transaction");
@@ -244,8 +240,7 @@ class Transaction extends Model {
         }
     }
     public static async fetchAll(userId: string) {
-        const prisma = Transaction.getPrisma();
-        const transactions = await prisma.transaction
+        const transactions = await this.prisma.transaction
             .findMany({
                 where: { userId },
                 select: {

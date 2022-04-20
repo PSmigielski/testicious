@@ -19,47 +19,51 @@ class Product extends Model {
         this.categoryId = categoryId;
         this.toppings = toppings?.map((el: string) => ({ toppingId: el }));
     }
-    public async create() {
-        const prisma = Product.getPrisma();
-        if (typeof this.toppings !== undefined) {
-            const product = await prisma.product
-                .create({
-                    data: {
-                        name: this.name,
-                        price: this.price,
-                        imageUrl: this.imageUrl,
-                        categoryId: this.categoryId,
-                        toppings: {
-                            create: this.toppings,
-                        },
-                    },
-                    include: { toppings: { select: { topping: true } } },
-                })
-                .catch((err) => {
-                    throw PrismaException.createException(err, "Product");
-                });
-            return Product.formatDbData(product);
-        } else {
-            const product = await prisma.product
-                .create({
-                    data: {
-                        imageUrl: this.imageUrl,
-                        name: this.name,
-                        price: this.price,
-                        categoryId: this.categoryId,
-                    },
-                })
-                .catch((err) => {
-                    throw PrismaException.createException(err, "Product");
-                });
-            return product;
-        }
+    public async createWithoutToppings() {
+        const product = await this.prisma.product
+            .create({
+                data: {
+                    imageUrl: this.imageUrl,
+                    name: this.name,
+                    price: this.price,
+                    categoryId: this.categoryId,
+                },
+            })
+            .catch((err) => {
+                throw PrismaException.createException(err, "Product");
+            });
+        return product;
     }
-
-    public static async fetchProducts(categoryName: string) {
-        const prisma = Product.getPrisma();
-        const products = await prisma.product
+    public async create() {
+        const product = await this.prisma.product
+            .create({
+                data: {
+                    name: this.name,
+                    price: this.price,
+                    imageUrl: this.imageUrl,
+                    categoryId: this.categoryId,
+                    toppings: {
+                        create: this.toppings,
+                    },
+                },
+                include: { toppings: { select: { topping: true } } },
+            })
+            .catch((err) => {
+                throw PrismaException.createException(err, "Product");
+            });
+        return product;
+    }
+    public static async count() {
+        return await this.prisma.product.count().catch((err) => {
+            throw PrismaException.createException(err, "Product");
+        });
+    }
+    public static async fetchProducts(categoryName: string, limit: number, page: number) {
+        const products = await this.prisma.product
             .findMany({
+                take: limit,
+                skip: page * limit,
+                orderBy: { name: "asc" },
                 where: {
                     category: {
                         name: categoryName,
@@ -70,58 +74,24 @@ class Product extends Model {
             .catch((err) => {
                 throw PrismaException.createException(err, "Product");
             });
-        const formattedProducts = new Array<PrismaProduct & { toppings: Array<ITopping & { id: string }> }>();
-        for (const el of products) {
-            formattedProducts.push(Product.formatDbData(el));
-        }
-        return formattedProducts;
+        return products;
     }
-    private static formatDbData(data: PrismaProduct & { toppings: { topping: Topping }[] }) {
-        let flatObjArr = new Array<ITopping & { id: string }>();
-        data.toppings.forEach((el) => {
-            let obj: { id: string; name: string; price: number } = { id: "", name: "", price: 0 };
-            obj.id = el.topping.id;
-            obj.name = el.topping.name;
-            obj.price = el.topping.price as unknown as number;
-            flatObjArr.push(obj);
-        });
-        let formattedObj = {
-            id: data.id,
-            name: data.name,
-            price: data.price,
-            imageUrl: data.imageUrl,
-            categoryId: data.categoryId,
-            toppings: flatObjArr,
-        };
-        return formattedObj;
-    }
-
     public static async removeProduct(id: string) {
-        const prisma = Product.getPrisma();
-        const removedProduct = await prisma.product.delete({ where: { id } }).catch((err) => {
+        const removedProduct = await this.prisma.product.delete({ where: { id } }).catch((err) => {
             throw PrismaException.createException(err, "Product");
-        });
-        await FileService.removeFile(
-            removedProduct.imageUrl.substring(removedProduct.imageUrl.indexOf("uploads/") + 8),
-            false,
-        ).catch((err) => {
-            throw err;
         });
         return removedProduct;
     }
     private static async updateToppings(toppings: string[], id: string) {
-        const prisma = Product.getPrisma();
-        await prisma.toppingsOnPizzas.deleteMany({ where: { productId: id } }).catch((err) => {
+        await this.prisma.toppingsOnPizzas.deleteMany({ where: { productId: id } }).catch((err) => {
             throw PrismaException.createException(err, "toppingsOnPizzas");
         });
         for (const toppingId of toppings) {
-            console.log(toppings);
-            const topping = await prisma.topping.findMany({ where: { id: toppingId } }).catch((err) => {
+            const topping = await this.prisma.topping.findMany({ where: { id: toppingId } }).catch((err) => {
                 throw PrismaException.createException(err, "toppingsOnPizzas");
             });
-            console.log(topping);
             if (topping.length != 0) {
-                await prisma.toppingsOnPizzas.create({ data: { toppingId, productId: id } }).catch((err) => {
+                await this.prisma.toppingsOnPizzas.create({ data: { toppingId, productId: id } }).catch((err) => {
                     throw PrismaException.createException(err, "toppingsOnPizzas");
                 });
             } else {
@@ -130,24 +100,18 @@ class Product extends Model {
         }
     }
     public static async getProductImageUrl(id: string) {
-        const prisma = Product.getPrisma();
-        const product = await prisma.product.findUnique({ where: { id }, select: { imageUrl: true } }).catch((err) => {
-            throw PrismaException.createException(err, "Product");
-        });
+        const product = await this.prisma.product
+            .findUnique({ where: { id }, select: { imageUrl: true } })
+            .catch((err) => {
+                throw PrismaException.createException(err, "Product");
+            });
         return product?.imageUrl;
     }
     public static async updateProduct({ name, price, imageUrl, toppings }: IProduct, categoryId: string, id: string) {
-        const prisma = Product.getPrisma();
         if (toppings) {
             await Product.updateToppings(toppings, id);
         }
-        const oldUrl = await Product.getProductImageUrl(id);
-        if (imageUrl && typeof oldUrl == "string" && oldUrl != imageUrl) {
-            await FileService.removeFile(oldUrl.substring(oldUrl.indexOf("uploads/") + 8), false).catch((err) => {
-                throw err;
-            });
-        }
-        const product = await prisma.product
+        const product = await this.prisma.product
             .update({
                 data: {
                     name,
@@ -167,7 +131,7 @@ class Product extends Model {
             .catch((err) => {
                 throw PrismaException.createException(err, "Product");
             });
-        return Product.formatDbData(product);
+        return product;
     }
 }
 

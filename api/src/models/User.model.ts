@@ -28,8 +28,7 @@ class User extends Model {
             (this.buildingNumber = buildingNumber);
     }
     public async create() {
-        const prisma = User.getPrisma();
-        const user = await prisma.user
+        const user = await this.prisma.user
             .create({
                 data: {
                     email: this.email,
@@ -49,8 +48,7 @@ class User extends Model {
         return user;
     }
     public static async verify(id: string) {
-        const prisma = User.getPrisma();
-        await prisma.user
+        await this.prisma.user
             .update({
                 where: { id },
                 data: { isVerified: true },
@@ -61,11 +59,10 @@ class User extends Model {
         return true;
     }
     public static async getUserById(userId: string) {
-        const prisma = User.getPrisma();
         if (!userId) {
             throw new ApiErrorException("undefined user id", 404);
         }
-        const user = await prisma.user
+        const user = await this.prisma.user
             .findUnique({
                 where: { id: userId },
             })
@@ -79,11 +76,10 @@ class User extends Model {
         }
     }
     public static async getUserByEmail(email: string) {
-        const prisma = User.getPrisma();
         if (!email) {
             throw new ApiErrorException("undefined email", 404);
         }
-        const user = await prisma.user
+        const user = await this.prisma.user
             .findUnique({
                 where: { email },
             })
@@ -93,8 +89,7 @@ class User extends Model {
         return user;
     }
     public static async editPassword(password: string, id: string) {
-        const prisma = User.getPrisma();
-        const updatedUser = await prisma.user
+        const updatedUser = await this.prisma.user
             .update({
                 data: { password },
                 where: { id },
@@ -105,8 +100,7 @@ class User extends Model {
         return true;
     }
     public static async editAccountData(data: EditData, userId: string) {
-        const prisma = User.getPrisma();
-        return await prisma.user
+        return await this.prisma.user
             .update({
                 data,
                 where: { id: userId },
@@ -127,8 +121,7 @@ class User extends Model {
             });
     }
     public static async changeRole(role: Roles, userId: string) {
-        const prisma = User.getPrisma();
-        return await prisma.user
+        return await this.prisma.user
             .update({
                 data: { role },
                 where: { id: userId },
@@ -138,8 +131,7 @@ class User extends Model {
             });
     }
     public static async getUserMails() {
-        const prisma = User.getPrisma();
-        const users = await prisma.user
+        const users = await this.prisma.user
             .findMany({ select: { email: true }, where: { role: "USER", isVerified: true } })
             .catch((err) => {
                 throw PrismaException.createException(err, "User");
@@ -148,8 +140,7 @@ class User extends Model {
         return emails;
     }
     public static async remove(id: string) {
-        const prisma = User.getPrisma();
-        const removedUser = await prisma.user.delete({ where: { id } }).catch((err) => {
+        const removedUser = await this.prisma.user.delete({ where: { id } }).catch((err) => {
             throw PrismaException.createException(err, "User");
         });
         return removedUser;

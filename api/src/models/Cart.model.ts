@@ -9,8 +9,7 @@ class Cart extends Model {
         this.userId = userId;
     }
     public async create() {
-        const prisma = Cart.getPrisma();
-        const cart = await prisma.cart
+        const cart = await this.prisma.cart
             .create({
                 data: { userId: this.userId },
             })
@@ -20,13 +19,11 @@ class Cart extends Model {
         return cart;
     }
     public static async hasActiveCart(userId: string) {
-        const prisma = Cart.getPrisma();
-        const cart = await prisma.cart.findFirst({ where: { isActive: true, userId } });
+        const cart = await this.prisma.cart.findFirst({ where: { isActive: true, userId } });
         return cart ? true : false;
     }
     public static async createWithoutUser(guestId: string) {
-        const prisma = Cart.getPrisma();
-        const cart = await prisma.cart
+        const cart = await this.prisma.cart
             .create({
                 data: { guestId },
             })
@@ -36,8 +33,7 @@ class Cart extends Model {
         return cart;
     }
     public static async isOwner(userId: string, cartId: string) {
-        const prisma = Cart.getPrisma();
-        const isOwner = await prisma.cart
+        const isOwner = await this.prisma.cart
             .findUnique({
                 where: {
                     id: cartId,
@@ -55,8 +51,7 @@ class Cart extends Model {
         return true;
     }
     public static async getItems(id: string) {
-        const prisma = Cart.getPrisma();
-        const items = await prisma.cart
+        const items = await this.prisma.cart
             .findUnique({
                 where: { id },
                 select: {
@@ -90,8 +85,7 @@ class Cart extends Model {
         return items;
     }
     public static async getOverallPrice(cartId: string) {
-        const prisma = Cart.getPrisma();
-        const cart = await prisma.cart
+        const cart = await this.prisma.cart
             .findUnique({ where: { id: cartId }, select: { overallPrice: true } })
             .catch((err) => {
                 throw PrismaException.createException(err, "Cart");
@@ -99,9 +93,8 @@ class Cart extends Model {
         return cart?.overallPrice;
     }
     public static async updateOverallPrice(price: Decimal, cartId: string) {
-        const prisma = Cart.getPrisma();
         const currentOverallPrice = (await Cart.getOverallPrice(cartId)) as Decimal;
-        const updatedCart = await prisma.cart.update({
+        const updatedCart = await this.prisma.cart.update({
             where: { id: cartId },
             data: {
                 overallPrice: currentOverallPrice.add(price).toFixed(2),
@@ -110,15 +103,13 @@ class Cart extends Model {
         return updatedCart.overallPrice;
     }
     public static async checkStatus(id: string) {
-        const prisma = Cart.getPrisma();
-        const cart = await prisma.cart.findUnique({ where: { id }, select: { isActive: true } }).catch((err) => {
+        const cart = await this.prisma.cart.findUnique({ where: { id }, select: { isActive: true } }).catch((err) => {
             throw PrismaException.createException(err, "Cart");
         });
         return cart?.isActive;
     }
     public static async archive(id: string) {
-        const prisma = Cart.getPrisma();
-        const updatedCart = await prisma.cart.update({ where: { id }, data: { isActive: false } }).catch((err) => {
+        const updatedCart = await this.prisma.cart.update({ where: { id }, data: { isActive: false } }).catch((err) => {
             throw PrismaException.createException(err, "Cart");
         });
         return updatedCart;

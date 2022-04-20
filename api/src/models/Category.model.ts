@@ -8,8 +8,7 @@ class Category extends Model {
         this.name = name;
     }
     public async create() {
-        const prisma = Category.getPrisma();
-        const category = await prisma.category
+        const category = await this.prisma.category
             .create({
                 data: { name: this.name },
             })
@@ -19,8 +18,7 @@ class Category extends Model {
         return category;
     }
     public static async fetchAll(page: number, limit: number) {
-        const prisma = Category.getPrisma();
-        const categories = await prisma.category
+        const categories = await this.prisma.category
             .findMany({
                 take: limit,
                 skip: page * limit,
@@ -32,21 +30,18 @@ class Category extends Model {
         return categories;
     }
     public static async count() {
-        const prisma = Category.getPrisma();
-        return await prisma.category.count().catch((err) => {
+        return await this.prisma.category.count().catch((err) => {
             throw PrismaException.createException(err, "Category");
         });
     }
     public static async remove(id: string) {
-        const prisma = Category.getPrisma();
-        const category = await prisma.category.delete({ where: { id } }).catch((err) => {
+        const category = await this.prisma.category.delete({ where: { id } }).catch((err) => {
             throw PrismaException.createException(err, "Category");
         });
         return category;
     }
     public static async edit(name: string, id: string) {
-        const prisma = Category.getPrisma();
-        const category = await prisma.category
+        const category = await this.prisma.category
             .update({
                 data: { name },
                 where: { id },

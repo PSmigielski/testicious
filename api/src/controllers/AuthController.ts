@@ -112,8 +112,16 @@ class AuthController extends Controller {
             const refreshTokenExp = new Date();
             refreshTokenExp.setTime((result.refreshToken.exp as number) * 1000);
             return res
-                .cookie("BEARER", result.jwt.token, { httpOnly: true, expires: tokenExp })
-                .cookie("REFRESH_TOKEN", result.refreshToken, { httpOnly: true, expires: refreshTokenExp })
+                .cookie("BEARER", result.jwt.token, {
+                    httpOnly: true,
+                    expires: tokenExp,
+                    sameSite: "lax",
+                })
+                .cookie("REFRESH_TOKEN", result.refreshToken, {
+                    httpOnly: true,
+                    expires: refreshTokenExp,
+                    sameSite: "lax",
+                })
                 .status(200)
                 .json({
                     message: "user logged in",

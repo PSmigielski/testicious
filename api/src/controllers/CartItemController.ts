@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import checkJwt from "../middleware/checkJwt";
 import checkUuid from "../middleware/checkUuid";
+import parameterPollutionMiddleware from "../middleware/parameterPollutionMiddleware";
 import CartItemService from "../services/CartItemService";
 import { Methods } from "../types/Methods";
 import Controller from "./Controller";
@@ -15,7 +16,7 @@ class CartItemController extends Controller {
             path: "/:cartId/:productId",
             method: Methods.POST,
             handler: this.create,
-            localMiddleware: [checkJwt, checkUuid(["cartId", "productId"])],
+            localMiddleware: [checkJwt, checkUuid(["cartId", "productId"]), parameterPollutionMiddleware("quantity")],
         },
         {
             path: "/:cartId/:itemId",
@@ -27,7 +28,7 @@ class CartItemController extends Controller {
             path: "/:cartId/:itemId",
             method: Methods.PUT,
             handler: this.edit,
-            localMiddleware: [checkJwt, checkUuid(["cartId", "itemId"])],
+            localMiddleware: [checkJwt, checkUuid(["cartId", "itemId"]), parameterPollutionMiddleware("quantity")],
         },
     ];
     public async create(req: Request, res: Response, next: NextFunction) {

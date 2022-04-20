@@ -4,15 +4,13 @@ import Model from "./Model";
 
 class ResetPasswordRequest extends Model {
     public static async create(userId: string) {
-        const prisma = ResetPasswordRequest.getPrisma();
-        const request = await prisma.resetPasswordRequest.create({ data: { userId } }).catch((err) => {
+        const request = await this.prisma.resetPasswordRequest.create({ data: { userId } }).catch((err) => {
             throw PrismaException.createException(err, "ResetPasswordRequest");
         });
         return request;
     }
     public static async getRequest(requestId: string) {
-        const prisma = ResetPasswordRequest.getPrisma();
-        const request = await prisma.resetPasswordRequest
+        const request = await this.prisma.resetPasswordRequest
             .findUnique({
                 where: { id: requestId },
             })
@@ -26,8 +24,7 @@ class ResetPasswordRequest extends Model {
         }
     }
     public static async removeRequest(requestId: string) {
-        const prisma = ResetPasswordRequest.getPrisma();
-        const request = await prisma.resetPasswordRequest
+        const request = await this.prisma.resetPasswordRequest
             .delete({
                 where: { id: requestId },
             })

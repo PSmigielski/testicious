@@ -9,11 +9,10 @@ class RefreshToken extends Model {
         this.userId = userId;
     }
     public async createToken() {
-        const prisma = RefreshToken.getPrisma();
         const refreshToken = jwt.sign({ id: this.userId }, process.env.JWT_SECRET as string, {
             expiresIn: 60 * 60 * 24 * 60,
         });
-        const token = await prisma.refreshToken
+        const token = await this.prisma.refreshToken
             .create({
                 data: {
                     token: refreshToken,
@@ -26,8 +25,7 @@ class RefreshToken extends Model {
         return token;
     }
     public static async getTokens(userId: string) {
-        const prisma = RefreshToken.getPrisma();
-        const refTokens = await prisma.refreshToken
+        const refTokens = await this.prisma.refreshToken
             .findMany({
                 where: { userId },
                 include: { user: { select: { email: true, role: true } } },
@@ -38,8 +36,7 @@ class RefreshToken extends Model {
         return refTokens;
     }
     public static async deleteToken(id: string) {
-        const prisma = RefreshToken.getPrisma();
-        const deletedToken = await prisma.refreshToken
+        const deletedToken = await this.prisma.refreshToken
             .delete({
                 where: { id },
             })

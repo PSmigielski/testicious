@@ -3,8 +3,7 @@ import Model from "./Model";
 
 class VerifyRequest extends Model {
     public static async create(userId: string) {
-        const prisma = VerifyRequest.getPrisma();
-        const request = await prisma.verifyRequest
+        const request = await this.prisma.verifyRequest
             .create({
                 data: { userId },
             })
@@ -14,8 +13,7 @@ class VerifyRequest extends Model {
         return request;
     }
     public static async delete(id: string) {
-        const prisma = VerifyRequest.getPrisma();
-        const deletedVerifyRequest = await prisma.verifyRequest
+        const deletedVerifyRequest = await this.prisma.verifyRequest
             .delete({
                 where: { id },
             })
@@ -25,8 +23,7 @@ class VerifyRequest extends Model {
         return deletedVerifyRequest;
     }
     public static async getUniqueVerifyRequest(id: string) {
-        const prisma = VerifyRequest.getPrisma();
-        const request = await prisma.verifyRequest
+        const request = await this.prisma.verifyRequest
             .findUnique({
                 where: { id },
                 include: { user: { select: { id: true } } },
