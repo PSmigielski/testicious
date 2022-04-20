@@ -1,9 +1,12 @@
 import { NextFunction, Request, Response } from "express";
+import ApiErrorException from "../exceptions/ApiErrorException";
 import checkJwt from "../middleware/checkJwt";
 import checkRole from "../middleware/checkRole";
 import checkUuid from "../middleware/checkUuid";
+import parameterPollutionMiddleware from "../middleware/parameterPollutionMiddleware";
 import schemaValidator from "../middleware/schemaValidator";
 import Category from "../models/Category.model";
+import CategoryService from "../services/CategoryService";
 import { Methods } from "../types/Methods";
 import Roles from "../types/Roles";
 import Controller from "./Controller";
@@ -24,7 +27,7 @@ class CategoryController extends Controller {
             path: "",
             method: Methods.GET,
             handler: this.showAll,
-            localMiddleware: [],
+            localMiddleware: [parameterPollutionMiddleware(["page", "limit"])],
         },
         {
             path: "/:id",
@@ -52,9 +55,14 @@ class CategoryController extends Controller {
         }
     }
     public async showAll(req: Request, res: Response, next: NextFunction) {
-        const categories = await Category.fetchAll().catch(next);
+        const page = req.query?.page ? parseInt(req.query.page as string) : 0;
+        const limit = req.query?.limit ? parseInt(req.query.limit as string) : 25;
+        if (isNaN(page) || isNaN(limit)) {
+            next(new ApiErrorException(`wrong ${isNaN(page) ? "page" : "limit"} format`, 400));
+        }
+        const categories = await new CategoryService().showAll(page, limit).catch(next);
         if (categories) {
-            return res.status(200).json({ categories });
+            return res.status(200).json(categories);
         }
     }
     public async remove(req: Request, res: Response, next: NextFunction) {
