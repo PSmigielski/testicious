@@ -1,0 +1,21 @@
+@import "src/styles/_colors.scss";
+
+@font-face {
+    font-family: ArialRounded;
+    src: url(./fonts/arlrdbd.ttf);
+}
+* {
+    margin: 0px;
+    padding: 0px;
+    box-sizing: border-box;
+}
+body {
+    width: 100vw;
+    height: 100vh;
+    background-color: $background;
+    font-family: ArialRounded;
+}
+#root {
+    width: 100%;
+    height: 100%;
+}
