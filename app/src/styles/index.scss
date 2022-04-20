@@ -1,3 +1,4 @@
+@import "src/styles/_colors.scss";
 * {
     margin: 0px;
     padding: 0px;
@@ -6,6 +7,7 @@
 body {
     width: 100vw;
     height: 100vh;
+    background-color: $background;
 }
 #root {
     width: 100%;
