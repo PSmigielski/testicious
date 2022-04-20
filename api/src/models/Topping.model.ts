@@ -22,10 +22,12 @@ class Topping extends Model {
             });
         return topping;
     }
-    public static async fetchAllToppings() {
-        const toppings = await this.prisma.topping.findMany().catch((err) => {
-            throw PrismaException.createException(err, "Topping");
-        });
+    public static async fetchAllToppings(page: number, limit: number) {
+        const toppings = await this.prisma.topping
+            .findMany({ take: limit, skip: page * limit, orderBy: { name: "asc" } })
+            .catch((err) => {
+                throw PrismaException.createException(err, "Topping");
+            });
         return toppings;
     }
     public static async removeTopping(id: string) {
@@ -33,6 +35,9 @@ class Topping extends Model {
             throw PrismaException.createException(err, "Topping");
         });
         return removedTopping;
+    }
+    public static async count() {
+        return await this.prisma.topping.count();
     }
     public static async editTopping(id: string, { name, price }: ITopping) {
         const updatedTopping = await this.prisma.topping

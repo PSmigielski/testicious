@@ -40,7 +40,7 @@ class ProductController extends Controller {
             path: "",
             method: Methods.GET,
             handler: this.fetch,
-            localMiddleware: [parameterPollutionMiddleware("name")],
+            localMiddleware: [parameterPollutionMiddleware(["name", "page", "limit"])],
         },
         {
             path: "/:id",

@@ -10,6 +10,7 @@ import CartItemController from "./controllers/CartItemController";
 import CategoryController from "./controllers/CategoryController";
 import DiscountController from "./controllers/DiscountController";
 import ProductController from "./controllers/ProductController";
+import ToppingController from "./controllers/ToppingController";
 
 const controllers = [
     new AuthController(),
@@ -18,6 +19,7 @@ const controllers = [
     new CategoryController(),
     new DiscountController(),
     new ProductController(),
+    new ToppingController(),
 ];
 const globalMiddleware = [cookieParser(), json(), cors({ credentials: true, origin: process.env.FRONTEND_URL })];
 const errorHandlers = [prismaErrorHandler, errorHandler];

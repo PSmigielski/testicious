@@ -80,7 +80,6 @@ class ProductService {
         const updatedProduct = await Product.updateProduct(data, categoryId, id).catch((err) => {
             throw err;
         });
-        console.log(this.formatDbData(updatedProduct));
         return this.formatDbData(updatedProduct);
     }
 }
