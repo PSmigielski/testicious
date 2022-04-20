@@ -1,0 +1,13 @@
+@import "src/styles/_colors.scss";
+
+.logo{
+    text-decoration: none;
+
+    &__paragraph{
+        font-size: 45px;
+        width: 210px;
+        height: 45px;
+        color: $secondary;
+
+    }
+}
