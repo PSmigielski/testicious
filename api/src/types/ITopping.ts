@@ -1,4 +1,4 @@
 interface ITopping {
-    name: string,
-    price: number
+    name: string;
+    price: number;
 }

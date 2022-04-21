@@ -25,36 +25,27 @@
             "type": "string",
             "pattern": "^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$ %^&*-]).{8,100}$"
         },
-        "street":{
+        "street": {
             "type": "string",
             "minLength": 1,
             "maxLength": 200
         },
-        "buildingNumber":{
+        "buildingNumber": {
             "type": "integer",
             "minimum": 1,
             "maximum": 10000
         },
-        "homeNumber":{
+        "homeNumber": {
             "type": "integer",
             "minimum": 1,
             "maximum": 1000
         },
-        "city":{
+        "city": {
             "type": "string",
             "minLength": 2,
             "maxLength": 100
         }
     },
-    "required": [
-        "email",
-        "name",
-        "surname",
-        "phoneNumber",
-        "password",
-        "city",
-        "buildingNumber",
-        "street"
-    ],
+    "required": ["email", "name", "surname", "phoneNumber", "password", "city", "buildingNumber", "street"],
     "additionalProperties": false
 }

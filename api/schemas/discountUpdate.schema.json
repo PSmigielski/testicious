@@ -11,7 +11,7 @@
             "minimum": 1,
             "maximum": 100
         },
-        "expDate":{
+        "expDate": {
             "type": "number",
             "minimum": 1,
             "maximum": 2147483648

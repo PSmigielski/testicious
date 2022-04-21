@@ -8,8 +8,6 @@
             "maxLength": 255
         }
     },
-    "required": [
-        "email"
-    ],
+    "required": ["email"],
     "additionalProperties": false
 }

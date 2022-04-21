@@ -1,66 +1,182 @@
 import { NextFunction, Request, Response } from "express";
 import ApiErrorException from "../exceptions/ApiErrorException";
-import Cart from "../models/Cart.model";
-import ResetPasswordRequest from "../models/ResetPasswordRequest.model";
+import checkJwt from "../middleware/checkJwt";
+import checkRole from "../middleware/checkRole";
+import checkUuid from "../middleware/checkUuid";
+import schemaValidator from "../middleware/schemaValidator";
 import User from "../models/User.model";
-import VerifyRequest from "../models/VerifyRequest.model";
-import MailerService from "../services/MailerService";
+import AuthService from "../services/AuthService";
 import EditData from "../types/EditData";
+import { Methods } from "../types/Methods";
+import Roles from "../types/Roles";
+import Controller from "./Controller";
+import csrf from "csurf";
 
-class AuthController {
+class AuthController extends Controller {
+    constructor() {
+        super();
+    }
+    path = "/auth";
+    routes = [
+        {
+            path: "/login",
+            method: Methods.POST,
+            handler: this.login,
+            localMiddleware: [schemaValidator("/../../schemas/login.schema.json"), csrf({ cookie: true })],
+        },
+        {
+            path: "/register",
+            method: Methods.POST,
+            handler: this.register,
+            localMiddleware: [schemaValidator("/../../schemas/register.schema.json"), csrf({ cookie: true })],
+        },
+        {
+            path: "/logout",
+            method: Methods.POST,
+            handler: this.logout,
+            localMiddleware: [checkJwt, csrf({ cookie: true })],
+        },
+        {
+            path: "/verify/:requestId",
+            method: Methods.GET,
+            handler: this.verify,
+            localMiddleware: [checkUuid("requestId"), csrf({ cookie: true })],
+        },
+        {
+            path: "/refresh",
+            method: Methods.POST,
+            handler: this.refreshBearerToken,
+            localMiddleware: [],
+        },
+        {
+            path: "/forget",
+            method: Methods.POST,
+            handler: this.sendResetRequest,
+            localMiddleware: [schemaValidator("/../../schemas/forget.schema.json"), csrf({ cookie: true })],
+        },
+        {
+            path: "/reset/:requestId",
+            method: Methods.PUT,
+            handler: this.reset,
+            localMiddleware: [
+                checkUuid("requestId"),
+                schemaValidator("/../../schemas/reset.schema.json"),
+                csrf({ cookie: true }),
+            ],
+        },
+        {
+            path: "/edit",
+            method: Methods.PUT,
+            handler: this.editAccountData,
+            localMiddleware: [
+                checkJwt,
+                schemaValidator("/../../schemas/editAccount.schema.json"),
+                csrf({ cookie: true }),
+            ],
+        },
+        {
+            path: "/edit/password",
+            method: Methods.PUT,
+            handler: this.editPassword,
+            localMiddleware: [
+                checkJwt,
+                schemaValidator("/../../schemas/editPassword.schema.json"),
+                csrf({ cookie: true }),
+            ],
+        },
+        {
+            path: "/edit/role/:id",
+            method: Methods.PUT,
+            handler: this.changeRole,
+            localMiddleware: [
+                checkUuid("id"),
+                checkJwt,
+                checkRole(Roles.ADMIN),
+                schemaValidator("/../../schemas/changeRole.schema.json"),
+                csrf({ cookie: true }),
+            ],
+        },
+        {
+            path: "/remove",
+            method: Methods.DELETE,
+            handler: this.removeAccount,
+            localMiddleware: [checkJwt, csrf({ cookie: true })],
+        },
+        {
+            path: "/csrf-token",
+            method: Methods.GET,
+            handler: this.getCsrfToken,
+            localMiddleware: [csrf({ cookie: true })],
+        },
+    ];
+    public async getCsrfToken(req: Request, res: Response, next: NextFunction) {
+        return res.send({ csrfToken: req.csrfToken() });
+    }
     public async register(req: Request, res: Response, next: NextFunction) {
         const data = req.body;
-        const user = await new User(data).createUser().catch(next);
+        const user = await new AuthService().createAccount(data).catch(next);
         if (user) {
-            await new Cart(user.id).create().catch(next);
-            const request = await VerifyRequest.create(user.id).catch(next)
-            if (request) {
-                MailerService.sendVerificationMail(user.email, request.id);
-                return res.json({message: "You are now registered! Check your email to verify your account"});
-            }
+            return res.json({ message: "You are now registered! Check your email to verify your account" });
         }
     }
     public async verify(req: Request, res: Response, next: NextFunction) {
         const { requestId } = req.params;
-        const result = await User.verify(requestId).catch(next);
+        const result = await new AuthService().verify(requestId).catch(next);
         if (result) {
-            return res.status(202).json({ message: "Email has been verified successfully" })
+            return res.status(202).json({ message: "Email has been verified successfully" });
         }
     }
     public async login(req: Request, res: Response, next: NextFunction) {
         const { email, password } = req.body;
-        const result = await User.login({ email, password }).catch(next);
+        const result = await new AuthService().login({ email, password }).catch(next);
         if (result) {
             const tokenExp: Date = new Date();
-            tokenExp.setTime(result.jwt.exp as number * 1000);
-            const refreshTokenExp = new Date()
-            refreshTokenExp.setTime(result.refreshToken.exp as number * 1000);
+            tokenExp.setTime((result.jwt.exp as number) * 1000);
+            const refreshTokenExp = new Date();
+            refreshTokenExp.setTime((result.refreshToken.exp as number) * 1000);
             return res
-                .cookie("BEARER", result.jwt.token, { httpOnly: true, expires: tokenExp })
-                .cookie("REFRESH_TOKEN", result.refreshToken, { httpOnly: true, expires: refreshTokenExp })
-                .status(200).json({ message: "user logged in", user: {
-                    id: result.user.id,
-                    email: result.user.email,
-                    role: result.user.role
-                }});
+                .cookie("BEARER", result.jwt.token, {
+                    httpOnly: true,
+                    expires: tokenExp,
+                    sameSite: "lax",
+                })
+                .cookie("REFRESH_TOKEN", result.refreshToken, {
+                    httpOnly: true,
+                    expires: refreshTokenExp,
+                    sameSite: "lax",
+                })
+                .status(200)
+                .json({
+                    message: "user logged in",
+                    user: {
+                        id: result.user.id,
+                        email: result.user.email,
+                        role: result.user.role,
+                    },
+                });
         }
     }
     public async logout(req: Request, res: Response, next: NextFunction) {
-        const result = await User.logout(req.user?.refTokenId).catch(next);
+        const result = await new AuthService().logout(req.user?.refTokenId).catch(next);
         if (result) {
             req.user = undefined;
-            return res.clearCookie("BEARER").clearCookie("REFRESH_TOKEN").status(202).json({ message: "user logged out successfully" });
+            return res
+                .clearCookie("BEARER")
+                .clearCookie("REFRESH_TOKEN")
+                .status(202)
+                .json({ message: "user logged out successfully" });
         }
     }
     public async refreshBearerToken(req: Request, res: Response, next: NextFunction) {
         if (req.cookies.REFRESH_TOKEN != undefined) {
-            const newToken = await User.refreshBearerToken(req.cookies.REFRESH_TOKEN.token).catch(next)
+            const newToken = await new AuthService().refreshBearerToken(req.cookies.REFRESH_TOKEN.token).catch(next);
             if (newToken !== undefined) {
                 const tokenExp: Date = new Date();
-                tokenExp.setTime(newToken?.exp as number * 1000);
+                tokenExp.setTime((newToken?.exp as number) * 1000);
                 return res
                     .cookie("BEARER", newToken?.token, { httpOnly: true, expires: tokenExp })
-                    .status(200).json({ message: "token has been refreshed" });
+                    .status(200)
+                    .json({ message: "token has been refreshed" });
             }
         } else {
             return next(new ApiErrorException("REFRESH_TOKEN cookie not found", 401));
@@ -68,48 +184,48 @@ class AuthController {
     }
     public async sendResetRequest(req: Request, res: Response, next: NextFunction) {
         const { email } = req.body;
-        const user = await User.getUserByEmail(email).catch(next);
-        if (user) {
-            const request = await ResetPasswordRequest.create(user.id).catch(next)
-            if (request) {
-                MailerService.sendResetRequest(email, request.id);
-                return res.json({ message: "reset request has been sent" });
-            }
-        }else{
-            next(new ApiErrorException("User with this email does not exist!", 404));
+        const result = await new AuthService().sendResetRequest(email).catch(next);
+        if (result) {
+            return res.json({ message: "reset request has been sent" });
         }
     }
     public async reset(req: Request, res: Response, next: NextFunction) {
         const { newPassword } = req.body;
-        const { requestId } = req.params
-        const result = await User.resetPassword(newPassword, requestId).catch(next);
-        if(result){
-            return res.json({message: "Password reset successfully"});
+        const { requestId } = req.params;
+        const result = await new AuthService().resetPassword(newPassword, requestId).catch(next);
+        if (result) {
+            return res.json({ message: "Password reset successfully" });
         }
     }
-    public async editAccountData(req: Request, res: Response, next: NextFunction){
+    public async editAccountData(req: Request, res: Response, next: NextFunction) {
         const data: EditData = req.body;
         const result = await User.editAccountData(data, req.user?.id);
-        if(result){
+        if (result) {
             return res.status(202).json({ message: "Your account details has been edited", data: result });
         }
     }
-    public async editPassword(req: Request, res: Response, next: NextFunction){
+    public async editPassword(req: Request, res: Response, next: NextFunction) {
         const { password, newPassword } = req.body;
-        const result = await User.editPassword(password,newPassword, req.user?.id).catch(next); 
-        if(result){
-            return res.status(202).json({message: "password updated successfully"});
+        const result = await new AuthService().editPassword(password, newPassword, req.user?.id).catch(next);
+        if (result) {
+            return res.status(202).json({ message: "password updated successfully" });
         }
     }
-    public async changeRole(req: Request, res: Response, next: NextFunction){
-        const { role } =  req.body;
-        if(req.params.id == req.user?.id){
+    public async changeRole(req: Request, res: Response, next: NextFunction) {
+        const { role } = req.body;
+        if (req.params.id == req.user?.id) {
             return next(new ApiErrorException("You can't change your own role", 403));
         } else {
             const result = await User.changeRole(role, req.params.id).catch(next);
-            if(result){
-                return res.status(202).json({message: `User role has been changed to ${role}`})
+            if (result) {
+                return res.status(202).json({ message: `User role has been changed to ${role}` });
             }
+        }
+    }
+    public async removeAccount(req: Request, res: Response, next: NextFunction) {
+        const removedUser = await User.remove(req.user?.id).catch(next);
+        if (removedUser) {
+            return res.status(202).json({ message: "User has been removed" });
         }
     }
 }

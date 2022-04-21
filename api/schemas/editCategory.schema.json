@@ -7,5 +7,5 @@
             "maxLength": 100
         }
     },
-    "minProperties":1
+    "minProperties": 1
 }

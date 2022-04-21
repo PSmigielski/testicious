@@ -1,23 +1,23 @@
-import { Decimal } from "@prisma/client/runtime"
+import { Decimal } from "@prisma/client/runtime";
 
-interface ITransactionWithoutUserData{
+interface ITransactionWithoutUserData {
     clientData: {
-        name: string,
-        surname: string,
-        phoneNumber: string,
-        city: string,
-        buildingNumber: number,
-        homeNumber?: number,
-        street: string,
-        email: string,
-    }
+        name: string;
+        surname: string;
+        phoneNumber: string;
+        city: string;
+        buildingNumber: number;
+        homeNumber?: number;
+        street: string;
+        email: string;
+    };
     cart: {
-        overallPrice: number, 
+        overallPrice: number;
         items: Array<{
-            quantity: number, 
-            product: string
-        }>
-    }
-} 
+            quantity: number;
+            product: string;
+        }>;
+    };
+}
 
 export default ITransactionWithoutUserData;
