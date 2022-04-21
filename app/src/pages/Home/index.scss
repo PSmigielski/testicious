@@ -1,20 +1,3 @@
 @import "src/styles/_colors.scss";
 
-.logo__container{
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    position: relative;
-    height: 120px;
-    width: 100%;
-    border-bottom: 3px solid $secondary;
 
-}
-
-.navigation__container{
-    display: grid;
-    place-content: center;
-    width: 100%;
-    height: 65px;
-    
-}

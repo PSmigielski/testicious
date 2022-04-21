@@ -3,14 +3,10 @@ import NavigationLink from "../../atoms/NavigationLink";
 import "./index.scss";
 
 const Navigation = () => {
-    let userRole = "ADMIN";
+    let userRole = "USER";
     let links = [];
-    if (userRole === "ADMIN") {
+    if (userRole === "USER") {
         links = [
-            {
-                name: "Admin tool",
-                to: "/admin",
-            },
             {
                 name: "Contact",
                 to: "/",
@@ -25,6 +21,7 @@ const Navigation = () => {
             },
         ];
     }
+
     return (
         <nav className="navigation">
             <ul className="navigation__links">
@@ -33,6 +30,7 @@ const Navigation = () => {
                 ))}
             </ul>
         </nav>
+        
     );
 };
 

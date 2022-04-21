@@ -1,0 +1,12 @@
+@import "src/styles/_colors.scss";
+
+.logo__container{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    height: 120px;
+    width: 100%;
+    border-bottom: 3px solid $secondary;
+
+}
