@@ -4,12 +4,12 @@ import checkRole from "../middleware/checkRole";
 import checkUuid from "../middleware/checkUuid";
 import parameterPollutionMiddleware from "../middleware/parameterPollutionMiddleware";
 import schemaValidator from "../middleware/schemaValidator";
-import Product from "../models/Product.model";
 import ProductService from "../services/ProductService";
 import IProduct from "../types/IProduct";
 import { Methods } from "../types/Methods";
 import Roles from "../types/Roles";
 import Controller from "./Controller";
+import csrf from "csurf";
 
 class ProductController extends Controller {
     path = "/products";
@@ -23,6 +23,7 @@ class ProductController extends Controller {
                 checkRole(Roles.ADMIN),
                 checkUuid("categoryId"),
                 schemaValidator("/../../schemas/product.schema.json"),
+                csrf({ cookie: true }),
             ],
         },
         {
@@ -34,6 +35,7 @@ class ProductController extends Controller {
                 checkRole(Roles.ADMIN),
                 checkUuid(["categoryId", "id"]),
                 schemaValidator("/../../schemas/productUpdate.schema.json"),
+                csrf({ cookie: true }),
             ],
         },
         {
@@ -46,7 +48,7 @@ class ProductController extends Controller {
             path: "/:id",
             method: Methods.DELETE,
             handler: this.remove,
-            localMiddleware: [checkJwt, checkRole(Roles.ADMIN), checkUuid("id")],
+            localMiddleware: [checkJwt, checkRole(Roles.ADMIN), checkUuid("id"), csrf({ cookie: true })],
         },
     ];
     public async create(req: Request, res: Response, next: NextFunction) {

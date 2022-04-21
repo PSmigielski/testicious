@@ -10,6 +10,7 @@ import CategoryService from "../services/CategoryService";
 import { Methods } from "../types/Methods";
 import Roles from "../types/Roles";
 import Controller from "./Controller";
+import csrf from "csurf";
 
 class CategoryController extends Controller {
     constructor() {
@@ -21,7 +22,12 @@ class CategoryController extends Controller {
             path: "",
             method: Methods.POST,
             handler: this.create,
-            localMiddleware: [checkJwt, checkRole(Roles.ADMIN), schemaValidator("/../../schemas/category.schema.json")],
+            localMiddleware: [
+                checkJwt,
+                checkRole(Roles.ADMIN),
+                schemaValidator("/../../schemas/category.schema.json"),
+                csrf({ cookie: true }),
+            ],
         },
         {
             path: "",
@@ -38,13 +44,14 @@ class CategoryController extends Controller {
                 checkRole(Roles.ADMIN),
                 checkUuid("id"),
                 schemaValidator("/../../schemas/editCategory.schema.json"),
+                csrf({ cookie: true }),
             ],
         },
         {
             path: "/:id",
             method: Methods.DELETE,
             handler: this.remove,
-            localMiddleware: [checkJwt, checkRole(Roles.ADMIN), checkUuid("id")],
+            localMiddleware: [checkJwt, checkRole(Roles.ADMIN), checkUuid("id"), csrf({ cookie: true })],
         },
     ];
     public async create(req: Request, res: Response, next: NextFunction) {

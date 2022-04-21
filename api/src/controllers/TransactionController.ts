@@ -8,6 +8,7 @@ import checkUuid from "../middleware/checkUuid";
 import schemaValidator from "../middleware/schemaValidator";
 import TransactionService from "../services/TransactionService";
 import parameterPollutionMiddleware from "../middleware/parameterPollutionMiddleware";
+import csrf from "csurf";
 
 class TransactionController extends Controller {
     path = "/transactions";
@@ -16,13 +17,18 @@ class TransactionController extends Controller {
             path: "/:cartId",
             method: Methods.POST,
             handler: this.create,
-            localMiddleware: [checkJwt, checkUuid("cartId"), parameterPollutionMiddleware("code")],
+            localMiddleware: [
+                checkJwt,
+                checkUuid("cartId"),
+                parameterPollutionMiddleware("code"),
+                csrf({ cookie: true }),
+            ],
         },
         {
             path: "",
             method: Methods.POST,
             handler: this.createWithoutUser,
-            localMiddleware: [schemaValidator("/../../schemas/transaction.schema.json")],
+            localMiddleware: [schemaValidator("/../../schemas/transaction.schema.json"), csrf({ cookie: true })],
         },
         {
             path: "/:transactionId",

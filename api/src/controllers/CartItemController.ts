@@ -5,7 +5,7 @@ import parameterPollutionMiddleware from "../middleware/parameterPollutionMiddle
 import CartItemService from "../services/CartItemService";
 import { Methods } from "../types/Methods";
 import Controller from "./Controller";
-
+import csrf from "csurf";
 class CartItemController extends Controller {
     constructor() {
         super();
@@ -16,19 +16,29 @@ class CartItemController extends Controller {
             path: "/:cartId/:productId",
             method: Methods.POST,
             handler: this.create,
-            localMiddleware: [checkJwt, checkUuid(["cartId", "productId"]), parameterPollutionMiddleware("quantity")],
+            localMiddleware: [
+                checkJwt,
+                checkUuid(["cartId", "productId"]),
+                parameterPollutionMiddleware("quantity"),
+                csrf({ cookie: true }),
+            ],
         },
         {
             path: "/:cartId/:itemId",
             method: Methods.DELETE,
             handler: this.remove,
-            localMiddleware: [checkJwt, checkUuid(["cartId", "itemId"])],
+            localMiddleware: [checkJwt, checkUuid(["cartId", "itemId"]), csrf({ cookie: true })],
         },
         {
             path: "/:cartId/:itemId",
             method: Methods.PUT,
             handler: this.edit,
-            localMiddleware: [checkJwt, checkUuid(["cartId", "itemId"]), parameterPollutionMiddleware("quantity")],
+            localMiddleware: [
+                checkJwt,
+                checkUuid(["cartId", "itemId"]),
+                parameterPollutionMiddleware("quantity"),
+                csrf({ cookie: true }),
+            ],
         },
     ];
     public async create(req: Request, res: Response, next: NextFunction) {

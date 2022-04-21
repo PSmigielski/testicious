@@ -9,7 +9,7 @@ import IDiscount from "../types/IDiscount";
 import { Methods } from "../types/Methods";
 import Roles from "../types/Roles";
 import Controller from "./Controller";
-
+import csrf from "csurf";
 class DiscountController extends Controller {
     constructor() {
         super();
@@ -20,7 +20,12 @@ class DiscountController extends Controller {
             path: "",
             method: Methods.POST,
             handler: this.create,
-            localMiddleware: [checkJwt, checkRole(Roles.ADMIN), schemaValidator("/../../schemas/discount.schema.json")],
+            localMiddleware: [
+                checkJwt,
+                checkRole(Roles.ADMIN),
+                schemaValidator("/../../schemas/discount.schema.json"),
+                csrf({ cookie: true }),
+            ],
         },
         {
             path: "",
@@ -37,13 +42,14 @@ class DiscountController extends Controller {
                 checkRole(Roles.ADMIN),
                 checkUuid("discountId"),
                 schemaValidator("/../../schemas/discountUpdate.schema.json"),
+                csrf({ cookie: true }),
             ],
         },
         {
             path: "/:discountId",
             method: Methods.DELETE,
             handler: this.remove,
-            localMiddleware: [checkJwt, checkRole(Roles.ADMIN), checkUuid("discountId")],
+            localMiddleware: [checkJwt, checkRole(Roles.ADMIN), checkUuid("discountId"), csrf({ cookie: true })],
         },
     ];
     public async create(req: Request, res: Response, next: NextFunction) {

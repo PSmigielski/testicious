@@ -9,7 +9,7 @@ import ToppingService from "../services/ToppingService";
 import { Methods } from "../types/Methods";
 import Roles from "../types/Roles";
 import Controller from "./Controller";
-
+import csrf from "csurf";
 class ToppingController extends Controller {
     path = "/toppings";
     routes = [
@@ -17,7 +17,12 @@ class ToppingController extends Controller {
             path: "",
             method: Methods.POST,
             handler: this.create,
-            localMiddleware: [checkJwt, checkRole(Roles.ADMIN), schemaValidator("/../../schemas/topping.schema.json")],
+            localMiddleware: [
+                checkJwt,
+                checkRole(Roles.ADMIN),
+                schemaValidator("/../../schemas/topping.schema.json"),
+                csrf({ cookie: true }),
+            ],
         },
         {
             path: "",
@@ -34,13 +39,14 @@ class ToppingController extends Controller {
                 checkRole(Roles.ADMIN),
                 checkUuid("toppingId"),
                 schemaValidator("/../../schemas/editTopping.schema.json"),
+                csrf({ cookie: true }),
             ],
         },
         {
             path: "/:toppingId",
             method: Methods.DELETE,
             handler: this.removeTopping,
-            localMiddleware: [checkJwt, checkRole(Roles.ADMIN), checkUuid("toppingId")],
+            localMiddleware: [checkJwt, checkRole(Roles.ADMIN), checkUuid("toppingId"), csrf({ cookie: true })],
         },
     ];
     public async create(req: Request, res: Response, next: NextFunction) {

@@ -10,6 +10,7 @@ import EditData from "../types/EditData";
 import { Methods } from "../types/Methods";
 import Roles from "../types/Roles";
 import Controller from "./Controller";
+import csrf from "csurf";
 
 class AuthController extends Controller {
     constructor() {
@@ -21,25 +22,25 @@ class AuthController extends Controller {
             path: "/login",
             method: Methods.POST,
             handler: this.login,
-            localMiddleware: [schemaValidator("/../../schemas/login.schema.json")],
+            localMiddleware: [schemaValidator("/../../schemas/login.schema.json"), csrf({ cookie: true })],
         },
         {
             path: "/register",
             method: Methods.POST,
             handler: this.register,
-            localMiddleware: [schemaValidator("/../../schemas/register.schema.json")],
+            localMiddleware: [schemaValidator("/../../schemas/register.schema.json"), csrf({ cookie: true })],
         },
         {
             path: "/logout",
             method: Methods.POST,
             handler: this.logout,
-            localMiddleware: [checkJwt],
+            localMiddleware: [checkJwt, csrf({ cookie: true })],
         },
         {
             path: "/verify/:requestId",
             method: Methods.GET,
             handler: this.verify,
-            localMiddleware: [checkUuid("requestId")],
+            localMiddleware: [checkUuid("requestId"), csrf({ cookie: true })],
         },
         {
             path: "/refresh",
@@ -51,25 +52,37 @@ class AuthController extends Controller {
             path: "/forget",
             method: Methods.POST,
             handler: this.sendResetRequest,
-            localMiddleware: [schemaValidator("/../../schemas/forget.schema.json")],
+            localMiddleware: [schemaValidator("/../../schemas/forget.schema.json"), csrf({ cookie: true })],
         },
         {
             path: "/reset/:requestId",
             method: Methods.PUT,
             handler: this.reset,
-            localMiddleware: [checkUuid("requestId"), schemaValidator("/../../schemas/reset.schema.json")],
+            localMiddleware: [
+                checkUuid("requestId"),
+                schemaValidator("/../../schemas/reset.schema.json"),
+                csrf({ cookie: true }),
+            ],
         },
         {
             path: "/edit",
             method: Methods.PUT,
             handler: this.editAccountData,
-            localMiddleware: [checkJwt, schemaValidator("/../../schemas/editAccount.schema.json")],
+            localMiddleware: [
+                checkJwt,
+                schemaValidator("/../../schemas/editAccount.schema.json"),
+                csrf({ cookie: true }),
+            ],
         },
         {
             path: "/edit/password",
             method: Methods.PUT,
             handler: this.editPassword,
-            localMiddleware: [checkJwt, schemaValidator("/../../schemas/editPassword.schema.json")],
+            localMiddleware: [
+                checkJwt,
+                schemaValidator("/../../schemas/editPassword.schema.json"),
+                csrf({ cookie: true }),
+            ],
         },
         {
             path: "/edit/role/:id",
@@ -80,15 +93,25 @@ class AuthController extends Controller {
                 checkJwt,
                 checkRole(Roles.ADMIN),
                 schemaValidator("/../../schemas/changeRole.schema.json"),
+                csrf({ cookie: true }),
             ],
         },
         {
             path: "/remove",
             method: Methods.DELETE,
             handler: this.removeAccount,
-            localMiddleware: [checkJwt],
+            localMiddleware: [checkJwt, csrf({ cookie: true })],
+        },
+        {
+            path: "/csrf-token",
+            method: Methods.GET,
+            handler: this.getCsrfToken,
+            localMiddleware: [csrf({ cookie: true })],
         },
     ];
+    public async getCsrfToken(req: Request, res: Response, next: NextFunction) {
+        return res.send({ csrfToken: req.csrfToken() });
+    }
     public async register(req: Request, res: Response, next: NextFunction) {
         const data = req.body;
         const user = await new AuthService().createAccount(data).catch(next);

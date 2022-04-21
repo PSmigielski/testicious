@@ -4,6 +4,7 @@ import checkUuid from "../middleware/checkUuid";
 import CartService from "../services/CartService";
 import { Methods } from "../types/Methods";
 import Controller from "./Controller";
+import csrf from "csurf";
 
 class CartController extends Controller {
     constructor() {
@@ -15,7 +16,7 @@ class CartController extends Controller {
             path: "",
             method: Methods.POST,
             handler: this.create,
-            localMiddleware: [checkJwt],
+            localMiddleware: [checkJwt, csrf({ cookie: true })],
         },
         {
             path: "/:cartId",
