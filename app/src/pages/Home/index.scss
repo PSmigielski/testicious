@@ -1,3 +1,23 @@
 @import "src/styles/_colors.scss";
 
+*{
+    color: $secondary;
+}
 
+.hero__container{
+    display: grid;
+}
+.hero__paragraph{
+    font-size: 90px;
+    width: 950px;
+    letter-spacing: -5px;
+
+    &--marked{
+        color: $accent2;
+    }
+    
+    &__slave{
+        font-size: 25px;
+        width: 530px;
+    }
+}
