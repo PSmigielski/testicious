@@ -1,11 +1,12 @@
 import React from "react";
-import createRoot from "react-dom";
+import * as ReactDOMClient from 'react-dom/client';
 import "./styles/index.scss";
 import Router from "./Router";
 
-createRoot.render(
+const root = ReactDOMClient.createRoot(document.getElementById('root'));
+
+root.render(
     <React.StrictMode>
         <Router />
-    </React.StrictMode>,
-    document.getElementById("root"),
+    </React.StrictMode>
 );
