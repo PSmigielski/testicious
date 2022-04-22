@@ -8,13 +8,13 @@
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
-    padding: 145px 60px 0 120px;
+    padding: 7.5% 3% 0% 6.25%;
     width: 100%;
-
 }
+
 .hero__paragraph{
-    font-size: 90px;
-    width: 950px;
+    font-size: clamp(20px,4.7vw,90px);
+    width: clamp(100px,50vw,950px);
     letter-spacing: -5px;
 
     &--marked{
@@ -22,7 +22,19 @@
     }
     
     &__slave{
-        font-size: 25px;
-        width: 530px;
+        padding-top: 4.5%;
+        font-size: clamp(5px,1.3vw,25px);
+        width: clamp(100px,27.5vw,530px);
+    }
+}
+
+.hero__img{
+    width: clamp(100px,30vw,577px);
+}
+
+@media screen and (max-width: 768px) {
+    .hero__container{
+        display: flex;
+        flex-direction: column;
     }
 }
