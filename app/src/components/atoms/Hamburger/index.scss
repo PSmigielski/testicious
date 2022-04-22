@@ -1,0 +1,60 @@
+@import "src/styles/_colors.scss";
+
+.hamburger__container{
+    position: relative;
+    width: 100px;
+    height: 100px;
+    display: grid;
+    place-content: center;
+}
+.hamburger__line{
+    width: 100px;
+    height: 5px;
+    background-color: $accent2;
+    border-radius: 50px;
+    transition: all .5s ease-in-out;
+}
+.hamburger__line::after,.hamburger__line::before{
+    content: '';
+    position: absolute;
+    width: 50px;
+    height: 5px;
+    background-color: $accent2;
+    border-radius: 50px;
+    transition: all .5s ease-in-out;
+
+}
+.hamburger__line::after{
+    transform: translateY(25px);
+    right: 0;
+}
+.hamburger__line::before{
+    transform: translateY(-25px);
+}
+
+.hamburger__line--active{
+    width: 100px;
+    height: 5px;
+    background-color: $accent2;
+    border-radius: 50px;
+    background-color: transparent;
+    transition: all .5s ease-in-out;
+}
+
+.hamburger__line--active::before, .hamburger__line--active::after{
+    content: '';
+    position: absolute;
+    width: 100px;
+    height: 5px;
+    background-color: $accent2;
+    border-radius: 50px;
+    transition: all .5s ease-in-out;
+}
+.hamburger__line--active::before{
+    transform: rotate(45deg);
+    
+}
+.hamburger__line--active::after{
+    transform: rotate(-45deg);
+    right: 0;
+}
