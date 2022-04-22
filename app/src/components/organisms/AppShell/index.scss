@@ -8,5 +8,13 @@
     height: 120px;
     width: 100%;
     border-bottom: 3px solid $secondary;
+    
+}
+
+@media screen and (max-width: 768px){
+    .logo__container{
+        height: 85px;
+        border-color: $accent3;
+    }
 
 }

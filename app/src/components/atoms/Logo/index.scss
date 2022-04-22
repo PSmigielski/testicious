@@ -16,5 +16,24 @@
         line-height: 35px;
 
     }
+
 }
 
+@media screen and (max-width: 768px) {
+    .logo{
+        width:  140px;
+        height: 25px;
+    
+        &__paragraph{
+            font-size: 22px;
+            line-height: 17px;
+    
+        }
+
+        &__img{
+            width: 35px;
+            height: 22.75px;
+            
+        }
+    }
+}
