@@ -11,7 +11,6 @@ const Home = () => {
                 <p className="hero__paragraph__slave">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
             </div>
             <img className="hero__img" src={HeroImage} alt="hero image" />
-            <Hamburger />
         </div>
     );
 };

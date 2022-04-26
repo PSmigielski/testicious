@@ -1,6 +1,7 @@
 @import "src/styles/_colors.scss";
 
 .logo__container{
+    position: relative;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -16,5 +17,12 @@
         height: 85px;
         border-color: $accent3;
     }
+
+}
+
+.burger__container{
+    position: absolute;
+    left: 5%;
+
 
 }

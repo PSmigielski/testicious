@@ -1,40 +1,47 @@
-@import "src/styles/_colors.scss";
+// @import "src/styles/_colors.scss";
 
-*{
-    color: $secondary;
-}
+// *{
+//     color: $secondary;
+// }
 
-.hero__container{
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    padding: 7.5% 3% 0% 6.25%;
-    width: 100%;
-}
+// .hero__container{
+//     display: flex;
+//     justify-content: space-between;
+//     align-items: flex-start;
+//     padding: 7.5% 3% 0% 6.25%;
+//     width: 100%;
+// }
 
-.hero__paragraph{
-    font-size: clamp(20px,4.7vw,90px);
-    width: clamp(100px,50vw,950px);
-    letter-spacing: -5px;
+// .hero__paragraph{
+//     font-size: clamp(30px,4.7vw,90px);
+//     width: clamp(300px,50vw,950px);
+//     letter-spacing: -5px;
 
-    &--marked{
-        color: $accent2;
-    }
+//     &--marked{
+//         color: $accent2;
+//     }
     
-    &__slave{
-        padding-top: 4.5%;
-        font-size: clamp(5px,1.3vw,25px);
-        width: clamp(100px,27.5vw,530px);
-    }
-}
+//     &__slave{
+//         padding-top: 4.5%;
+//         font-size: clamp(5px,1.3vw,25px);
+//         width: clamp(100px,27.5vw,530px);
+//     }
+// }
 
-.hero__img{
-    width: clamp(100px,30vw,577px);
-}
+// .hero__img{
+//     width: clamp(250px,30vw,577px);
+// }
 
-@media screen and (max-width: 768px) {
-    .hero__container{
-        display: flex;
-        flex-direction: column;
-    }
-}
+// @media screen and (max-width: 768px) {
+//     .hero__container{
+//         display: flex;
+//         flex-direction: column;
+//     }
+//     .hero__paragraph{
+//         letter-spacing: -2px;
+//         &__slave{
+
+//         }
+//         &
+//     }
+// }
