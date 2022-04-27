@@ -1,4 +1,4 @@
-// @import "src/styles/_colors.scss";
+@import "src/styles/_colors.scss";
 
 // *{
 //     color: $secondary;
@@ -45,3 +45,42 @@
 //         &
 //     }
 // }
+
+.hero__container{
+    display: flex;
+    flex-direction: column;
+    color: $secondary;
+    letter-spacing: -0.05rem;
+    
+    .hero__paragraph__container{
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: center;
+        font-size: 36px;
+        text-align: center;
+
+        .hero__paragraph{
+            padding: 20px 0px 0px 20px;
+            
+            &--marked{
+                color: $accent2;
+            }
+            
+            &__slave{
+                padding: 40px 0px 0px 20px;
+                font-size: .75em;
+            }
+        }
+    }
+    .hero__img{       
+        padding: 20px;
+        width: clamp(300px,60vw,600px)
+    
+    }
+}
+.hero__paragraph__container:last-child{
+    
+}
+
+
