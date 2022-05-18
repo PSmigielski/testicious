@@ -24,20 +24,24 @@
                 
                 &--marked{
                     color: $accent2;
+
                 }
                 
                 &__slave{
                     padding: 40px 0px 0px 20px;
                     font-size: .75em;
+
                 }
             }
         }
+
         .hero__img{       
             padding: 20px;
             width: clamp(300px,60vw,650px)
         
         }
     }
+
     .wave__img{
         width: 100%;
         transform: translateY(-50px);
@@ -46,6 +50,7 @@
     
     .indicator__container{
         display: none;
+
     }
 }
 
@@ -69,14 +74,15 @@
                     font-size: 5vw;
                     text-align: left;
     
-                    
                     &__slave{
                         text-align: left;
                         width: 65%;
                         font-size: 1.5vw;
+
                     }
                 }
             }
+
             .hero__img{       
                 padding: 20px;
                 width: 40vw;
@@ -90,16 +96,18 @@
             place-content: center;
             width: 100%;
             transform: translateY(-50px);
+
         }
     
         @keyframes move {
             from{
                 transform: translateY(5px);
+
             }
             to{
                 transform: translateY(50px);
+
             }
-            
         }
     }
 }
