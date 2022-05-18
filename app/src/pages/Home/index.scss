@@ -1,112 +1,105 @@
 @import "src/styles/_colors.scss";
 
-.hero__container{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    color: $secondary;
-    letter-spacing: -0.05rem;
-    
-    .hero__paragraph__container{
-        display: flex;
-        flex-direction: column;
-        justify-content: flex-start;
-        align-items: center;
-        font-size: 36px;
-        text-align: center;
 
-        .hero__paragraph{
-            padding: 20px 0px 0px 20px;
-            
-            &--marked{
-                color: $accent2;
-            }
-            
-            &__slave{
-                padding: 40px 0px 0px 20px;
-                font-size: .75em;
-            }
-        }
-    }
-    .hero__img{       
-        padding: 20px;
-        width: clamp(300px,60vw,650px)
-    
-    }
-}
-
-@media screen and (min-width: 768px) {
+.home{
+    height: calc(100vh - 85px);
 
     .hero__container{
-        flex-direction: row;
-        justify-content: space-around;
-        align-items: flex-start;
-        margin-top: clamp(40px,10vh,160px);
-
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        color: $secondary;
+        letter-spacing: -0.05rem;
+        
         .hero__paragraph__container{
-            width: 50%;
-            align-items: flex-start;
-
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: center;
+            font-size: 36px;
+            text-align: center;
+    
             .hero__paragraph{
-                font-size: 5vw;
-                text-align: left;
-
+                padding: 20px 0px 0px 20px;
+                
+                &--marked{
+                    color: $accent2;
+                }
                 
                 &__slave{
-                    text-align: left;
-                    width: 65%;
-                    font-size: 1.5vw;
+                    padding: 40px 0px 0px 20px;
+                    font-size: .75em;
                 }
             }
         }
         .hero__img{       
             padding: 20px;
-            width: 40vw;
-            max-width: 700px;
+            width: clamp(300px,60vw,650px)
         
         }
     }
-
-   
-    .indicator{
-        bottom: 5%;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        width: 50px;
-        height: 100px;
-        border: 3px solid $secondary;
-        border-radius: 100px;
-        
-        &__ball{
-            display: grid;
-            place-content: center;
-            width: 35px;
-            height: 35px;
-            border-radius: 100px;
-            border: 3px solid $secondary;
-            animation: move 2s infinite;
+    .wave__img{
+        width: 100%;
+        transform: translateY(-50px);
     
-            &__pointer{
-                width: 10px;
-                height: 10px;
-                border: 3px solid $secondary;
-                border-top: transparent;
-                border-left: transparent;
-                transform: translateY(-2px) rotate(45deg);
-               
+    }
+    
+    .indicator__container{
+        display: none;
+    }
+}
+
+
+@media screen and (min-width: 1024px) {
+
+    .home{
+        height: calc(100vh - 120px);
+        
+        .hero__container{
+            flex-direction: row;
+            justify-content: space-around;
+            align-items: flex-start;
+            margin-top: clamp(40px,10vh,160px);
+    
+            .hero__paragraph__container{
+                width: 50%;
+                align-items: flex-start;
+    
+                .hero__paragraph{
+                    font-size: 5vw;
+                    text-align: left;
+    
+                    
+                    &__slave{
+                        text-align: left;
+                        width: 65%;
+                        font-size: 1.5vw;
+                    }
+                }
+            }
+            .hero__img{       
+                padding: 20px;
+                width: 40vw;
+                max-width: 700px;
+            
             }
         }
-    }
     
+        .indicator__container{
+            display: grid;
+            place-content: center;
+            width: 100%;
+            transform: translateY(-50px);
+        }
     
-    @keyframes move {
-        from{
-            transform: translateY(5px);
+        @keyframes move {
+            from{
+                transform: translateY(5px);
+            }
+            to{
+                transform: translateY(50px);
+            }
+            
         }
-        to{
-            transform: translateY(50px);
-        }
-        
     }
 }
