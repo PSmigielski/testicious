@@ -13,12 +13,12 @@ const Home = () => {
                     <p className="hero__paragraph">THE BEST <span className="hero__paragraph--marked">FOOD</span> FOR YOUR TASTE</p>
                     <p className="hero__paragraph__slave">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
                 </div>
-                    <img className="hero__img" src={HeroImage} alt="hero image" /> 
+                <img className="hero__img" src={HeroImage} alt="hero" /> 
             </section>
             <div className="indicator__container">
                 <Indicator />
             </div>
-            <img className="wave__img" src={WaveImage} alt="wave image" />
+            <img className="wave__img" src={WaveImage} alt="wave" />
         </section>
             
     );

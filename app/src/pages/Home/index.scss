@@ -3,7 +3,11 @@
 
 .home{
     height: calc(100vh - 85px);
-
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: space-evenly;
+    position: relative;
     .hero__container{
         display: flex;
         flex-direction: column;
@@ -30,27 +34,23 @@
                 &__slave{
                     padding: 40px 0px 0px 20px;
                     font-size: .75em;
-
                 }
             }
         }
-
         .hero__img{       
             padding: 20px;
-            width: clamp(300px,60vw,650px)
-        
+            width: clamp(300px,60vw,650px);
         }
     }
-
     .wave__img{
+        position: absolute;
+        bottom: 0px;
+        left: 0px;
         width: 100%;
-        transform: translateY(-50px);
-    
+        transform: translateY(50px);
     }
-    
     .indicator__container{
         display: none;
-
     }
 }
 
@@ -58,14 +58,16 @@
 @media screen and (min-width: 1024px) {
 
     .home{
-        height: calc(100vh - 120px);
-        
+        height: calc(100vh - 170px);
+        display: flex;
+        align-items: flex-start;
+        flex-direction: column;
+        justify-content: space-between;
         .hero__container{
             flex-direction: row;
             justify-content: space-around;
             align-items: flex-start;
-            margin-top: clamp(40px,10vh,160px);
-    
+            padding-top: 40px;
             .hero__paragraph__container{
                 width: 50%;
                 align-items: flex-start;
