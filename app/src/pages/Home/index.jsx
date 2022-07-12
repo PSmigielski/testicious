@@ -2,6 +2,7 @@ import React from "react";
 import HeroImage from "../../assets/HeroImage.svg";
 import WaveImage from "../../assets/WaveImage.svg";
 import Indicator from "../../components/atoms/Indicator";
+import SliderContainer from "../../components/organisms/SliderContainer";
 import "./index.scss";
 
 
@@ -19,8 +20,8 @@ const Home = () => {
                 <Indicator />
             </div>
             <img className="wave__img" src={WaveImage} alt="wave" />
-        </section>
-            
+            <SliderContainer />
+        </section>      
     );
 };
 export default Home;

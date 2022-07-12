@@ -8,6 +8,7 @@
     flex-direction: column;
     justify-content: space-evenly;
     position: relative;
+
     .hero__container{
         display: flex;
         flex-direction: column;
@@ -24,7 +25,7 @@
             text-align: center;
     
             .hero__paragraph{
-                padding: 20px 0px 0px 20px;
+                padding: 20px;
                 
                 &--marked{
                     color: $accent2;
@@ -32,7 +33,7 @@
                 }
                 
                 &__slave{
-                    padding: 40px 0px 0px 20px;
+                    padding: 40px;
                     font-size: .75em;
                 }
             }
@@ -54,7 +55,6 @@
     }
 }
 
-
 @media screen and (min-width: 1024px) {
 
     .home{
@@ -73,14 +73,15 @@
                 align-items: flex-start;
     
                 .hero__paragraph{
-                    font-size: 5vw;
                     text-align: left;
+                    font-size: 5vw;
+                    padding: 20px 0px 0px 20px;
     
                     &__slave{
                         text-align: left;
                         width: 65%;
                         font-size: 1.5vw;
-
+                        padding: 40px 0px 0px 20px;
                     }
                 }
             }
