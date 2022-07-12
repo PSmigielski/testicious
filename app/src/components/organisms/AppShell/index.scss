@@ -1,0 +1,27 @@
+@import "src/styles/_colors.scss";
+
+.logo__container{
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    height: 120px;
+    width: 100%;
+    border-bottom: 3px solid $secondary;
+    
+}
+
+@media screen and (max-width: 1023px){
+    .logo__container{
+        height: 85px;
+        border-color: $accent3;
+    }
+
+}
+
+.burger__container{
+    position: absolute;
+    left: 5%;
+    
+}

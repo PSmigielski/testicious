@@ -1,0 +1,30 @@
+@import "src/styles/_colors.scss";
+
+
+.cart{
+    position: absolute;
+    right: 30px;
+    top: 50%;
+    transform: translate(0, -50%);
+
+    &__container{
+        position: relative;
+
+        .cart__dot{
+            position: absolute;
+            top: -5px;
+            right: -10px;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background-color: $errorColor;
+            
+        }
+    }
+}
+
+@media screen and (max-width: 768px){
+    .cart{
+        display: none;
+    }
+}

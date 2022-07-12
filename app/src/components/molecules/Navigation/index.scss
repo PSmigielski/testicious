@@ -1,0 +1,33 @@
+@import "src/styles/_colors.scss";
+
+.navigation__links {
+    list-style-type: none;
+    display: flex;
+    width: 50%;
+    justify-content: space-around;
+    flex-direction: row;
+
+}
+
+.navigation {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-top: 20px;
+
+}
+
+@media screen and (max-width: 1300px) {
+    .navigation__links {
+        width: 70%;
+
+    }
+}
+
+@media screen and (max-width: 1023px) {
+    .navigation__links {
+        display: none;
+        
+    }
+}

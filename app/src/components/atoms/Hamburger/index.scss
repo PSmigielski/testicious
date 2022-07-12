@@ -1,0 +1,79 @@
+@import "src/styles/_colors.scss";
+
+.hamburger__container{
+    position: relative;
+    width: 40px;
+    height: 40px;
+    display: grid;
+    place-content: center;
+
+}
+
+.hamburger__line{
+    width: 40px;
+    height: 3px;
+    background-color: $secondary;
+    border-radius: 50px;
+    transition: all .5s ease-in-out;
+
+}
+
+.hamburger__line::after,.hamburger__line::before{
+    content: '';
+    position: absolute;
+    width: 20px;
+    height: 3px;
+    background-color: $secondary;
+    border-radius: 50px;
+    transition: all .5s ease-in-out;
+
+}
+
+.hamburger__line::after{
+    transform: translateY(12px);
+    right: 0;
+
+}
+
+.hamburger__line::before{
+    transform: translateY(-12px);
+
+}
+
+.hamburger__line--active{
+    width: 40px;
+    height: 3px;
+    background-color: $secondary;
+    border-radius: 50px;
+    background-color: transparent;
+    transition: all .5s ease-in-out;
+
+}
+
+.hamburger__line--active::before, .hamburger__line--active::after{
+    content: '';
+    position: absolute;
+    width: 40px;
+    height: 3px;
+    background-color: $secondary;
+    border-radius: 50px;
+    transition: all .5s ease-in-out;
+
+}
+
+.hamburger__line--active::before{
+    transform: rotate(45deg);
+    
+}
+
+.hamburger__line--active::after{
+    transform: rotate(-45deg);
+    right: 0;
+}
+
+@media screen and (min-width: 1024px){
+    .hamburger__container, .hamburger__line{
+        display: none;
+        
+    }
+}

@@ -4,7 +4,7 @@ import "./index.css";
 
 const MenuLinks = ({links}) => {
 
-    return (<ul className="menuLinksWrapper">{links.map((el, idx) => (<MenuLink name={el.name} to={el.to} key={idx} />))}</ul>)
+    return (<ul className="navigation__links">{links.map((el, idx) => (<MenuLink name={el.name} to={el.to} key={idx} />))}</ul>)
 }
 
 export default MenuLinks

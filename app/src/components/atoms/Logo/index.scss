@@ -1,0 +1,37 @@
+@import "src/styles/_colors.scss";
+
+.logo{
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    width:  300px;
+    height: 48px;
+    text-decoration: none;
+
+    &__paragraph{
+        text-decoration: none;
+        font-size: 45px;
+        color: $secondary;
+        line-height: 35px;
+
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .logo{
+        width:  140px;
+        height: 25px;
+    
+        &__paragraph{
+            font-size: 22px;
+            line-height: 17px;
+    
+        }
+
+        &__img{
+            width: 35px;
+            height: 22.75px;
+            
+        }
+    }
+}
