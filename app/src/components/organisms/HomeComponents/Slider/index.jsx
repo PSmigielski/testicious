@@ -2,9 +2,9 @@ import React from "react";
 import "./index.scss";
 
 
-const SliderContainer = () => {
+const Slider = () => {
     return (
-        <section className="slider__container">
+        <section className="slider">
             <div className="slider__paragraph">
                 Lorem ipsum <span className="slider__paragraph--marked">dolor </span> 
                 sit amet, consectetur adipiscing elit
@@ -12,4 +12,4 @@ const SliderContainer = () => {
         </section>      
     );
 };
-export default SliderContainer;
+export default Slider;

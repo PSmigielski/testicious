@@ -1,5 +1,8 @@
 @import "src/styles/_colors.scss";
-
+    .hero{
+        position: relative;
+    }
+    
     .hero__container{
         display: flex;
         flex-direction: column;
