@@ -1,5 +1,5 @@
 import React from "react";
-import WaveImage from "../../assets/WaveImage.svg";
+import WaveImage from "../../../assets/WaveImage.svg";
 import "./index.scss";
 
 const Wave = () => {
