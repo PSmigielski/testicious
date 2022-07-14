@@ -1,0 +1,9 @@
+@import "src/styles/_colors.scss";
+
+.wave__img{
+    position: absolute;
+    bottom: 0px;
+    left: 0px;
+    width: 100%;
+    transform: translateY(50px);
+}
