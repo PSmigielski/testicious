@@ -16,7 +16,7 @@ const AppShell = () => {
                 <Logo />
                 <CartButton />
                 <div className="burger__container">
-                    <Hamburger isOpen={isOpen} setIsOpen={setIsOpen} className="asd"/>
+                    <Hamburger isOpen={isOpen} setIsOpen={setIsOpen}/>
                 </div>
             </div>
             <Navigation />

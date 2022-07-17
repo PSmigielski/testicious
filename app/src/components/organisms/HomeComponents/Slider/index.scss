@@ -1,14 +1,15 @@
 @import "src/styles/_colors.scss";
 
 @media screen and (max-width: 1023px){
-    .slider__container{
+    .slider{
         display: flex;
         flex-direction: column;
         align-items: center;
         justify-content: center;
-        width: 100%;
+        width: 100vw;
+        height: 100vh;
 
-        .slider__paragraph{
+        &__paragraph{
             text-align: center;
             width: 95%;
             font-size: 1.75vvem;
@@ -20,4 +21,10 @@
         }
     }
 
+}
+
+.slider{
+    display: flex;
+    width: 100vw;
+    height: 100vh;
 }
