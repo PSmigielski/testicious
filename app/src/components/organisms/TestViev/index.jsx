@@ -13,6 +13,7 @@ const TestView = () => {
             <AppShell />
             <Home />
             <Slider />
+            <PreviewLeftBlock />
         </section>
     );
 };
