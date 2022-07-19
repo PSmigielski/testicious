@@ -1,6 +1,6 @@
 @import "src/styles/_colors.scss";
 
-.previev_leftblock{
+.preview__leftblock{
     position: relative;
     display: flex;
     flex-direction: column;
@@ -24,7 +24,7 @@
     }
 }
 
-.previev_leftblock::before{
+.preview__leftblock::before{
     position: absolute;
     content: "";
     width: 175px;
@@ -38,7 +38,7 @@
 
 @media screen and (min-width: 1024px){
     
-    .previev_leftblock{
+    .preview__leftblock{
         position: relative;
         display: flex;
         flex-direction: column;
@@ -62,7 +62,7 @@
         }
     }
 
-    .previev_leftblock::before{
+    .preview__leftblock::before{
         position: absolute;
         content: "";
         width: 420px;
