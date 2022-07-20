@@ -1,5 +1,7 @@
 import React from "react";
 import PreviewLeftBlock from "../../../atoms/PreviewBlocks/PreviewLeftBlock";
+import PreviewRightBlock from "../../../atoms/PreviewBlocks/PreviewRightBlock";
+import PreviewCenterBlock from "../../../atoms/PreviewBlocks/PreviewCenterBlock";
 import "./index.scss";
 
 
@@ -12,6 +14,8 @@ const Slider = () => {
             </div> */}
             <div className="previev">
                 <PreviewLeftBlock />
+                <PreviewRightBlock />
+                <PreviewCenterBlock />
             </div>
         </section>      
     );
