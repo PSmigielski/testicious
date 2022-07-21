@@ -20,8 +20,8 @@ const PreviewCenterBlock = ({img,name,price,rating,bio}) => {
             <div className="preview__centerblock__rating">
                 <img className="previev__centerblock__icon" src={StarIcon} alt="" />{rating}
             </div>
-            <div className="preview__centerblock__img">
-                <img src={img} alt="" />
+            <div className="preview__centerblock__imgblock">
+                <img className="preview__centerblock__imgblock__img" src={img} alt="" />
             </div>
             <div className="preview__centerblock__name">
                 {name}
