@@ -24,11 +24,56 @@
 }
 
 .slider{
-    display: flex;
-    flex-direction: row;
-    justify-content: space-evenly;
-    align-items: center;
     width: 100vw;
     height: 100vh;
     
-} 
+    .slider__preview{
+        display: flex;
+        flex-direction: row;
+        justify-content: space-evenly;
+        align-items: center;
+    
+        &__button{
+           
+            &--left,&--right{
+                background-color: transparent;
+                border-style: none;
+
+            }
+
+            &--right{
+                transform: rotate(180deg);
+
+                &:active{
+                    transform: scale(.90) rotate(180deg);
+
+                }
+
+                &:hover{
+                    filter: invert(40%) sepia(0%) saturate(261%) hue-rotate(206deg) brightness(99%) contrast(84%);
+                    
+                }   
+            }
+            &--left{
+
+                &:active{
+                    transform: scale(.90);
+
+                }
+
+                &:hover{
+                    filter: invert(40%) sepia(0%) saturate(261%) hue-rotate(206deg) brightness(99%) contrast(84%);
+                    
+                }   
+            }
+            
+            
+            
+
+        }
+    }
+}
+
+
+   
+  
